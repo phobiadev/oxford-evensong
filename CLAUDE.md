@@ -35,9 +35,9 @@ published music lists.
 | `sources/<termId>/` | raw downloaded lists per term, committed for audit, never linked from the site |
 | `sources/samples/` | the survey's sample lists |
 | `reports/` | reports written by the update skill |
-| `scripts/` | `oxweeks.mjs`, `validate.mjs`, `fetch.mjs` (later) |
+| `scripts/` | `oxweeks.mjs`, `validate.mjs`, `fetch.mjs`, plus `*.test.mjs` |
 | `docs/` | `sources-survey.md`, `data-schema.md`, `design-brief.md`, `decisions.md`, `later.md` |
-| `.claude/skills/` | skills (later phase) |
+| `.claude/skills/update-termcard/` | `SKILL.md` (procedure) + `parsing-notes.md` (per-venue parsing memory) |
 
 ## Commands
 
@@ -45,7 +45,8 @@ published music lists.
 - `node scripts/validate.mjs [--strict]` — validate all data files
 - `node --test scripts/` — run the script tests (includes `site.test.mjs`, the
   browser modules)
-- `/update-termcard "<Term Year>"` — refresh a term's data (skill, later)
+- `/update-termcard "<Term Year>" [venueId …]` — refresh a term's data from the
+  chapels' published lists (branch + PR; never commits to `main`)
 
 ## The site
 
@@ -78,13 +79,20 @@ published music lists.
 ## State (2026-09)
 
 - Sources survey done (`docs/sources-survey.md`), registry populated
-  (`data/venues.json`, 30 venues). Scraper / `fetch.mjs` not started.
+  (`data/venues.json`, 30 venues).
+- **Pipeline built.** `scripts/fetch.mjs` (dependency-free downloader: PDF →
+  `pdftotext`, `.docx` → unzip `document.xml`, text-layer check) and the
+  `update-termcard` skill (`.claude/skills/update-termcard/` — procedure +
+  `parsing-notes.md` memory). The skill fetches each chapel's list, parses it to
+  the schema, validates, writes a `reports/` file, opens a PR, never touches `main`.
 - `data/index.json` lists Michaelmas 2026 onward (the dates ox.ac.uk publishes).
-  `current` is `2026-MT`, whose lists are not out yet.
-- `data/terms/2026-TT.json` is a **hand-built fixture**: 3rd Week of Trinity 2026,
-  three venues (magdalen, merton, keble), transcribed from `sources/samples/`. It
-  is what the site UI is built against. `validate.mjs --strict` reports 3 expected
-  warnings against the current data (see `docs/decisions.md`).
+  `current` is `2026-MT`, whose lists are not out yet. `2026-TT` stays out of
+  `terms{}` (resolved from its own term file) but is in `termFiles`.
+- `data/terms/2026-TT.json` is a **full-term parse** (update-termcard run
+  2026-09-02): ~460 sung services across 20 venues for Trinity 2026, plus honest
+  per-venue status for the rest. It superseded the earlier 3-venue/1-week fixture.
+  See `reports/2026-TT-2026-09-02.md`. `validate.mjs` passes with 0 errors;
+  `--strict` still fails on expected low-confidence + `index.json` warnings.
 - **Design done. `docs/design-brief.md` is the definitive spec** (direction H2:
   serif + small caps, monospace scaffolding, one bounded "board", warm paper + one
   sage accent, light + evening palettes). Reference mocks: `design/tonight.html`,
@@ -93,5 +101,5 @@ published music lists.
   week, Chapels + chapel page, Find music, About) from `data/` at runtime, against
   the `2026-TT` fixture. `data/index.json` gained `"termFiles"` (the list of term
   files that physically exist) so the app knows what to fetch. Search is built
-  (basic; filters deferred — see `docs/later.md`). **Next: `scripts/fetch.mjs` +
-  the `update-termcard` skill** to replace the fixture with real term files.
+  (basic; filters deferred — see `docs/later.md`). Now runs against the real
+  `2026-TT` term file.

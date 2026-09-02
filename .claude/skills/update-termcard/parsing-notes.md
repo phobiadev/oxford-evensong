@@ -545,6 +545,30 @@ promises a list that isn't there; St Stephen's House has no chapel page at all.
 
 ## Change log
 
-- **(first run — <date>)** File created from `sources/samples/` during the initial
-  build of the update-termcard skill. Per-venue maps for magdalen / merton / keble
-  lifted from the hand-built `data/terms/2026-TT.json` fixture's `parserNote`s.
+- **(file created)** From `sources/samples/` during the initial build of the
+  update-termcard skill. magdalen / merton / keble maps lifted from the fixture.
+- **(Trinity 2026 run — 2026-09-02)** Learned:
+  - Every TT26 list fetched fresh was byte-identical to its sample.
+  - **Oriel** split the music out of the term card this term → a separate chapel
+    web page (`oriel.ox.ac.uk/…/chapel/choir-and-music/`), not located. Term card
+    gives themes + preachers only.
+  - **New College** appends `NCH nn` (New College Hymnal) numbers and organ-scholar
+    initials (MM/JH/HR) to lines — not captured. `NC` prefix on composer names =
+    New College composer, dropped. Visiting/joint choirs frequent (Winchester +
+    Eton, Flagey Academy, Corpus, St Gertrude's Cincinnati).
+  - **Christ Church**: the April list runs 30 Mar–end April with the Cathedral
+    Choir largely away for Easter (Cathedral Singers cover). Monday is said
+    Evening Prayer unless a visiting choir sings. `College Compline` Wed 20:35 has
+    no music printed. Some Evensongs sung by the **Cathedral Singers** (adult
+    cover choir) — recorded in `notes`, not `choir`.
+  - **Queen's** sometimes swaps the `CANTICLES` / `LESSONS` labels (13 May 2026) —
+    check the value, not the label. `PRELUDE` → `other`/Prelude.
+  - **Exeter** (.docx): term-theme services — Choral Vespers, German Vespers,
+    Cantata Service, Rogationtide Service, Vigil of Pentecost — recorded `type:
+    "other"`. Composer is the last token of each `Heading: value` line.
+  - **Keble / Pusey House**: unlabelled; slots by position at `confidence: medium`.
+    Keble's Corpus Christi Eucharist is at Pusey House; Pusey's is with Keble.
+  - **RC Masses in chapels** (Queen's, Exeter, Magdalen, LMH) omitted as out of
+    scope; a chapel line reading "No service" / "No evensong" produces no record
+    and is noted in the report.
+  - **`.docx`** extraction via `fetch.mjs` works cleanly for Exeter.

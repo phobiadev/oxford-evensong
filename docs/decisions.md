@@ -82,6 +82,45 @@ Brief §11/§9 updated with a note; behaviour is unchanged.
 Plain `node scripts/validate.mjs` exits 0. `--strict` will exit 1 until real term
 files replace the fixture and `index.json` catches up.
 
+## The pipeline: `scripts/fetch.mjs` + `update-termcard` (Sept 2026)
+
+- **`scripts/fetch.mjs`** — one URL per invocation, no dependencies. Follows
+  redirects, writes the raw file, and: for a PDF runs `pdftotext -layout`; for a
+  `.docx` runs `unzip -p … word/document.xml` and strips tags to text (there is no
+  `pandoc`; `unzip` is a system tool like `pdftotext`). Reports whether the text
+  layer looks usable (> 200 non-whitespace chars/page). The **skill** paces
+  between venues; the script does not sleep. User-Agent is the repo URL only, **no
+  contact email** (JP's choice, 2026-09-02).
+- **`update-termcard`** works on a branch, opens a PR, never commits to `main`.
+  `disable-model-invocation: true` — always user-started. Detailed per-venue
+  parsing lives in `parsing-notes.md`, updated at the end of every run.
+
+## First real run: Trinity 2026 (2026-09-02)
+
+`/update-termcard "Trinity 2026"` replaced the 3-venue/1-week fixture with a
+full-term parse: **~460 sung services across 20 venues**. Method notes:
+
+- Every TT26 list fetched fresh matched its `sources/samples/` copy byte-for-byte
+  (the lists have not changed since the survey), so the sample-based
+  `parsing-notes.md` applied directly.
+- **20 venues published.** The rest carry an honest status: `worcester`
+  (image-only PDF → `not-parsed`, needs OCR); `corpus-christi` / `somerville` /
+  `university-church` (`not-found` — no current list on the page when fetched);
+  `hertford` / `st-hughs` (`not-yet-published`); five Free-Church / no-chapel
+  venues `no-list`.
+- **Christ Church** is monthly: the April, May and June 2026 PDFs were all fetched;
+  only the 26 Apr – 20 Jun services are in the term file. Each service's
+  `source.url` points at its own month's PDF.
+- **`music[].text` is verbatim; structured `composer`/`title` extras were not
+  populated** for the newly-parsed venues this run (they are optional search aids;
+  the `text` is the record). Populating them across the term is deferred.
+- Unlabelled Anglo-Catholic lists (Keble, Pusey House) and New College's
+  minimally-labelled list have position-inferred slots at `confidence: medium`
+  with a blanket `parserNote`. 12 services are `confidence: low` (listed in the
+  report).
+- Roman Catholic Masses hosted in chapels (Queen's 3 Jun, Exeter 12 Jun, Magdalen
+  18 May, LMH 9 Jun) are out of scope and omitted.
+
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 
 - **Christ Church publishes monthly, not termly** — the update process must

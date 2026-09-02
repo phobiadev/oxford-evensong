@@ -39,18 +39,23 @@ leaves for future phases.
   fully-expanded music per service — that belongs to Tonight / Chapel. Fine for
   now; reconsider if a full week order-of-service printout is wanted.
 
-## `scripts/fetch.mjs`
+## ~~`scripts/fetch.mjs`~~ — done (Sept 2026)
 
-Deterministic downloader: for a term, read `data/venues.json`, fetch each venue's
-current list (scraping the chapel page for the live link where the URL is opaque —
-Balliol, Merton, Pusey, St Peter's, St Edmund Hall, …), save raw files under
-`sources/<termId>/`, and write a `venueStatus` skeleton. No parsing.
+Built. Also handles `.docx` (Exeter). See `docs/decisions.md`.
 
-## `.claude/skills/update-termcard`
+## ~~`.claude/skills/update-termcard`~~ — done (Sept 2026)
 
-The interpretive half: read the downloaded lists, produce `data/terms/<termId>.json`
-to the schema, write a report under `reports/`. Works on a branch, opens a PR,
-never commits to `main`.
+Built and run once (Trinity 2026). Deferred within it:
+
+- **Structured `composer`/`title` extras** across the term (verbatim `text` is
+  complete; the extras are optional search aids — populate on a later pass).
+- **Idempotence hardening.** The skill describes byte-stable output and a stable
+  `generated.at` when nothing else changed; the current run used a hand-run
+  builder, so re-running the skill needs that logic wired in.
+- **Oriel** publishes its per-service music on a separate chapel web page that was
+  not located this run — its services are recorded from the term card without
+  music. Find the page.
+- **Worcester** needs OCR (or manual entry) for its image-only PDF.
 
 ## Known hard cases (from `docs/sources-survey.md` §6, and `docs/decisions.md`)
 
