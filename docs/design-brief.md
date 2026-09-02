@@ -260,14 +260,13 @@ tab). The service list below is the **same entry component**, grouped by day wit
 the chosen week, week-navigable. If the venue's list isn't in, the body is the
 "list not published" state with its status and `note`.
 
-### Find music (deferred)
+### Find music
 
-Not built in v1. Nav item stays, routed to a page that says the feature is coming
-and links This week. When built: a search box **plus filters** (chapel / week /
-service type). A composer or work query returns **matching services** (each as a
-collapsed entry: "Byrd — Merton, Thu 14 May, 6.00pm"), grouped by date, current
-term; extensible to held past terms. Verbatim `music[].text` is searched along with
-`composer` / `title`.
+Built in v1 as a **basic** search: a box over `?view=search&q=`, matching the
+query (case- and accent-insensitive) against `music[].text`, `composer` and
+`title` for every held term, results grouped by date, each a link to that day's
+Tonight view with the service expanded. **Filters** (chapel / week / service type)
+and past-term search are deferred — see `docs/later.md`.
 
 ## 10. Empty & edge states
 
@@ -281,13 +280,19 @@ term; extensible to held past terms. Verbatim `music[].text` is searched along w
 
 ## 11. Interaction
 
+> **Routing note (build).** The site uses **query parameters**, not the hash
+> sketched below: `?view=tonight|week|chapels|chapel|search|about`, `?date=`,
+> `?venue=`, `?q=`, `?open=<serviceId>[,…]`, plus `?now=` and `?theme=`. The path
+> never changes, so it still works as static files under the Pages sub-path. The
+> `#…` forms below are superseded; the behaviour they describe is unchanged.
+
 - **Expand / collapse** a service: click anywhere on a collapsed entry, or the
-  `FULL MUSIC LIST` / `CLOSE` control. State is in the URL (`#…/s/<serviceId>`), so
+  `FULL MUSIC LIST` / `CLOSE` control. State is in the URL (`?open=<serviceId>`), so
   an expanded service is linkable and survives reload. One entry open at a time is
   not required — multiple may be open.
-- **Day / week navigation**: arrows and the date-picker change the route
-  (`#/2026-05-12`, `#/week/2026-TT/3`, `#/chapel/magdalen/2026-TT/3`). Hash
-  routing — no server config, works under the Pages sub-path.
+- **Day / week navigation**: arrows and the date-picker change the query
+  (`?date=2026-05-12`, `?view=week&date=…`, `?view=chapel&venue=magdalen&date=…`).
+  No server config, works under the Pages sub-path.
 - **Theme toggle**: as §6.
 - **Keyboard**: entries and controls are real `<button>` / `<a>`; visible focus
   ring; the grid chips and day headers are links.

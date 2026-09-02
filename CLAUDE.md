@@ -26,7 +26,9 @@ published music lists.
 
 | Path | What |
 |---|---|
-| `index.html`, `assets/` | the site (later phase) |
+| `index.html` | the site shell (loads `assets/fonts.css`, `assets/style.css`, `assets/app.js`) |
+| `assets/*.js` | ES modules: `app` (entry) · `router` (query params) · `data` (fetch + merge) · `oxweeks` (browser week arithmetic) · `london` (Europe/London "now") · `schedule` (Tonight day rule) · `entry` (the service-entry component) · `views` · `theme` · `dom` |
+| `assets/style.css` | tokens + components (was `design/style.css`) |
 | `data/venues.json` | venue registry |
 | `data/index.json` | `{ current, terms }` — term ids and dates |
 | `data/terms/<termId>.json` | one file per term (schema: `docs/data-schema.md`) |
@@ -41,8 +43,25 @@ published music lists.
 
 - `python3 -m http.server 8000` — preview at `http://localhost:8000/`
 - `node scripts/validate.mjs [--strict]` — validate all data files
-- `node --test scripts/` — run the script tests
+- `node --test scripts/` — run the script tests (includes `site.test.mjs`, the
+  browser modules)
 - `/update-termcard "<Term Year>"` — refresh a term's data (skill, later)
+
+## The site
+
+- Plain HTML/CSS/ES-modules, no build. `index.html` fetches `data/` at runtime.
+  All URLs relative so it works under a Pages sub-path.
+- **Routing is query parameters** (the path never changes): `?view=tonight|week|
+  chapels|chapel|search|about`, `?date=YYYY-MM-DD`, `?venue=<id>`, `?q=<text>`,
+  `?open=<serviceId>[,<serviceId>]` (expanded services). This supersedes the
+  hash-routing sketch in `docs/design-brief.md` §11.
+- **`?now=<ISO>`** overrides "now" for testing / screenshots, read as
+  Europe/London wall-time, e.g. `?now=2026-10-29T17:40` or `?now=2026-05-12`.
+  Real "now" is `Intl.DateTimeFormat(timeZone:'Europe/London')`.
+- **`?theme=light|dark`** forces a palette for a shared link / screenshot
+  (not persisted; the masthead toggle is what persists, in `localStorage`).
+- Screenshots for review: headless Chromium via Playwright (dev-only; not a repo
+  dependency — `/package.json` and `/package-lock.json` are git-ignored).
 
 ## Conventions
 
@@ -69,7 +88,10 @@ published music lists.
 - **Design done. `docs/design-brief.md` is the definitive spec** (direction H2:
   serif + small caps, monospace scaffolding, one bounded "board", warm paper + one
   sage accent, light + evening palettes). Reference mocks: `design/tonight.html`,
-  `design/week.html`; tokens/components in `design/style.css`, enhancement layer
-  `design/app.js`, self-hosted fonts in `assets/fonts/`. `docs/design-directions.md`
-  logs the rejected options. **Next: build `index.html` + render/routing** (promote
-  `design/style.css`+`app.js` to `assets/`). Search deferred.
+  `design/week.html`; `docs/design-directions.md` logs the rejected options.
+- **Site built.** `index.html` + `assets/` render all five views (Tonight, This
+  week, Chapels + chapel page, Find music, About) from `data/` at runtime, against
+  the `2026-TT` fixture. `data/index.json` gained `"termFiles"` (the list of term
+  files that physically exist) so the app knows what to fetch. Search is built
+  (basic; filters deferred — see `docs/later.md`). **Next: `scripts/fetch.mjs` +
+  the `update-termcard` skill** to replace the fixture with real term files.

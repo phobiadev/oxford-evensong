@@ -34,6 +34,23 @@ file's own `term` block when a term id is absent from `index.json`. The fixture'
 Trinity 2026 sample lists (Wadham, Oriel). See `docs/data-schema.md` → "Term
 resolution".
 
+## `data/index.json` `termFiles` (added with the site build)
+
+The site can't list a directory, so it needs to be told which term files exist.
+`termFiles` is that list — `["2026-TT"]` now. It is deliberately separate from
+`terms`: `terms` stays authoritative (ox.ac.uk-published Full-Term dates only, the
+fixture excluded, per the decision above), while `termFiles` just says "this file
+is on disk, fetch it". When real term files land they go in both. The site fetches
+`{current} ∪ keys(terms) ∪ termFiles` and tolerates 404s.
+
+## Site routing: query parameters, not the hash
+
+`docs/design-brief.md` §11 sketched hash routing (`#/week/2026-TT/3`). The build
+uses query parameters instead (`?view=week&date=…`, `?venue=…`, `?q=…`, `?open=…`,
+`?now=…`, `?theme=…`) — the build brief called for shareable `?…` URLs with those
+exact shapes. The path never changes so it still works under the Pages sub-path.
+Brief §11/§9 updated with a note; behaviour is unchanged.
+
 ## The fixture: `data/terms/2026-TT.json`
 
 - **Trinity 2026, 3rd Week only** (Sun 2026-05-10 – Sat 2026-05-16), three venues:
