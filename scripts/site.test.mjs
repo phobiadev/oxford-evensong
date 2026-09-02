@@ -12,6 +12,7 @@ import { dirname, join } from 'node:path';
 import * as browser from '../assets/oxweeks.js';
 import { nowParts, clockLabel, timeLabel } from '../assets/london.js';
 import { chooseDay } from '../assets/schedule.js';
+import { searchHits } from '../assets/views.js';
 import * as node from './oxweeks.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -140,4 +141,67 @@ test('chooseDay advances after 21:00 on an empty day, but leaves another day alo
     chooseDay(map, { date: '2026-05-14', minutes: 21 * 60 + 30 }, '2026-05-13'),
     { date: '2026-05-13', advanced: false },
   );
+});
+
+// ---- Find music: filter + sort (searchHits) ----
+
+const svc = (over) => ({
+  id: `${over.date}-${over.venueId}-${(over.time || '').replace(':', '')}`,
+  title: over.title || 'Choral Evensong',
+  time: over.time ?? '18:00',
+  type: over.type || 'choral-evensong',
+  music: over.music || [],
+  _venue: { name: over.venueName || over.venueId, shortName: over.venueId },
+  ...over,
+});
+
+const SVCS = [
+  svc({ date: '2026-05-10', venueId: 'magdalen', venueName: 'Magdalen College',
+    music: [{ slot: 'canticles', text: 'Howells — Collegium Regale', composer: 'Howells' }] }),
+  svc({ date: '2026-05-14', venueId: 'newcollege', venueName: 'New College',
+    type: 'choral-eucharist',
+    music: [{ slot: 'setting', text: 'Byrd — Mass for Four Voices', composer: 'Byrd' }] }),
+  svc({ date: '2026-05-20', venueId: 'magdalen', venueName: 'Magdalen College',
+    music: [{ slot: 'anthem', text: 'Howells — Take him earth', composer: 'Howells' }] }),
+  svc({ date: '2026-05-25', venueId: 'christ-church', venueName: 'Christ Church',
+    music: [{ slot: 'canticles', text: 'Stanford in A', composer: 'Stanford' }] }),
+];
+
+test('searchHits: upcoming-only is the default and reports what it hides', () => {
+  const r = searchHits(SVCS, { q: 'howells', today: '2026-05-15' });
+  assert.deepEqual(r.hits.map((h) => h.s.date), ['2026-05-20']);
+  assert.equal(r.hiddenPast, 1);
+});
+
+test('searchHits: past=… (upcomingOnly false) returns every match, no hidden count', () => {
+  const r = searchHits(SVCS, { q: 'howells', upcomingOnly: false, today: '2026-05-15' });
+  assert.deepEqual(r.hits.map((h) => h.s.date), ['2026-05-10', '2026-05-20']);
+  assert.equal(r.hiddenPast, 0);
+});
+
+test('searchHits: venue and type filters narrow the matches', () => {
+  assert.equal(
+    searchHits(SVCS, { q: 'a', venue: 'magdalen', upcomingOnly: false, today: '2026-01-01' }).hits.length,
+    2,
+  );
+  const byType = searchHits(SVCS, { q: 'a', type: 'choral-eucharist', upcomingOnly: false, today: '2026-01-01' });
+  assert.deepEqual(byType.hits.map((h) => h.s.venueId), ['newcollege']);
+});
+
+test('searchHits: date-desc reverses the day groups; composer sort is one flat A–Z group', () => {
+  const desc = searchHits(SVCS, { q: 'a', sort: 'date-desc', upcomingOnly: false, today: '2026-01-01' });
+  assert.deepEqual(desc.groups.map((g) => g.items[0].s.date),
+    ['2026-05-25', '2026-05-20', '2026-05-14', '2026-05-10']);
+
+  const comp = searchHits(SVCS, { q: 'a', sort: 'composer', upcomingOnly: false, today: '2026-01-01' });
+  assert.equal(comp.groups.length, 1);
+  assert.deepEqual(comp.groups[0].items.map((h) => h.m.composer),
+    ['Byrd', 'Howells', 'Howells', 'Stanford']);
+});
+
+test('searchHits: chapel sort groups by venue name, alphabetically', () => {
+  const r = searchHits(SVCS, { q: 'a', sort: 'chapel', upcomingOnly: false, today: '2026-01-01' });
+  assert.deepEqual(r.groups.map((g) => g.heading),
+    ['Christ Church', 'Magdalen College', 'New College']);
+  assert.deepEqual(r.groups[1].items.map((h) => h.s.date), ['2026-05-10', '2026-05-20']);
 });

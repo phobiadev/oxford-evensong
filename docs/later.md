@@ -20,8 +20,10 @@ leaves for future phases.
   build step that bakes today's / this week's HTML into `index.html`. Out of
   scope for a no-build site; `<noscript>` currently points at the data and the
   about page. Revisit if a static pre-render step becomes acceptable.
-- **Find music: filters + history.** v1 search is a plain box (see the brief §9).
-  Add chapel / week / service-type filters and search across held past terms.
+- **Find music: history + week filter.** Search now has chapel / service-type
+  filters, an upcoming-only toggle (on by default) and sort (date ↑/↓, composer,
+  chapel). Still missing: a week filter, searching across held *past* terms, and
+  composer sort keys on `m.text` where `m.composer` is absent (rough A–Z).
 - **Structured venue patterns.** `venues.json` `typicalPattern` is prose. A
   structured form (day + time + service type) would let Tonight/Week show the
   brief's "ghost" rows (a chapel whose list isn't out, at its usual slot, clearly

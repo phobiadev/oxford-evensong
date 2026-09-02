@@ -54,8 +54,10 @@ published music lists.
   All URLs relative so it works under a Pages sub-path.
 - **Routing is query parameters** (the path never changes): `?view=tonight|week|
   chapels|chapel|search|about`, `?date=YYYY-MM-DD`, `?venue=<id>`, `?q=<text>`,
-  `?open=<serviceId>[,<serviceId>]` (expanded services). This supersedes the
-  hash-routing sketch in `docs/design-brief.md` §11.
+  `?open=<serviceId>[,<serviceId>]` (expanded services). Search also reads
+  `?venue=<id>`, `?type=<serviceType>`, `?sort=date|date-desc|composer|chapel`
+  and `?past=1` (show past services; upcoming-only is the default). This
+  supersedes the hash-routing sketch in `docs/design-brief.md` §11.
 - **`?now=<ISO>`** overrides "now" for testing / screenshots, read as
   Europe/London wall-time, e.g. `?now=2026-10-29T17:40` or `?now=2026-05-12`.
   Real "now" is `Intl.DateTimeFormat(timeZone:'Europe/London')`.
@@ -100,6 +102,9 @@ published music lists.
 - **Site built.** `index.html` + `assets/` render all five views (Tonight, This
   week, Chapels + chapel page, Find music, About) from `data/` at runtime, against
   the `2026-TT` fixture. `data/index.json` gained `"termFiles"` (the list of term
-  files that physically exist) so the app knows what to fetch. Search is built
-  (basic; filters deferred — see `docs/later.md`). Now runs against the real
-  `2026-TT` term file.
+  files that physically exist) so the app knows what to fetch. Search runs against the real
+  `2026-TT` term file and has filters: chapel / service-type selects, an
+  upcoming-only toggle (on by default; `?past=1` opts out), and sort
+  (`date` | `date-desc` | `composer` | `chapel`). Pure filter/sort logic is
+  `searchHits()` in `assets/views.js`, unit-tested in `scripts/site.test.mjs`.
+  Remaining search wants are in `docs/later.md`.

@@ -397,7 +397,28 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   padding:.5rem .65rem;
 }
 .search-box input:focus-visible{outline:2px solid var(--accent-ink);outline-offset:1px}
+.search-filters{
+  display:flex;flex-wrap:wrap;gap:.7rem 1.1rem;align-items:end;
+  padding:.85rem 1.15rem;border-bottom:1px solid var(--rule);
+}
+.search-filters label{
+  display:flex;flex-direction:column;gap:.3rem;
+  font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;
+  font-size:.56rem;color:var(--faint);
+}
+.search-filters select{
+  font-family:var(--serif);font-size:.92rem;color:var(--ink);
+  background:var(--paper);border:1px solid var(--rule);padding:.32rem .4rem;
+}
+.search-filters label.check{
+  flex-direction:row;align-items:center;gap:.4rem;
+  font-size:.62rem;letter-spacing:.06em;align-self:center;
+}
+.search-filters label.check input{margin:0}
+.search-filters select:focus-visible,
+.search-filters input:focus-visible{outline:2px solid var(--accent-ink);outline-offset:1px}
 .search-count{padding:.8rem 1.15rem 0;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+.search-count a{color:var(--faint)}
 .result-day > h2{
   font-family:var(--serif);font-weight:500;font-size:1.05rem;
   padding:1rem 1.15rem .2rem;
@@ -410,6 +431,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .js .result-day .r:hover{background:var(--accent-tint)}
 .result-day .r .t{font-family:var(--mono);font-size:.62rem;color:var(--mid);letter-spacing:.02em}
 .result-day .r .c{font-family:var(--serif-sc);font-weight:500;letter-spacing:.02em;font-size:1rem;margin-left:.5em}
+.result-day .r .rd{font-family:var(--mono);font-size:.6rem;color:var(--faint);letter-spacing:.04em;margin-left:.5em}
 .result-day .r .hit{display:block;font-size:.9rem;margin-top:.15rem}
 .result-day .r mark{background:var(--accent-tint);color:inherit;padding:0 .1em}
 
@@ -481,7 +503,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   body{padding:0;font-size:11pt}
   .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
   .datehead .nav-day a,.datehead .nav-day .step,
-  .picker,.search-box,.chapelhead .back{display:none}
+  .picker,.search-box,.search-filters,.chapelhead .back{display:none}
   .board{border-color:#000}
   .entry,.music,.chip,.daygroup{break-inside:avoid}
   .music{max-width:none}

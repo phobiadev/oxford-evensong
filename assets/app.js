@@ -55,9 +55,12 @@ function applyFocus(focus) {
     el = document.querySelector('[data-pick]');
   } else if (focus.type === 'disclose') {
     el = document.querySelector(`[data-toggle="${CSS.escape(focus.id)}"]`);
+  } else if (focus.type === 'filter') {
+    el = document.getElementById(`f-${focus.id}`);
   }
   if (!el) return;
-  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+  const nativelyFocusable = el.matches('a[href], button, input, select, textarea');
+  if (!nativelyFocusable && !el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
   el.focus({ preventScroll: focus === 'main' });
 }
 
@@ -101,6 +104,17 @@ function afterRender(p, focus) {
         const nq = document.getElementById('q');
         if (nq) { nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length); }
       }, 140);
+    });
+  }
+
+  // search filters (chapel / service / sort / upcoming-only)
+  for (const el of document.querySelectorAll('[data-filter]')) {
+    el.addEventListener('change', () => {
+      const key = el.dataset.filter;
+      // "Upcoming only" checked is the default → no param; unchecked → past=1.
+      const val = el.type === 'checkbox' ? (el.checked ? null : '1') : (el.value || null);
+      nextFocus = { type: 'filter', id: key };
+      go({ [key]: val, open: [] }, { replace: true });
     });
   }
 
