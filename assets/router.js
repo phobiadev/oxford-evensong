@@ -2,14 +2,16 @@
 //   ?view=tonight&date=2026-05-12&open=<serviceId>
 //   ?view=week&date=2026-10-27
 //   ?view=chapel&venue=magdalen
-//   ?view=search&q=howells
+//   ?view=search&q=howells&venue=magdalen&type=choral-evensong&sort=composer&past=1
 //   ?view=about
 // plus ?now=<ISO> to override "now" and ?theme=light|dark to force a palette.
+// Search filters: `venue` / `type` narrow the hits, `sort` orders them
+// (date | date-desc | composer | chapel), `past=1` opts out of upcoming-only.
 // The path never changes, so this works as static files under a Pages sub-path.
 
 import { isValidISODate } from './oxweeks.js';
 
-const KEYS = ['view', 'date', 'venue', 'q', 'now', 'theme', 'open'];
+const KEYS = ['view', 'date', 'venue', 'q', 'type', 'sort', 'past', 'now', 'theme', 'open'];
 let listener = () => {};
 
 /** Current params as a plain object; `open` is an array of service ids. */

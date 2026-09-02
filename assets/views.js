@@ -8,12 +8,16 @@ import {
 } from './oxweeks.js';
 import { timeLabel } from './london.js';
 import { entryHTML, summaryParts, chipMusicHTML } from './entry.js';
-import { servicesForVenue, venueStatusFor, allServices } from './data.js';
+import { servicesForVenue, venueStatusFor, allServices, byTimeThenChapel } from './data.js';
 import { chooseDay } from './schedule.js';
 
 export { chooseDay };
 
 const CONTACT = 'joseph.preston@pmb.ox.ac.uk';
+
+// Nav / result links leave the search view; null these out so filters don't
+// trail into Tonight or a chapel page.
+const DROP_SEARCH = { venue: null, q: null, type: null, sort: null, past: null };
 
 const CHOIR_TYPE = {
   'boys-and-men': 'boys & men',
@@ -68,13 +72,13 @@ export function shell(inner, { now, view, weekSpan }) {
     ['search', 'Find music'],
   ].map(([v, label]) => {
     const active = v === view || (view === 'chapel' && v === 'chapels');
-    return `<a href="${esc(href({ view: v, date: null, venue: null, q: null, open: [] }))}" data-link${active ? ' aria-current="page"' : ''}>${label}</a>`;
+    return `<a href="${esc(href({ view: v, date: null, open: [], ...DROP_SEARCH }))}" data-link${active ? ' aria-current="page"' : ''}>${label}</a>`;
   }).join('');
 
   return `
   <div class="sheet${view === 'week' ? ' wide' : ''}">
     <header class="masthead">
-      <a class="mark" href="${esc(href({ view: 'tonight', date: null, venue: null, q: null, open: [] }))}" data-link>Oxford Evensong</a>
+      <a class="mark" href="${esc(href({ view: 'tonight', date: null, open: [], ...DROP_SEARCH }))}" data-link>Oxford Evensong</a>
       <span class="right">
         <span class="clock">${esc(now.weekdayLong)} · <b>${esc(now.clock)}</b></span>
         <button class="toggle" type="button" aria-label="Switch theme">☾</button>
@@ -84,7 +88,7 @@ export function shell(inner, { now, view, weekSpan }) {
     <main id="main">${inner}</main>
     <footer>
       Sung services in Oxford’s college chapels and the cathedral, from each chapel’s own music list.
-      <span class="mono">Music verbatim · times Oxford local${weekSpan ? ` · ${esc(weekSpan)}` : ''} · <a href="${esc(href({ view: 'about', date: null, venue: null, q: null, open: [] }))}" data-link>about &amp; sources</a></span>
+      <span class="mono">Music verbatim · times Oxford local${weekSpan ? ` · ${esc(weekSpan)}` : ''} · <a href="${esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }))}" data-link>about &amp; sources</a></span>
     </footer>
   </div>`;
 }
@@ -462,51 +466,176 @@ export function chapel(data, p, now, ui) {
 
 /* ---------- Find music (search) ---------- */
 
+// Service types offered as a filter, in the order they appear in the menu.
+// `said-evensong` is deliberately omitted — nothing is sung, so it can't match.
+const SEARCH_TYPES = [
+  ['choral-evensong', 'Choral Evensong'],
+  ['sung-evensong', 'Sung Evensong'],
+  ['choral-matins', 'Choral Matins'],
+  ['choral-eucharist', 'Choral Eucharist'],
+  ['compline', 'Compline'],
+  ['special', 'Special'],
+  ['other', 'Other'],
+];
+
+const SEARCH_SORTS = [
+  ['date', 'Date — earliest first'],
+  ['date-desc', 'Date — latest first'],
+  ['composer', 'Composer A–Z'],
+  ['chapel', 'Chapel A–Z'],
+];
+
+function matchService(s, needle) {
+  for (const m of s.music || []) {
+    const hay = fold([m.text, m.composer, m.title].filter(Boolean).join(' · '));
+    if (hay.includes(needle)) return m;
+  }
+  return null;
+}
+
+function searchRow(s, m, q, showDate) {
+  const hitText = [m.composer, m.title].filter(Boolean).join(', ') || m.text;
+  return `<a class="r" href="${esc(href({ view: 'tonight', date: s.date, open: [s.id], ...DROP_SEARCH }))}" data-link>`
+    + `<span class="t">${esc(timeLabel(s.time))}</span>`
+    + `<span class="c">${esc(s._venue?.shortName || s.venueId)}</span>`
+    + (showDate ? `<span class="rd">${esc(shortDayDate(s.date))}</span>` : '')
+    + `<span class="hit">${highlight(hitText, q)} <span class="mid">— ${esc(s.title)}</span></span>`
+    + '</a>';
+}
+
+function searchGroup(heading, rows) {
+  return `<div class="result-day">${heading ? `<h2>${esc(heading)}</h2>` : ''}${rows.join('')}</div>`;
+}
+
+function pushInto(map, key, value) {
+  if (!map.has(key)) map.set(key, []);
+  map.get(key).push(value);
+}
+
+/**
+ * Pure filter + sort for the music search — no DOM, unit-tested in
+ * scripts/site.test.mjs. `services` is the annotated list from allServices();
+ * `today` is now.date (ISO). Returns the ordered groups to render, the hit
+ * count, and how many matches the upcoming-only default is hiding.
+ */
+export function searchHits(services, {
+  q, venue = '', type = '', sort = 'date', upcomingOnly = true, today = '',
+}) {
+  const needle = fold(q);
+  const matched = [];
+  for (const s of services) {
+    if (venue && s.venueId !== venue) continue;
+    if (type && s.type !== type) continue;
+    const m = matchService(s, needle);
+    if (m) matched.push({ s, m });
+  }
+  const upcoming = matched.filter(({ s }) => s.date >= today);
+  const hits = upcomingOnly ? upcoming : matched;
+  const hiddenPast = upcomingOnly ? matched.length - upcoming.length : 0;
+
+  const byDateAsc = (a, b) => (a.s.date < b.s.date ? -1 : a.s.date > b.s.date ? 1 : 0);
+  let groups = [];
+  if (sort === 'composer') {
+    const keyOf = (m) => fold(m.composer || m.title || m.text);
+    groups = [{
+      heading: null,
+      showDate: true,
+      items: [...hits].sort((a, b) => keyOf(a.m).localeCompare(keyOf(b.m)) || byDateAsc(a, b)),
+    }];
+  } else if (sort === 'chapel') {
+    const byVenue = new Map();
+    for (const h of hits) pushInto(byVenue, h.s._venue?.name || h.s.venueId, h);
+    groups = [...byVenue.keys()].sort((a, b) => a.localeCompare(b)).map((k) => ({
+      heading: k,
+      showDate: true,
+      items: byVenue.get(k).sort((a, b) => byDateAsc(a, b) || byTimeThenChapel(a.s, b.s)),
+    }));
+  } else {
+    const byDate = new Map();
+    for (const h of hits) pushInto(byDate, h.s.date, h);
+    const days = [...byDate.keys()].sort();
+    if (sort === 'date-desc') days.reverse();
+    groups = days.map((d) => ({ heading: longDate(d), showDate: false, items: byDate.get(d) }));
+  }
+  return { hits, hiddenPast, groups };
+}
+
 export function search(data, p, now) {
-  const q = (p.q || '').trim();
+  // The input keeps the raw string; the query logic works on the trimmed form.
+  // Trimming the value we render back into the box would eat a space the moment
+  // the debounced keystroke re-renders the view (a trailing/lone space vanishes,
+  // a space between words survives — that's the bug this avoids).
+  const raw = p.q || '';
+  const q = raw.trim();
   const term = resolveTerm(data, now.date);
+
+  const venue = p.venue || '';
+  const type = p.type || '';
+  const sort = SEARCH_SORTS.some(([v]) => v === p.sort) ? p.sort : 'date';
+  const upcomingOnly = p.past !== '1'; // upcoming-only is the default
+
   const box = `
     <div class="search-box">
       <label for="q">Search this term’s music — composer or work</label>
-      <input id="q" type="search" name="q" value="${esc(q)}" autocomplete="off"
+      <input id="q" type="search" name="q" value="${esc(raw)}" autocomplete="off"
         placeholder="Howells · Stanford in G · Coll Reg" />
     </div>`;
+
+  const venuesSeen = new Set(allServices(data).map((s) => s.venueId));
+  const venueOpts = [...data.venueList]
+    .filter((v) => venuesSeen.has(v.id))
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((v) => `<option value="${esc(v.id)}"${v.id === venue ? ' selected' : ''}>${esc(v.shortName || v.name)}</option>`)
+    .join('');
+
+  const filters = q ? `
+    <div class="search-filters">
+      <label>Chapel
+        <select id="f-venue" data-filter="venue">
+          <option value="">Any chapel</option>${venueOpts}
+        </select>
+      </label>
+      <label>Service
+        <select id="f-type" data-filter="type">
+          <option value="">Any service</option>
+          ${SEARCH_TYPES.map(([v, l]) => `<option value="${v}"${v === type ? ' selected' : ''}>${l}</option>`).join('')}
+        </select>
+      </label>
+      <label>Sort
+        <select id="f-sort" data-filter="sort">
+          ${SEARCH_SORTS.map(([v, l]) => `<option value="${v}"${v === sort ? ' selected' : ''}>${l}</option>`).join('')}
+        </select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="f-past" data-filter="past"${upcomingOnly ? ' checked' : ''} />
+        Upcoming only
+      </label>
+    </div>` : '';
 
   let results = '';
   if (!q) {
     results = '<div class="empty"><p>Type a composer or a piece.</p>'
       + '<span class="mono">e.g. Bairstow · Dum transisset · Missa</span></div>';
   } else {
-    const needle = fold(q);
-    const hits = [];
-    for (const s of allServices(data)) {
-      for (const m of s.music || []) {
-        const hay = fold([m.text, m.composer, m.title].filter(Boolean).join(' · '));
-        if (hay.includes(needle)) { hits.push({ s, m }); break; }
-      }
-    }
+    const { hits, hiddenPast, groups } = searchHits(allServices(data), {
+      q, venue, type, sort, upcomingOnly, today: now.date,
+    });
+
     if (!hits.length) {
-      results = `<div class="empty"><p>Nothing matches “${esc(q)}”.</p></div>`;
+      const showAll = hiddenPast
+        ? ` <a href="${esc(href({ past: '1' }))}" data-link>Show ${hiddenPast} past result${hiddenPast === 1 ? '' : 's'}</a>.`
+        : '';
+      const what = upcomingOnly && hiddenPast ? 'No upcoming service matches' : 'Nothing matches';
+      results = `<div class="empty"><p>${what} “${esc(q)}”.${showAll}</p></div>`;
     } else {
-      const byDate = new Map();
-      for (const h of hits) {
-        if (!byDate.has(h.s.date)) byDate.set(h.s.date, []);
-        byDate.get(h.s.date).push(h);
-      }
-      const days = [...byDate.keys()].sort();
-      results = `<div class="search-count">${hits.length} service${hits.length === 1 ? '' : 's'}</div>`
-        + days.map((d) => (
-          `<div class="result-day"><h2>${esc(longDate(d))}</h2>`
-          + byDate.get(d).map(({ s, m }) => {
-            const hitText = [m.composer, m.title].filter(Boolean).join(', ') || m.text;
-            return `<a class="r" href="${esc(href({ view: 'tonight', date: s.date, open: [s.id] }))}" data-link>`
-              + `<span class="t">${esc(timeLabel(s.time))}</span>`
-              + `<span class="c">${esc(s._venue?.shortName || s.venueId)}</span>`
-              + `<span class="hit">${highlight(hitText, q)} <span class="mid">— ${esc(s.title)}</span></span>`
-              + '</a>';
-          }).join('')
-          + '</div>'
-        )).join('');
+      const body = groups.map((g) => searchGroup(
+        g.heading,
+        g.items.map(({ s, m }) => searchRow(s, m, q, g.showDate)),
+      )).join('');
+      const past = hiddenPast
+        ? ` · <a href="${esc(href({ past: '1' }))}" data-link>${hiddenPast} past hidden</a>`
+        : '';
+      results = `<div class="search-count">${hits.length} service${hits.length === 1 ? '' : 's'}${past}</div>${body}`;
     }
   }
 
@@ -514,6 +643,7 @@ export function search(data, p, now) {
     <div class="board">
       <div class="datehead"><h1>Find music</h1><div class="wk">${term ? esc(termLong(term)) : ''}</div></div>
       ${box}
+      ${filters}
       <div class="results" role="status" aria-live="polite">${results}</div>
     </div>`, { now, view: 'search' });
 }
