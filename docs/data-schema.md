@@ -23,6 +23,7 @@ e.g. `2026-MT`. Service ids are `<date>-<venueId>-<HHMM>`, e.g.
 ```json
 {
   "current": "2026-MT",
+  "termFiles": ["2026-TT"],
   "terms": {
     "2026-MT": { "name": "Michaelmas 2026", "weekOneSunday": "2026-10-11", "lastSaturday": "2026-12-05" }
   }
@@ -32,14 +33,16 @@ e.g. `2026-MT`. Service ids are `<date>-<venueId>-<HHMM>`, e.g.
 | Field | Meaning |
 |---|---|
 | `current` | Term id the site shows by default. May name a term with no term file yet (e.g. before a term's lists are published) — validation warns, does not error. |
+| `termFiles` | Optional array. The term ids that have a `data/terms/<id>.json` file **right now** — how the site knows what to fetch. Distinct from `terms`: a term file may exist for a term not in `terms` (the `2026-TT` fixture), and `terms` may list a term whose file isn't out yet. The site fetches every id in `{current} ∪ keys(terms) ∪ termFiles`, tolerating 404s. Validation errors if an entry has no matching file or the file's `term.id` disagrees. |
 | `terms` | Object keyed by term id. |
 | `terms.<id>.name` | Human name, e.g. `"Michaelmas 2026"`. |
 | `terms.<id>.weekOneSunday` | ISO date of the Sunday of 1st Week (= the start of Full Term). Must be a Sunday. |
 | `terms.<id>.lastSaturday` | ISO date of the Saturday of 8th Week (the "To" date on ox.ac.uk). Must be a Saturday, after `weekOneSunday`. |
 
-`data/index.json` currently lists only terms whose Full-Term dates are published on
-ox.ac.uk (Michaelmas 2026 onward). The `2026-TT` fixture is **not** listed here; see
-"Term resolution" below.
+`data/index.json` `terms` currently lists only terms whose Full-Term dates are
+published on ox.ac.uk (Michaelmas 2026 onward). The `2026-TT` fixture is **not** in
+`terms` (see "Term resolution" below) but it **is** in `termFiles`, so the site
+loads it.
 
 ### Term resolution (`scripts/oxweeks.mjs`)
 
@@ -223,6 +226,9 @@ outside 0th–9th Week; a `published` venue with noticeably fewer services than 
 `typicalPattern` implies; any `confidence: "low"`; two services at one venue within
 30 minutes; a term file whose id is not in `index.json`; `current` naming a term
 with no file.
+
+`index.json` `termFiles` (if present) must be an array of strings; each must have a
+`data/terms/<id>.json` whose `term.id` matches (**error** otherwise).
 
 ---
 

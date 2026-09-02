@@ -121,7 +121,30 @@ function loadIndex() {
     err('data/index.json', '', `invalid JSON: ${error}`);
     return { current: null, terms: {} };
   }
-  checkKeys('data/index.json', '', value, ['current', 'terms']);
+  checkKeys('data/index.json', '', value, ['current', 'termFiles', 'terms'], ['current', 'terms']);
+
+  if ('termFiles' in value) {
+    if (!Array.isArray(value.termFiles)) {
+      err('data/index.json', 'termFiles', 'must be an array of term ids');
+    } else {
+      for (const id of value.termFiles) {
+        if (!isNonEmptyString(id)) {
+          err('data/index.json', 'termFiles', 'entries must be non-empty strings');
+          continue;
+        }
+        const p = join(DATA, 'terms', `${id}.json`);
+        if (!existsSync(p)) {
+          err('data/index.json', `termFiles`, `"${id}" has no data/terms/${id}.json`);
+        } else {
+          const { value: doc } = readJSON(p);
+          if (doc && doc.term && doc.term.id !== id) {
+            err('data/index.json', 'termFiles', `"${id}" file has term.id "${doc.term?.id}"`);
+          }
+        }
+      }
+    }
+  }
+
   const terms = isPlainObject(value.terms) ? value.terms : {};
   for (const [id, t] of Object.entries(terms)) {
     checkKeys('data/index.json', `terms.${id}`, t, ['name', 'weekOneSunday', 'lastSaturday']);
