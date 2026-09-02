@@ -41,6 +41,21 @@ export function parseISO(iso) {
   return ms;
 }
 
+/**
+ * True when `iso` is exactly "YYYY-MM-DD" and a real calendar date. Used to
+ * sanitise ?date= / ?now= before any week arithmetic touches it — a bad value
+ * would otherwise throw out of parseISO and blank the page.
+ */
+export function isValidISODate(iso) {
+  if (typeof iso !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return false;
+  try {
+    parseISO(iso);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** UTC-midnight epoch ms -> ISO date string. */
 export function formatISO(ms) {
   const d = new Date(ms);

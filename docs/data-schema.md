@@ -33,7 +33,7 @@ e.g. `2026-MT`. Service ids are `<date>-<venueId>-<HHMM>`, e.g.
 | Field | Meaning |
 |---|---|
 | `current` | Term id the site shows by default. May name a term with no term file yet (e.g. before a term's lists are published) — validation warns, does not error. |
-| `termFiles` | Optional array. The term ids that have a `data/terms/<id>.json` file **right now** — how the site knows what to fetch. Distinct from `terms`: a term file may exist for a term not in `terms` (the `2026-TT` fixture), and `terms` may list a term whose file isn't out yet. The site fetches every id in `{current} ∪ keys(terms) ∪ termFiles`, tolerating 404s. Validation errors if an entry has no matching file or the file's `term.id` disagrees. |
+| `termFiles` | Optional array. The term ids that have a `data/terms/<id>.json` file **right now** — how the site knows what to fetch. Distinct from `terms`: a term file may exist for a term not in `terms` (the `2026-TT` fixture), and `terms` may list a term whose file isn't out yet. The site fetches **exactly** the ids in `termFiles` (it still tolerates a 404 on any of them). Validation errors if an entry has no matching file or the file's `term.id` disagrees, and warns if a `data/terms/*.json` on disk is missing from `termFiles`. |
 | `terms` | Object keyed by term id. |
 | `terms.<id>.name` | Human name, e.g. `"Michaelmas 2026"`. |
 | `terms.<id>.weekOneSunday` | ISO date of the Sunday of 1st Week (= the start of Full Term). Must be a Sunday. |

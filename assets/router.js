@@ -7,6 +7,8 @@
 // plus ?now=<ISO> to override "now" and ?theme=light|dark to force a palette.
 // The path never changes, so this works as static files under a Pages sub-path.
 
+import { isValidISODate } from './oxweeks.js';
+
 const KEYS = ['view', 'date', 'venue', 'q', 'now', 'theme', 'open'];
 let listener = () => {};
 
@@ -20,6 +22,9 @@ export function params() {
   }
   out.view = out.view || 'tonight';
   out.open = out.open ? out.open.split(',').filter(Boolean) : [];
+  // A malformed ?date= must never reach the week arithmetic (it would throw and
+  // blank the page). Drop it and fall back to "today".
+  if (out.date && !isValidISODate(out.date)) delete out.date;
   return out;
 }
 

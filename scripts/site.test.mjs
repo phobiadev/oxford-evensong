@@ -39,6 +39,29 @@ test('termForDate picks the term whose -2..10 window holds the date', () => {
   assert.equal(browser.termForDate(terms, '2026-08-01'), null);
 });
 
+test('isValidISODate rejects bad shapes and impossible calendar dates', () => {
+  for (const ok of ['2026-05-12', '2027-01-01', '2024-02-29']) {
+    assert.equal(browser.isValidISODate(ok), true, ok);
+  }
+  for (const bad of [
+    'not-a-date', '2026-13-01', '2026-02-30', '2026-00-10', '2026-1-1',
+    '2026/05/12', '', null, undefined, '2026-05-12T18:00',
+  ]) {
+    assert.equal(browser.isValidISODate(bad), false, JSON.stringify(bad));
+  }
+});
+
+test('31 December resolves into the next term across the year boundary', () => {
+  const HT = { id: '2027-HT', ...readJSON('data/index.json').terms['2027-HT'] };
+  // MT ends 5 Dec; its +14d window stops at 19 Dec. HT starts 17 Jan; its -21d
+  // window reaches back to 27 Dec. 31 Dec falls in the HT window.
+  assert.equal(browser.termForDate([MT, HT], '2026-12-31').id, '2027-HT');
+  // the gap between the two windows (20-26 Dec) belongs to no term
+  assert.equal(browser.termForDate([MT, HT], '2026-12-23'), null);
+  // and 31 Dec sits in HT's -2nd week (a Thursday), not off the end of MT
+  assert.deepEqual(browser.weekDayForDate(HT, '2026-12-31'), { week: -2, day: 'Thu' });
+});
+
 test('the BST->GMT change (Sun 25 Oct 2026) does not drift a day', () => {
   // Michaelmas 2026 3rd Week is Sun 25 Oct .. Sat 31 Oct.
   assert.deepEqual(browser.weekDayForDate(MT, '2026-10-25'), { week: 3, day: 'Sun' });
@@ -57,6 +80,22 @@ test('nowParts parses a ?now= override as London wall-time', () => {
   assert.equal(d.date, '2026-05-12');
   assert.equal(d.hasTime, false);
   assert.equal(d.weekdayShort, 'Tue');
+});
+
+test('nowParts falls back to the real clock for an impossible override date', () => {
+  // ?now=2026-02-30 is shape-valid but not a real date; must not be trusted
+  // (it used to crash downstream in chooseDay / week arithmetic).
+  const p = nowParts('2026-02-30');
+  assert.equal(p.isOverride, false);
+  assert.match(p.date, /^\d{4}-\d{2}-\d{2}$/);
+});
+
+test('nowParts handles a midnight override', () => {
+  const p = nowParts('2026-06-01T00:00');
+  assert.equal(p.date, '2026-06-01');
+  assert.equal(p.minutes, 0);
+  assert.equal(p.clock, '12.00 am');
+  assert.equal(p.hasTime, true);
 });
 
 test('nowParts real clock is well-formed and in Europe/London', () => {

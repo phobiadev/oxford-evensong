@@ -48,6 +48,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
+main{display:block}
 html{background:var(--paper)}
 body{
   background:var(--paper);
@@ -119,6 +120,10 @@ nav a:hover{color:var(--accent-ink)}
 .datehead .nav-day{
   display:flex;align-items:baseline;gap:.55rem;
 }
+/* the Tonight heading is an <h1> wrapping the date/picker button; the button
+   carries the type, the h1 must not add a box of its own */
+.datehead .nav-day .daytitle{font:inherit;font-weight:500;font-size:2.3rem;line-height:1.05}
+.datehead .nav-day .wknav-title{font-weight:500;font-size:1.4rem;line-height:1.1}
 .datehead .nav-day a,
 .datehead .nav-day .step{
   font-family:var(--mono);font-size:1.3rem;line-height:1;
@@ -180,12 +185,13 @@ nav a:hover{color:var(--accent-ink)}
   text-transform:uppercase;letter-spacing:.08em;font-size:.64rem;
   color:var(--accent-ink);
 }
-.entry .summary{margin-top:.4rem;max-width:44rem}
+.entry .summary{margin-top:.4rem;max-width:44rem;text-wrap:pretty}
 .entry .preacher{margin-top:.35rem;font-size:.88rem;color:var(--mid)}
 .entry .preacher b{font-family:var(--mono);font-weight:400;font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-right:.4em}
-.entry .notes{margin-top:.35rem;font-size:.85rem;color:var(--mid);font-style:italic;max-width:44rem}
+.entry .notes{margin-top:.35rem;font-size:.85rem;color:var(--mid);font-style:italic;max-width:44rem;text-wrap:pretty}
 
 .disclose{
+  position:relative;
   display:inline-block;margin-top:.8rem;
   font-family:var(--mono);
   text-transform:uppercase;letter-spacing:.09em;font-size:.62rem;
@@ -193,6 +199,8 @@ nav a:hover{color:var(--accent-ink)}
   background:none;border:none;cursor:pointer;
   box-shadow:inset 0 -1px 0 var(--accent);padding:0 0 2px;
 }
+/* enlarge the tap target without moving the underline (WCAG 2.5.8) */
+.disclose::after{content:"";position:absolute;inset:-11px -8px}
 
 .music{margin-top:.9rem;border-top:1px solid var(--rule);padding-top:.6rem;max-width:44rem}
 .music .row{display:grid;grid-template-columns:6.6rem 1fr;column-gap:1.1rem;padding:.28rem 0}
@@ -208,6 +216,7 @@ nav a:hover{color:var(--accent-ink)}
   margin-top:.95rem;padding-left:1rem;
   border-left:3px solid var(--accent);
   font-style:italic;font-size:.92rem;max-width:43rem;color:var(--ink);
+  text-wrap:pretty;
 }
 .src{margin-top:.65rem;font-size:.8rem;color:var(--mid)}
 .src a{color:var(--mid);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
@@ -308,6 +317,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .chip .mus{
   display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
   font-size:.74rem;line-height:1.32;margin-top:.32rem;color:var(--ink);
+  text-wrap:pretty;
 }
 .chip.lowconf .c::after{content:"?";color:var(--accent-ink);font-family:var(--serif);vertical-align:.35em;font-size:.7em;margin-left:.1em}
 .chip.said .c{color:var(--mid)}
@@ -349,9 +359,9 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 }
 .daygroup{border-bottom:1px solid var(--hair)}
 .daygroup:last-child{border-bottom:none}
-.daygroup > h2{
+.daygroup > h3{
   font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;font-size:.6rem;
-  color:var(--faint);padding:.85rem 1.15rem .1rem;
+  font-weight:400;color:var(--faint);padding:.85rem 1.15rem .1rem;
 }
 
 /* ---- chapels list ---- */
@@ -447,7 +457,9 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   body{padding:1.5rem 1rem 2.5rem}
   .masthead{flex-wrap:wrap;gap:.35rem}
   .masthead .mark{font-size:1.12rem}
-  .datehead h1{font-size:1.75rem}
+  .datehead h1,.datehead .nav-day .daytitle{font-size:1.75rem}
+  /* ≥24px tap targets for the day/week arrows (WCAG 2.5.8) */
+  .datehead .nav-day a{padding:.45rem .5rem;margin:-.35rem -.2rem}
   .colhead,.entry{grid-template-columns:3.7rem 1fr}
   .entry > .time{font-size:.72rem;padding-right:.6rem}
   .entry > .body{padding:1rem .9rem 1.1rem .9rem}
@@ -467,7 +479,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   :root{--paper:#fff;--board:#fff;--ink:#000;--mid:#333;--faint:#555;
         --hair:#bbb;--rule:#666;--accent:#000;--accent-ink:#000;--accent-tint:transparent}
   body{padding:0;font-size:11pt}
-  .masthead .toggle,nav,.disclose,.js .entry.collapsible .disclose,
+  .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
   .datehead .nav-day a,.datehead .nav-day .step,
   .picker,.search-box,.chapelhead .back{display:none}
   .board{border-color:#000}
@@ -476,7 +488,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   /* every service prints its full list, expanded */
   .js .entry.collapsible:not(.open) .music{display:block}
   .entry.collapsible .summary{display:none}
-  a{text-decoration:none}
+  a,.src a,footer a{text-decoration:none}
   .wgrid{display:block}
   .col{border-right:none;border-top:1px solid #666}
   .chip .mus{-webkit-line-clamp:none;overflow:visible}

@@ -73,15 +73,15 @@ export function shell(inner, { now, view, weekSpan }) {
 
   return `
   <div class="sheet${view === 'week' ? ' wide' : ''}">
-    <div class="masthead">
+    <header class="masthead">
       <a class="mark" href="${esc(href({ view: 'tonight', date: null, venue: null, q: null, open: [] }))}" data-link>Oxford Evensong</a>
       <span class="right">
         <span class="clock">${esc(now.weekdayLong)} · <b>${esc(now.clock)}</b></span>
         <button class="toggle" type="button" aria-label="Switch theme">☾</button>
       </span>
-    </div>
-    <nav>${nav}</nav>
-    ${inner}
+    </header>
+    <nav aria-label="Views">${nav}</nav>
+    <main id="main">${inner}</main>
     <footer>
       Sung services in Oxford’s college chapels and the cathedral, from each chapel’s own music list.
       <span class="mono">Music verbatim · times Oxford local${weekSpan ? ` · ${esc(weekSpan)}` : ''} · <a href="${esc(href({ view: 'about', date: null, venue: null, q: null, open: [] }))}" data-link>about &amp; sources</a></span>
@@ -131,7 +131,7 @@ function dayHead(dateISO, term, feast, { picker }) {
     <div class="datehead">
       <div class="nav-day">
         <a href="${esc(href({ date: addDays(dateISO, -1), open: [] }))}" data-link aria-label="Previous day">‹</a>
-        <button class="pick" type="button" data-pick aria-expanded="${picker ? 'true' : 'false'}">${esc(longDate(dateISO))}</button>
+        <h1 class="daytitle"><button class="pick" type="button" data-pick aria-expanded="${picker ? 'true' : 'false'}">${esc(longDate(dateISO))}</button></h1>
         <a href="${esc(href({ date: addDays(dateISO, 1), open: [] }))}" data-link aria-label="Next day">›</a>
       </div>
       <div class="wk">${wk}</div>
@@ -434,7 +434,7 @@ export function chapel(data, p, now, ui) {
     <div class="datehead">
       <div class="nav-day">
         <a href="${esc(href({ date: addDays(sun, -7), open: [] }))}" data-link aria-label="Previous week">‹</a>
-        <h1 style="font-size:1.4rem">${esc(ordinalWeek(wk))} of ${esc(termShort(term))}</h1>
+        <h2 class="wknav-title">${esc(ordinalWeek(wk))} of ${esc(termShort(term))}</h2>
         <a href="${esc(href({ date: addDays(sun, 7), open: [] }))}" data-link aria-label="Next week">›</a>
       </div>
       <div class="wk">${esc(dateSpan(weekDates[0], weekDates[6]))}</div>
@@ -451,7 +451,7 @@ export function chapel(data, p, now, ui) {
       byDay.get(s.date).push(s);
     }
     body = [...byDay.entries()].map(([d, list]) => (
-      `<div class="daygroup"><h2>${esc(shortDayDate(d))}</h2>`
+      `<div class="daygroup"><h3>${esc(shortDayDate(d))}</h3>`
       + list.map((s) => entryHTML(s, { open: openSet.has(s.id) })).join('')
       + '</div>'
     )).join('');
@@ -514,7 +514,7 @@ export function search(data, p, now) {
     <div class="board">
       <div class="datehead"><h1>Find music</h1><div class="wk">${term ? esc(termLong(term)) : ''}</div></div>
       ${box}
-      ${results}
+      <div class="results" role="status" aria-live="polite">${results}</div>
     </div>`, { now, view: 'search' });
 }
 

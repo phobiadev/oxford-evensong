@@ -5,6 +5,8 @@
 // ?now=2026-10-29T17:40) is interpreted as London wall-time for testing and
 // screenshots.
 
+import { isValidISODate } from './oxweeks.js';
+
 const DAYS_LONG = [
   'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
 ];
@@ -40,7 +42,7 @@ export function timeLabel(hhmm) {
 export function nowParts(override) {
   if (override) {
     const m = /^(\d{4}-\d{2}-\d{2})(?:[T ](\d{2}):(\d{2}))?/.exec(override.trim());
-    if (m) {
+    if (m && isValidISODate(m[1])) {
       const date = m[1];
       const hasTime = m[2] !== undefined;
       const minutes = hasTime ? Number(m[2]) * 60 + Number(m[3]) : 0;

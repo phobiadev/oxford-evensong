@@ -14,34 +14,68 @@ const ui = { picker: false };
 let data = null;
 let loadError = false;
 
+// What to focus after the next render. Navigation (nav click / back / forward)
+// moves focus to the view heading so keyboard and screen-reader users don't
+// restart at the top of the document with no cue. A disclosure toggle keeps
+// focus on the control; a search keystroke leaves the search box alone.
+// null → a plain navigation; set by the handlers that are NOT navigation.
+let nextFocus = null;
+
 const VIEWS = { tonight, week, chapels, chapel, search, about };
 
-function render(p) {
+const TITLES = {
+  tonight: 'Tonight', week: 'This week', chapels: 'Chapels',
+  chapel: 'Chapels', search: 'Find music', about: 'About',
+};
+
+function render(p, focus) {
   const now = nowParts(p.now || null);
   const root = document.getElementById('app');
 
+  const label = TITLES[p.view] || 'Tonight';
+  document.title = `${label} · Oxford Evensong`;
+
   if (loadError || !data) {
     root.innerHTML = errorView(now);
-    afterRender(p);
+    afterRender(p, focus);
     return;
   }
 
   const fn = VIEWS[p.view] || tonight;
   root.innerHTML = fn(data, p, now, ui);
-  afterRender(p);
+  afterRender(p, focus);
 }
 
-function afterRender(p) {
+function applyFocus(focus) {
+  if (!focus) return;
+  let el = null;
+  if (focus === 'main') {
+    el = document.querySelector('#main h1') || document.getElementById('main');
+  } else if (focus === 'pick') {
+    el = document.querySelector('[data-pick]');
+  } else if (focus.type === 'disclose') {
+    el = document.querySelector(`[data-toggle="${CSS.escape(focus.id)}"]`);
+  }
+  if (!el) return;
+  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+  el.focus({ preventScroll: focus === 'main' });
+}
+
+function afterRender(p, focus) {
   bindToggle(document.querySelector('.toggle'));
 
   // date / picker toggle
   for (const b of document.querySelectorAll('[data-pick]')) {
-    b.addEventListener('click', () => { ui.picker = !ui.picker; render(params()); });
+    b.addEventListener('click', () => { ui.picker = !ui.picker; render(params(), 'pick'); });
   }
 
   // disclosure buttons
   for (const b of document.querySelectorAll('[data-toggle]')) {
-    b.addEventListener('click', (e) => { e.stopPropagation(); toggleOpen(b.dataset.toggle); });
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextFocus = { type: 'disclose', id: b.dataset.toggle };
+      toggleOpen(b.dataset.toggle);
+    });
   }
 
   // click a collapsed entry body to expand
@@ -49,7 +83,9 @@ function afterRender(p) {
     el.addEventListener('click', (e) => {
       if (e.target.closest('a, button')) return;
       const id = el.parentElement.id.replace(/^s-/, '');
-      if (id) toggleOpen(id);
+      if (!id) return;
+      nextFocus = { type: 'disclose', id };
+      toggleOpen(id);
     });
   }
 
@@ -60,18 +96,23 @@ function afterRender(p) {
       clearTimeout(q._t);
       const v = q.value;
       q._t = setTimeout(() => {
+        nextFocus = 'search';
         go({ q: v || null, open: [] }, { replace: true });
         const nq = document.getElementById('q');
         if (nq) { nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length); }
       }, 140);
     });
   }
+
+  applyFocus(focus);
 }
 
-// picker is a Tonight-only affordance; drop it on any navigation
 onChange((p) => {
+  // picker is a Tonight-only affordance; drop it on any navigation
   if (p.view !== 'tonight') ui.picker = false;
-  render(p);
+  const focus = nextFocus ?? 'main';
+  nextFocus = null;
+  render(p, focus);
 });
 
 (async function start() {

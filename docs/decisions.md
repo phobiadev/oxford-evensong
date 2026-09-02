@@ -40,8 +40,12 @@ The site can't list a directory, so it needs to be told which term files exist.
 `termFiles` is that list — `["2026-TT"]` now. It is deliberately separate from
 `terms`: `terms` stays authoritative (ox.ac.uk-published Full-Term dates only, the
 fixture excluded, per the decision above), while `termFiles` just says "this file
-is on disk, fetch it". When real term files land they go in both. The site fetches
-`{current} ∪ keys(terms) ∪ termFiles` and tolerates 404s.
+is on disk, fetch it". When real term files land they go in both.
+
+The site fetches **exactly** the ids in `termFiles` (commit `dbad39b` — no more
+speculative fetches of `current` / `keys(terms)` that 404 in the console). It
+still tolerates a 404 on a listed file. `validate.mjs` keeps `termFiles` and the
+files on disk in step.
 
 ## Site routing: query parameters, not the hash
 
