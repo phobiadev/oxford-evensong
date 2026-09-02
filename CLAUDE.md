@@ -66,7 +66,10 @@ published music lists.
   three venues (magdalen, merton, keble), transcribed from `sources/samples/`. It
   is what the site UI is built against. `validate.mjs --strict` reports 3 expected
   warnings against the current data (see `docs/decisions.md`).
-- **Design direction chosen: H2** (`design/direction-h2.html` — a Tonight-view mock
-  against the fixture; see `docs/design-directions.md`). Not final; the proper
-  `docs/design-brief.md` gets written from it before any site HTML is committed. No
-  site UI built yet.
+- **Design done. `docs/design-brief.md` is the definitive spec** (direction H2:
+  serif + small caps, monospace scaffolding, one bounded "board", warm paper + one
+  sage accent, light + evening palettes). Reference mocks: `design/tonight.html`,
+  `design/week.html`; tokens/components in `design/style.css`, enhancement layer
+  `design/app.js`, self-hosted fonts in `assets/fonts/`. `docs/design-directions.md`
+  logs the rejected options. **Next: build `index.html` + render/routing** (promote
+  `design/style.css`+`app.js` to `assets/`). Search deferred.
