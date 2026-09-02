@@ -15,13 +15,6 @@ async function getJSON(path) {
   return res.json();
 }
 
-async function getJSONOrNull(path) {
-  try {
-    return await getJSON(path);
-  } catch {
-    return null;
-  }
-}
 
 /**
  * @returns {{
@@ -43,18 +36,14 @@ export async function loadData() {
   const venueList = venuesDoc.venues ?? [];
   const venues = new Map(venueList.map((v) => [v.id, v]));
 
-  // Every term id worth trying: current, the authoritative term map, and the
-  // explicit list of term files that exist.
-  const ids = new Set([
-    ...(index.current ? [index.current] : []),
-    ...Object.keys(index.terms ?? {}),
-    ...(index.termFiles ?? []),
-  ]);
-
+  // index.json.termFiles is the authoritative list of term files that exist on
+  // disk — fetch exactly those (no speculative 404s). Adding a term file means
+  // adding it to termFiles; validate.mjs keeps the two in step.
+  const ids = index.termFiles ?? [];
   const terms = new Map();
   await Promise.all(
-    [...ids].map(async (id) => {
-      const doc = await getJSONOrNull(`data/terms/${id}.json`);
+    ids.map(async (id) => {
+      const doc = await getJSON(`data/terms/${id}.json`).catch(() => null);
       if (doc && doc.term && doc.term.id) terms.set(doc.term.id, doc);
     }),
   );

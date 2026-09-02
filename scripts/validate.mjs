@@ -154,6 +154,19 @@ function loadIndex() {
   if (isNonEmptyString(value.current) && !terms[value.current]) {
     warn('data/index.json', 'current', `"${value.current}" is not in terms{} (expected while its list is unpublished)`);
   }
+
+  // a term file on disk that termFiles doesn't list -> the site won't load it
+  const declared = new Set(Array.isArray(value.termFiles) ? value.termFiles : []);
+  const termsDir = join(DATA, 'terms');
+  if (existsSync(termsDir)) {
+    for (const f of readdirSync(termsDir).filter((n) => n.endsWith('.json'))) {
+      const id = basename(f, '.json');
+      if (!declared.has(id)) {
+        warn('data/index.json', 'termFiles', `data/terms/${f} exists but is not listed — the site will not load it`);
+      }
+    }
+  }
+
   return { current: value.current ?? null, terms };
 }
 
