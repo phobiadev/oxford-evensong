@@ -1,6 +1,10 @@
 # Design brief
 
-> Stub. To be written properly in the UI phase, before any HTML/CSS is committed.
+> Stub. To be written properly (with JP) before any site HTML/CSS is committed.
+>
+> **Direction chosen: H2 (*Register*)** — see `docs/design-directions.md` for the
+> current spec, palette, typefaces and the alternatives still on the table. Mock:
+> `design/direction-h2.html`. Not final; palette / fonts / border weights may change.
 
 ## Intent
 

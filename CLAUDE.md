@@ -66,4 +66,7 @@ published music lists.
   three venues (magdalen, merton, keble), transcribed from `sources/samples/`. It
   is what the site UI is built against. `validate.mjs --strict` reports 3 expected
   warnings against the current data (see `docs/decisions.md`).
-- No site UI yet.
+- **Design direction chosen: H2** (`design/direction-h2.html` — a Tonight-view mock
+  against the fixture; see `docs/design-directions.md`). Not final; the proper
+  `docs/design-brief.md` gets written from it before any site HTML is committed. No
+  site UI built yet.
