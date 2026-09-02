@@ -1,0 +1,543 @@
+{
+  "term": {
+    "id": "2026-TT",
+    "name": "Trinity 2026",
+    "weekOneSunday": "2026-04-26",
+    "lastSaturday": "2026-06-20",
+    "timezone": "Europe/London"
+  },
+  "generated": {
+    "at": "2026-09-02T12:00:00Z",
+    "by": "hand-built fixture",
+    "notes": "Hand-transcribed fixture, not machine-generated. Covers only 3rd Week of Trinity 2026 (Sun 2026-05-10 to Sat 2026-05-16) for three venues: magdalen (boys-and-men foundation), merton (student-mixed college) and keble (Anglo-Catholic, minimally-structured list). Built so the site has a realistic term file to render before the update pipeline exists; its shape matters more than its coverage. Trinity 2026 is not in the university term table in docs/sources-survey.md (which starts at Michaelmas 2026); term.weekOneSunday and term.lastSaturday here were read off the Trinity 2026 sample lists (Wadham 'FIRST WEEK Sunday 26th April', Oriel 'First Week - 26 April', 'Third Week - 10 May'). Said Morning Prayer, midday said Eucharists, organ recitals and one-off memorial/wedding services are omitted: only sung choral services are recorded. Scripture readings and sermons are not part of music[] and are not captured. Magdalen superscripts an 'M' against composers with a Magdalen connection; that mark is dropped here. Merton's music-list PDF download URL is reconstructed from the filename recorded in the survey. Music text is verbatim from each list with whitespace normalised.",
+    "sources": "sources/2026-TT/"
+  },
+  "venueStatus": {
+    "magdalen": {
+      "status": "published",
+      "sourceUrl": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+      "fetchedAt": "2026-09-02T00:08:00Z",
+      "services": 8,
+      "note": null
+    },
+    "merton": {
+      "status": "published",
+      "sourceUrl": "https://www.merton.ox.ac.uk/api/files/file/ChapelServicesTT2026Upload2.pdf",
+      "fetchedAt": "2026-09-02T00:08:00Z",
+      "services": 5,
+      "note": "Download URL reconstructed from the filename recorded in the survey (Merton serves music-list PDFs from /api/files/file/ with opaque names)."
+    },
+    "keble": {
+      "status": "published",
+      "sourceUrl": "https://www.keble.ox.ac.uk/wp-content/uploads/Music-List-TT26.pdf",
+      "fetchedAt": "2026-09-02T00:11:00Z",
+      "services": 3,
+      "note": "Keble's list gives almost no slot labels; several music slots below are interpreted by position - see each service's parserNote."
+    },
+    "christ-church": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "new-college": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "queens": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "exeter": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "st-johns": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "worcester": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "somerville": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "balliol": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "brasenose": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "corpus-christi": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "hertford": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "jesus": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "lady-margaret-hall": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "lincoln": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "mansfield": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "oriel": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "pembroke": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "st-edmund-hall": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "st-hughs": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "st-peters": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "trinity": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "university-college": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "wadham": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "harris-manchester": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "regents-park": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "pusey-house": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "university-church": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." },
+    "st-stephens-house": { "status": "not-parsed", "sourceUrl": null, "fetchedAt": null, "services": 0, "note": "Fixture term card - only magdalen, merton and keble are transcribed." }
+  },
+  "services": [
+    {
+      "id": "2026-05-10-magdalen-1100",
+      "venueId": "magdalen",
+      "date": "2026-05-10",
+      "time": "11:00",
+      "week": 3,
+      "day": "Sun",
+      "type": "choral-eucharist",
+      "title": "Sung Eucharist",
+      "occasion": "Fifth Sunday after Easter",
+      "choir": null,
+      "music": [
+        { "slot": "setting", "text": "Palestrina Missa Aeterna Christi munera" },
+        { "slot": "hymn", "text": "436, 305, 420" },
+        { "slot": "other", "label": "Alleluia", "text": "Plainsong Surrexit Christus" },
+        { "slot": "motet", "text": "John Harper Ubi caritas", "composer": "John Harper", "title": "Ubi caritas" },
+        { "slot": "voluntary", "text": "Bruhns Praeludium in E minor" }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Reverend Professor Sabina Alkire, Honorary Chaplain",
+      "notes": null,
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.10, 'MAY 2026 - 10 SUNDAY', 11.00 am"
+      },
+      "confidence": "high",
+      "parserNote": "'MASS' recorded under slot 'setting'. Magdalen's 'M' composer mark omitted."
+    },
+    {
+      "id": "2026-05-10-magdalen-1800",
+      "venueId": "magdalen",
+      "date": "2026-05-10",
+      "time": "18:00",
+      "week": 3,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": "Fifth Sunday after Easter",
+      "choir": null,
+      "music": [
+        { "slot": "introit", "text": "Electra Perivolaris The Lord is my light" },
+        { "slot": "hymn", "text": "362, 368" },
+        { "slot": "responses", "text": "Matthew Martin" },
+        { "slot": "psalm", "text": "36" },
+        { "slot": "canticles", "text": "Bairstow in D" },
+        { "slot": "anthem", "text": "Philip Moore All wisdom cometh from the Lord", "composer": "Philip Moore", "title": "All wisdom cometh from the Lord" },
+        { "slot": "other", "label": "Final Responses", "text": "Matthew Martin" },
+        { "slot": "voluntary", "text": "Ireland Meditation on John Keble's Rogationtide Hymn" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "The introit (Electra Perivolaris, The Lord is my light) is marked 'FIRST PERFORMANCE'.",
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.10, 'MAY 2026 - 10 SUNDAY', 6.00 pm"
+      },
+      "confidence": "high",
+      "parserNote": "'FINAL RESPONSES' recorded under slot 'other'. Magdalen's 'M' composer mark omitted."
+    },
+    {
+      "id": "2026-05-12-magdalen-1800",
+      "venueId": "magdalen",
+      "date": "2026-05-12",
+      "time": "18:00",
+      "week": 3,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Choral Evening Prayer (Choristers)",
+      "occasion": "Gregory Dix, 1952",
+      "choir": null,
+      "music": [
+        { "slot": "responses", "text": "Sarah MacDonald" },
+        { "slot": "psalm", "text": "59" },
+        { "slot": "other", "label": "Canticle", "text": "Plainsong O Christ, the heavens' eternal King" },
+        { "slot": "nunc-dimittis", "text": "Ian Shaw Magdalen Service" },
+        { "slot": "anthem", "text": "Richard Pantcheff Those who follow", "composer": "Richard Pantcheff", "title": "Those who follow" },
+        { "slot": "other", "label": "Antiphon", "text": "Plainsong Regina caeli" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.10, '12 TUESDAY', 6.00 pm"
+      },
+      "confidence": "high",
+      "parserNote": "List titles this 'Choral Evening Prayer'; classified as choral-evensong (the sung Office of Evening Prayer). '(Choristers)' is Magdalen's own boy Choristers, not a visiting choir, so choir is null. 'CANTICLE' and 'ANTIPHON' recorded under slot 'other'."
+    },
+    {
+      "id": "2026-05-12-magdalen-2100",
+      "venueId": "magdalen",
+      "date": "2026-05-12",
+      "time": "21:00",
+      "week": 3,
+      "day": "Tue",
+      "type": "compline",
+      "title": "Compline (Cantors)",
+      "occasion": "Gregory Dix, 1952",
+      "choir": null,
+      "music": [
+        { "slot": "hymn", "text": "Plainsong Ad coenam Agni providi" },
+        { "slot": "other", "label": "Antiphon", "text": "Plainsong Regina caeli" },
+        { "slot": "psalm", "text": "122" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.10, '12 TUESDAY', 9.00 pm"
+      },
+      "confidence": "high",
+      "parserNote": "'(Cantors)' is Magdalen's own foundation, not a visiting choir. The 'HYMN' at Compline is the office hymn; recorded under slot 'hymn' as the list labels it."
+    },
+    {
+      "id": "2026-05-13-magdalen-1800",
+      "venueId": "magdalen",
+      "date": "2026-05-13",
+      "time": "18:00",
+      "week": 3,
+      "day": "Wed",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        { "slot": "responses", "text": "Radcliffe" },
+        { "slot": "psalm", "text": "69: 1-22" },
+        { "slot": "canticles", "text": "Parry Great Service" },
+        { "slot": "anthem", "text": "Elgar Intende voci orationis meae", "composer": "Elgar", "title": "Intende voci orationis meae" },
+        { "slot": "other", "label": "Final Responses", "text": "Marlow" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.11, 'THIRD WEEK - 13 WEDNESDAY', 6.00 pm"
+      },
+      "confidence": "high",
+      "parserNote": "'FINAL RESPONSES' recorded under slot 'other'. No hymn or voluntary printed for this service."
+    },
+    {
+      "id": "2026-05-14-magdalen-1800",
+      "venueId": "magdalen",
+      "date": "2026-05-14",
+      "time": "18:00",
+      "week": 3,
+      "day": "Thu",
+      "type": "choral-eucharist",
+      "title": "Sung Eucharist",
+      "occasion": "Ascension Day",
+      "choir": null,
+      "music": [
+        { "slot": "setting", "text": "Haydn Missa brevis Sancti Joannis de Deo" },
+        { "slot": "hymn", "text": "130 (i), 134" },
+        { "slot": "motet", "text": "Gibbons O clap your hands", "composer": "Gibbons", "title": "O clap your hands" },
+        { "slot": "voluntary", "text": "Messiaen Majeste du Christ demandant sa gloire a son Pere, from L'Ascension" }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Reverend Dr Peter Groves, Senior Research Fellow, Worcester College, Oxford",
+      "notes": null,
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.11, 'THIRD WEEK - 14 THURSDAY', 6.00 pm"
+      },
+      "confidence": "high",
+      "parserNote": "'MASS' recorded under slot 'setting'. Voluntary line-break normalised; accented characters restored from the list's mangled encoding."
+    },
+    {
+      "id": "2026-05-15-magdalen-1800",
+      "venueId": "magdalen",
+      "date": "2026-05-15",
+      "time": "18:00",
+      "week": 3,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Choral Evening Prayer (Clerks)",
+      "occasion": "Matthias the Apostle",
+      "choir": null,
+      "music": [
+        { "slot": "responses", "text": "Plainsong" },
+        { "slot": "psalm", "text": "80" },
+        { "slot": "other", "label": "Canticle", "text": "Plainsong Now let the earth with joy resound" },
+        { "slot": "magnificat", "text": "Binchois Tertii toni" },
+        { "slot": "anthem", "text": "Jacotin Beati omnes qui timent Dominum", "composer": "Jacotin", "title": "Beati omnes qui timent Dominum" },
+        { "slot": "other", "label": "Antiphon", "text": "Plainsong Regina caeli" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.11, 'THIRD WEEK - 15 FRIDAY', 6.00 pm"
+      },
+      "confidence": "high",
+      "parserNote": "List titles this 'Choral Evening Prayer'; classified as choral-evensong. '(Clerks)' is Magdalen's own Academical Clerks. The list gives a Magnificat but no Nunc dimittis for this service."
+    },
+    {
+      "id": "2026-05-16-magdalen-1800",
+      "venueId": "magdalen",
+      "date": "2026-05-16",
+      "time": "18:00",
+      "week": 3,
+      "day": "Sat",
+      "type": "choral-evensong",
+      "title": "Choral Evensong (Consort of Voices)",
+      "occasion": "Caroline Chisholm, 1877",
+      "choir": null,
+      "music": [
+        { "slot": "introit", "text": "Tavener Mother of God, here I stand" },
+        { "slot": "responses", "text": "Cecilia McDowall" },
+        { "slot": "psalm", "text": "84" },
+        { "slot": "hymn", "text": "CP466" },
+        { "slot": "magnificat", "text": "Stanford Magnificat for Double Choir" },
+        { "slot": "nunc-dimittis", "text": "Wood Nunc dimittis" },
+        { "slot": "anthem", "text": "Finzi God is gone up", "composer": "Finzi", "title": "God is gone up" },
+        { "slot": "other", "label": "Final Responses", "text": "Cecilia McDowall" },
+        { "slot": "voluntary", "text": "Guilmant Grand Choeur" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.magd.ox.ac.uk/wp-content/uploads/2024/12/Chapel-Services-Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "PDF p.11, 'THIRD WEEK - 16 SATURDAY', 6.00 pm"
+      },
+      "confidence": "high",
+      "parserNote": "Canticles split by the list ('Stanford Magnificat for Double Choir' / 'Wood Nunc dimittis') into slots magnificat / nunc-dimittis. 'FINAL RESPONSES' recorded under slot 'other'. 'Grand Choeur' spelt with 'oe' for the list's o-e ligature."
+    },
+
+    {
+      "id": "2026-05-10-merton-1745",
+      "venueId": "merton",
+      "date": "2026-05-10",
+      "time": "17:45",
+      "week": 3,
+      "day": "Sun",
+      "type": "choral-eucharist",
+      "title": "Choral Eucharist",
+      "occasion": "The Sixth Sunday of Easter",
+      "choir": null,
+      "music": [
+        { "slot": "setting", "text": "Missa de la batalla escoutez Guerrero" },
+        { "slot": "psalm", "text": "66.7-end" },
+        { "slot": "motet", "text": "Dic nobis Maria Victoria", "composer": "Victoria", "title": "Dic nobis Maria" },
+        { "slot": "hymn", "text": "156, 368, 522" },
+        { "slot": "voluntary", "text": "Final (Symphonie I) Vierne" }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Reverend Stephen Gray, Conduct of Eton College",
+      "notes": null,
+      "source": {
+        "url": "https://www.merton.ox.ac.uk/api/files/file/ChapelServicesTT2026Upload2.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "Booklet p.6, '10 The Sixth Sunday of Easter (3rd week)', 5.45pm"
+      },
+      "confidence": "high",
+      "parserNote": "Merton prints work then composer; whitespace normalised. 'Setting' recorded under slot 'setting'."
+    },
+    {
+      "id": "2026-05-11-merton-1800",
+      "venueId": "merton",
+      "date": "2026-05-11",
+      "time": "18:00",
+      "week": 3,
+      "day": "Mon",
+      "type": "other",
+      "title": "Choral Vespers",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        { "slot": "responses", "text": "Plainsong" },
+        { "slot": "psalm", "text": "121" },
+        { "slot": "magnificat", "text": "Primi Toni" },
+        { "slot": "anthem", "text": "Lift thine eyes Mendelssohn", "composer": "Mendelssohn", "title": "Lift thine eyes" },
+        { "slot": "hymn", "text": "439" },
+        { "slot": "voluntary", "text": "Te lucis ante terminum Dupre" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.merton.ox.ac.uk/api/files/file/ChapelServicesTT2026Upload2.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "Booklet p.7, '11 Monday', 6.00pm"
+      },
+      "confidence": "medium",
+      "parserNote": "Type recorded as 'other': the list calls this 'Choral Vespers' (evening office with Magnificat only, no Nunc dimittis). Normally sung by the Merton College Girl Choristers per the registry, though the list does not name the singers. 'Dupre' for the list's accented 'e'."
+    },
+    {
+      "id": "2026-05-12-merton-1815",
+      "venueId": "merton",
+      "date": "2026-05-12",
+      "time": "18:15",
+      "week": 3,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        { "slot": "responses", "text": "Shephard" },
+        { "slot": "psalm", "text": "128, 129, 130, 131" },
+        { "slot": "canticles", "text": "Walmisley in D minor" },
+        { "slot": "anthem", "text": "And I saw a new heaven Bainton", "composer": "Bainton", "title": "And I saw a new heaven" },
+        { "slot": "hymn", "text": "345" },
+        { "slot": "voluntary", "text": "Chorale Prelude on a Theme of Thomas Tallis Darke" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.merton.ox.ac.uk/api/files/file/ChapelServicesTT2026Upload2.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "Booklet p.7, '12 Tuesday', 6.15pm"
+      },
+      "confidence": "high",
+      "parserNote": null
+    },
+    {
+      "id": "2026-05-13-merton-1815",
+      "venueId": "merton",
+      "date": "2026-05-13",
+      "time": "18:15",
+      "week": 3,
+      "day": "Wed",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        { "slot": "responses", "text": "Ayleward" },
+        { "slot": "psalm", "text": "15, 24" },
+        { "slot": "canticles", "text": "Stanford in B flat" },
+        { "slot": "anthem", "text": "O clap your hands Vaughan Williams", "composer": "Vaughan Williams", "title": "O clap your hands" },
+        { "slot": "hymn", "text": "169 (Tune II)" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.merton.ox.ac.uk/api/files/file/ChapelServicesTT2026Upload2.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "Booklet p.7, '13 Wednesday', 6.15pm"
+      },
+      "confidence": "high",
+      "parserNote": "No voluntary printed. Wednesday Evensong is normally sung by the Merton College Girl Choristers per the registry; the list does not name the singers."
+    },
+    {
+      "id": "2026-05-14-merton-1800",
+      "venueId": "merton",
+      "date": "2026-05-14",
+      "time": "18:00",
+      "week": 3,
+      "day": "Thu",
+      "type": "choral-eucharist",
+      "title": "Choral Eucharist",
+      "occasion": "Ascension Day",
+      "choir": null,
+      "music": [
+        { "slot": "setting", "text": "Mass for Four Voices Byrd" },
+        { "slot": "psalm", "text": "47" },
+        { "slot": "motet", "text": "Coelos ascendit hodie Stanford", "composer": "Stanford", "title": "Coelos ascendit hodie" },
+        { "slot": "hymn", "text": "171, 176" },
+        { "slot": "voluntary", "text": "Jerusalem, du hochgebaute Stadt Karg-Elert" }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Reverend Alan Ramsey, Associate Priest of the University Church & Communications Lead for Halo Customer Relationship Management Programme at the University of Oxford",
+      "notes": "Choral Eucharist attended by members of the congregation of the University Church.",
+      "source": {
+        "url": "https://www.merton.ox.ac.uk/api/files/file/ChapelServicesTT2026Upload2.pdf",
+        "fetchedAt": "2026-09-02T00:08:00Z",
+        "locator": "Booklet p.8, '14 Thursday - Ascension Day', 6.00pm"
+      },
+      "confidence": "high",
+      "parserNote": "'Setting' recorded under slot 'setting'. 12 noon 'Singing from the Tower' and the 1.15pm organ recital are not choral services and are omitted."
+    },
+
+    {
+      "id": "2026-05-10-keble-1730",
+      "venueId": "keble",
+      "date": "2026-05-10",
+      "time": "17:30",
+      "week": 3,
+      "day": "Sun",
+      "type": "choral-eucharist",
+      "title": "Choral Eucharist - CORPORATE COMMUNION",
+      "occasion": "Sixth Sunday of Easter (Rogation Sunday)",
+      "choir": null,
+      "music": [
+        { "slot": "hymn", "text": "NEH 124, 117, 285" },
+        { "slot": "other", "label": "Organ", "text": "Widor, Adagio from Symphonie No 5" },
+        { "slot": "setting", "text": "Langlais, Messe Solennelle" },
+        { "slot": "psalm", "text": "66 (7-11)" },
+        { "slot": "motet", "text": "Durufle, Tantum ergo", "composer": "Durufle", "title": "Tantum ergo" },
+        { "slot": "motet", "text": "Handl, Domine rex Deus Abraham", "composer": "Handl", "title": "Domine rex Deus Abraham" },
+        { "slot": "voluntary", "text": "Widor, Allegro vivace from Symphonie No 5" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.keble.ox.ac.uk/wp-content/uploads/Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:11:00Z",
+        "locator": "PDF p.6, '10 Sunday - Sixth Sunday of Easter (Rogation Sunday)', 5.30pm"
+      },
+      "confidence": "low",
+      "parserNote": "Keble's list is unlabelled apart from hymn numbers and 'Psalm'. Slots assigned by position and Anglo-Catholic convention: opening organ work -> other/Organ; the Mass -> setting; the two Latin choral items -> motet; the closing organ work -> voluntary. Needs a human check. 'Durufle' for the list's accented 'e'."
+    },
+    {
+      "id": "2026-05-12-keble-1800",
+      "venueId": "keble",
+      "date": "2026-05-12",
+      "time": "18:00",
+      "week": 3,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        { "slot": "hymn", "text": "NEH 114" },
+        { "slot": "other", "label": "Organ", "text": "Buxtehude, Kommt her du mir, BuxWV 201" },
+        { "slot": "responses", "text": "Ayleward" },
+        { "slot": "psalm", "text": "128" },
+        { "slot": "canticles", "text": "Bingham, Oriel Service" },
+        { "slot": "anthem", "text": "Warner, Dum Transisset", "composer": "Warner", "title": "Dum Transisset" },
+        { "slot": "voluntary", "text": "Ireland, Meditation on John Keble's Rogationtide hymn" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.keble.ox.ac.uk/wp-content/uploads/Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:11:00Z",
+        "locator": "PDF p.6, '12 Tuesday', 6.00pm"
+      },
+      "confidence": "medium",
+      "parserNote": "Responses and Psalm are labelled; the rest assigned by position - opening organ work -> other/Organ, the service setting -> canticles, the choral item -> anthem, closing organ work -> voluntary."
+    },
+    {
+      "id": "2026-05-14-keble-2100",
+      "venueId": "keble",
+      "date": "2026-05-14",
+      "time": "21:00",
+      "week": 3,
+      "day": "Thu",
+      "type": "compline",
+      "title": "Sung Compline (plainsong)",
+      "occasion": "Ascension Day",
+      "choir": null,
+      "music": [
+        { "slot": "nunc-dimittis", "text": "Reiner, Nunc dimittis" },
+        { "slot": "anthem", "text": "Philips, Ascendit Deus", "composer": "Philips", "title": "Ascendit Deus" }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "8.15am 'Matins from the Chapel Roof' is not a choral service; an organ recital (Louis Jones, Keble College) precedes Compline at 8.30pm.",
+      "source": {
+        "url": "https://www.keble.ox.ac.uk/wp-content/uploads/Music-List-TT26.pdf",
+        "fetchedAt": "2026-09-02T00:11:00Z",
+        "locator": "PDF p.7, '14 Thursday - Ascension Day', 9.00pm"
+      },
+      "confidence": "medium",
+      "parserNote": "The two unlabelled lines read as the Nunc dimittis setting and a motet/anthem; the office is otherwise plainsong."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "current": "2026-MT",
+  "terms": {
+    "2026-MT": {
+      "name": "Michaelmas 2026",
+      "weekOneSunday": "2026-10-11",
+      "lastSaturday": "2026-12-05"
+    },
+    "2027-HT": {
+      "name": "Hilary 2027",
+      "weekOneSunday": "2027-01-17",
+      "lastSaturday": "2027-03-13"
+    },
+    "2027-TT": {
+      "name": "Trinity 2027",
+      "weekOneSunday": "2027-04-25",
+      "lastSaturday": "2027-06-19"
+    }
+  }
+}
