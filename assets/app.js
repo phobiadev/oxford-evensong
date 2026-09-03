@@ -24,7 +24,7 @@ let nextFocus = null;
 const VIEWS = { tonight, week, chapels, chapel, search, about };
 
 const TITLES = {
-  tonight: 'Tonight', week: 'This week', chapels: 'Chapels',
+  tonight: 'Day', week: 'Week', chapels: 'Chapels',
   chapel: 'Chapels', search: 'Find music', about: 'About',
 };
 
@@ -32,7 +32,7 @@ function render(p, focus) {
   const now = nowParts(p.now || null);
   const root = document.getElementById('app');
 
-  const label = TITLES[p.view] || 'Tonight';
+  const label = TITLES[p.view] || 'Day';
   document.title = `${label} · Oxford Evensong`;
 
   if (loadError || !data) {
@@ -122,8 +122,8 @@ function afterRender(p, focus) {
 }
 
 onChange((p) => {
-  // picker is a Tonight-only affordance; drop it on any navigation
-  if (p.view !== 'tonight') ui.picker = false;
+  // the picker serves the Day and Week views; drop it on nav elsewhere
+  if (p.view !== 'tonight' && p.view !== 'week') ui.picker = false;
   const focus = nextFocus ?? 'main';
   nextFocus = null;
   render(p, focus);

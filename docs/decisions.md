@@ -121,6 +121,25 @@ full-term parse: **~460 sung services across 20 venues**. Method notes:
 - Roman Catholic Masses hosted in chapels (Queen's 3 Jun, Exeter 12 Jun, Magdalen
   18 May, LMH 9 Jun) are out of scope and omitted.
 
+## Nav cells renamed "Day" / "Week"; picker pages across terms (Sept 2026)
+
+The nav cells were **"Tonight" / "This week"** (brief §9 froze the first label).
+Renamed to **"Day" / "Week"**: the `.datehead` band — arrows, the clickable
+date/week heading, the picker — is the actual navigator, so the cell only names
+the mode. Internal view ids stay `tonight` / `week`; only the visible label,
+`<title>`, and the mocks changed.
+
+Same pass: the term-week picker gained ‹ › term paging in its head (it renders
+one term's grid; the arrows write `?date=` into the adjacent term's 1st-week
+Sunday and `resolveTerm` re-resolves), and the **Week** view got the same picker.
+A "Today" / "This week" link appears by the arrows when the shown date/week is
+not the current one. The Week head now guards out-of-band weeks: past weeks
+−2..10 it reads **"Vacation"** (matching `dayHead`) instead of "-5th Week of
+Trinity", and its Sunday is computed by `addDays` rather than a clamped
+`dateForWeekDay`, which had frozen prev/next navigation at the boundary. The
+identical latent bug in `chapel()` was fixed too. `weekHeadTitle()` in
+`assets/views.js` is the shared, unit-tested guard.
+
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 
 - **Christ Church publishes monthly, not termly** — the update process must

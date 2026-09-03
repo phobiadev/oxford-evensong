@@ -125,7 +125,7 @@ system setting until first click, then remembers the choice in `localStorage`.
 ```
 .sheet (max 57rem, centred)
   .masthead   wordmark (Spectral SC) · right: clock (mono) + ☾/☼ toggle · 1px rule under
-  nav         four ruled cells (Tonight · This week · Chapels · Find music);
+  nav         four ruled cells (Day · Week · Chapels · Find music);
               active cell = --accent-tint fill + --accent underline
   .board      1px --rule frame:
     .datehead   ‹ [date or week] ›  +  .wk line (mono caps; occasion in --accent-ink)
@@ -207,12 +207,15 @@ line (`3rd Week · Trinity Term 2026`; the day's feast in `--accent-ink` if any)
 Then `.colhead`, then the feed (entries earliest first). Trailing `.awaiting`
 sentence counts venues whose lists aren't in.
 
-**Day selection.** "Tonight" is this view with the date = today. The arrows step
+**Day selection.** The default is this view with the date = today. The arrows step
 one day; the date is itself a control — clicking it opens a picker over the term's
-weeks (`scripts/oxweeks.mjs` does the arithmetic). Each day-cell in **This week**
-links here. Nav label stays **"Tonight"** (the date band carries navigation).
+weeks (`scripts/oxweeks.mjs` does the arithmetic), and the picker head pages ‹ ›
+across the adjacent terms. Each day-cell in **Week** links here. When the date is
+not today a mono **"Today"** link sits by the arrows. The nav cell reads **"Day"**
+— it is only a mode switch; the date band is the navigator. If the shown day falls
+outside weeks −2..10 the `.wk` line reads **"Vacation"** in place of the week name.
 
-### This week (`design/week.html`)
+### Week (`design/week.html`)
 
 A **seven-column grid**, Sun–Sat, inside the board (`.sheet` widened to 68rem for
 this view only). Each column: a `.colday` header (`Sun 10`; the feast under it in
@@ -228,7 +231,10 @@ fine (it's a calendar).
 full-width and unclamped. This is the phone view; it reads like the Tonight feed.
 
 Week arrows step one Oxford week; `.datehead` h1 = `3rd Week of Trinity`, `.wk` =
-`Sun 10 – Sat 16 May 2026`.
+`Sun 10 – Sat 16 May 2026`. The h1 is a picker control like the Day view's (same
+term-week grid, one row per week, the shown week's row filled); out of weeks
+−2..10 the h1 reads **"Vacation"** with the date span still in `.wk`. A mono
+**"This week"** link by the arrows returns to the current week.
 
 ### Chapels (list + chapel page)
 
@@ -273,7 +279,7 @@ and past-term search are deferred — see `docs/later.md`.
 | State | Copy | Style |
 |---|---|---|
 | No services on a day | "Nothing sung in Oxford on Tuesday 12 May." + mono sub "the college chapels are in vacation" / "no lists record a service today" | `.empty` — centred, italic, `--mid`, inside the board |
-| Whole week empty (vacation) | "3rd Week of Trinity is outside Full Term — no sung services." | `.empty` |
+| Whole week empty (vacation) | "3rd Week of Trinity is outside Full Term — no sung services." — or, past weeks −2..10, "No sung services — this week falls outside term." with the head reading "Vacation" | `.empty` |
 | Term not yet published | "Michaelmas 2026 lists are not out yet." + link to the most recent term we hold | `.empty` |
 | Data fetch failed | "Couldn't load the services just now." + a retry link | `.empty`; never a blank board |
 | A chapel with no list all term | the chapel page body = the "list not published" state + `venueStatus.note` verbatim | — |
@@ -359,7 +365,8 @@ A4.
 - Promote `design/style.css` + `design/app.js` to `assets/`; write `index.html` and
   the render/routing modules.
 - Chapels list grouping (alphabetical vs. by kind) — decide when building it.
-- The date-picker widget (term-week grid vs. month calendar).
+- The date-picker widget: ships as a term-week grid on both the Day and Week
+  views, its head paging ‹ › across terms. A month calendar is still open.
 - Exact `prefers-reduced-motion` fallback for the expand.
 - Whether the desktop day view ever grows a right rail (week strip) — currently no;
   the board is centred and that's enough.
