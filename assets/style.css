@@ -13,7 +13,8 @@
   --rule:#C3BDAB;       /* board frame, column rule, header/date/footer rules */
   --accent:#83A07E;     /* sage — left-bars, nav underline, tint base */
   --accent-ink:#4F6B4C; /* sage text — occasion, links, clock highlight */
-  --accent-tint:rgba(131,160,126,.12); /* expanded-row background */
+  --accent-tint:rgba(131,160,126,.12); /* expanded-row background (open/selected) */
+  --accent-hover:rgba(131,160,126,.06); /* passing hover — lighter than the tint */
 
   --serif:"Spectral","Iowan Old Style",Georgia,"Times New Roman",serif;
   --serif-sc:"Spectral SC","Spectral","Iowan Old Style",Georgia,serif;
@@ -32,6 +33,7 @@
     --accent:#93B38D;
     --accent-ink:#AEC9A8;
     --accent-tint:rgba(147,179,141,.13);
+    --accent-hover:rgba(147,179,141,.06);
   }
 }
 :root[data-theme="dark"]{
@@ -45,6 +47,7 @@
   --accent:#93B38D;
   --accent-ink:#AEC9A8;
   --accent-tint:rgba(147,179,141,.13);
+  --accent-hover:rgba(147,179,141,.06);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -167,7 +170,17 @@ nav a:hover{color:var(--accent-ink)}
   border-bottom:1px solid var(--hair);
 }
 .entry:last-child{border-bottom:none}
-.entry.open{background:var(--accent-tint)}
+/* open reads as a bounded "selected" card: left accent bar + rules top and bottom
+   (heavier than the --hair divider, so two open entries in a row separate cleanly).
+   The grid track shrinks by the border width to keep the time column rule aligned
+   with the collapsed rows and the column header. */
+.entry.open{
+  background:var(--accent-tint);
+  grid-template-columns:calc(5rem - 3px) 1fr;
+  border-left:3px solid var(--accent);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+}
 .entry > .time{
   font-family:var(--mono);
   font-size:.8rem;font-weight:500;
@@ -178,7 +191,7 @@ nav a:hover{color:var(--accent-ink)}
 .entry > .time .m{display:block;font-size:.63rem;color:var(--mid);margin-top:.16rem}
 .entry > .body{padding:1.05rem 1.15rem 1.15rem 1.15rem;min-width:0}
 .js .entry.collapsible:not(.open) > .body{cursor:pointer}
-.js .entry.collapsible:not(.open):hover{background:var(--accent-tint)}
+.js .entry.collapsible:not(.open):hover{background:var(--accent-hover)}
 
 .entry .chapel{font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1.16rem}
 .entry .kind{font-style:italic;color:var(--mid);font-size:1rem}
@@ -288,7 +301,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 
 /* ---- week grid ---- */
 .sheet.wide{max-width:68rem}
-.wgrid{display:grid;grid-template-columns:repeat(7,1fr)}
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--rule)}
 .col{border-right:1px solid var(--rule);min-width:0;display:flex;flex-direction:column}
 .col:last-child{border-right:none}
 .col.today{background:var(--accent-tint)}
@@ -310,8 +323,10 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   border-bottom:1px solid var(--hair);
   text-decoration:none;color:var(--ink);
 }
-.chip:last-child{border-bottom:none}
-.chip:hover{background:var(--accent-tint)}
+/* every chip keeps its bottom border (incl. the last in a column) so each
+   evensong box is closed; the grid's own border-bottom draws the edge that
+   spans all seven columns below the tallest one. */
+.chip:hover{background:var(--accent-hover)}
 .col.today .chip:hover{background:rgba(0,0,0,.04)}
 .chip .t{font-family:var(--mono);font-size:.65rem;font-weight:500;color:var(--mid);letter-spacing:.01em}
 .chip .c{
@@ -337,6 +352,9 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   .col.today{background:none}
   .colday{letter-spacing:.1em;font-size:.7rem;padding:.75rem 1.15rem .6rem;min-height:0}
   .col.today .colday{background:var(--accent-tint)}
+  /* stacked: the next day's .col border-top is the divider, so the last chip in
+     a column doesn't need its own; .wgrid's border-bottom closes the final one */
+  .chip:last-child{border-bottom:none}
   .chip{padding:.75rem 1.15rem .8rem}
   .chip .c{font-size:1.08rem;margin-top:.2rem}
   .chip .k{font-size:.9rem}
@@ -376,7 +394,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .venues a{
   display:block;padding:1rem 1.15rem;text-decoration:none;color:var(--ink);
 }
-.js .venues a:hover{background:var(--accent-tint)}
+.js .venues a:hover{background:var(--accent-hover)}
 .venues .name{font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1.12rem}
 .venues .choir{font-style:italic;color:var(--mid);font-size:.9rem;margin-top:.12rem}
 .venues .pat{
@@ -433,7 +451,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   border-bottom:1px solid var(--hair);
 }
 .result-day .r:last-child{border-bottom:none}
-.js .result-day .r:hover{background:var(--accent-tint)}
+.js .result-day .r:hover{background:var(--accent-hover)}
 .result-day .r .t{font-family:var(--mono);font-size:.62rem;color:var(--mid);letter-spacing:.02em}
 .result-day .r .c{font-family:var(--serif-sc);font-weight:500;letter-spacing:.02em;font-size:1rem;margin-left:.5em}
 .result-day .r .rd{font-family:var(--mono);font-size:.6rem;color:var(--faint);letter-spacing:.04em;margin-left:.5em}
@@ -480,7 +498,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .pgrid .ph{color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
 .pgrid .wlabel{color:var(--faint)}
 .pgrid a{color:var(--ink);text-decoration:none}
-.js .pgrid a:hover{background:var(--accent-tint);color:var(--accent-ink)}
+.js .pgrid a:hover{background:var(--accent-hover);color:var(--accent-ink)}
 .pgrid a.on,.pgrid a.wkon{background:var(--accent);color:#fff}
 .pgrid a.has{font-weight:500;color:var(--accent-ink)}
 
@@ -493,6 +511,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   /* ≥24px tap targets for the day/week arrows (WCAG 2.5.8) */
   .datehead .nav-day a{padding:.45rem .5rem;margin:-.35rem -.2rem}
   .colhead,.entry{grid-template-columns:3.7rem 1fr}
+  .entry.open{grid-template-columns:calc(3.7rem - 3px) 1fr}
   .entry > .time{font-size:.72rem;padding-right:.6rem}
   .entry > .body{padding:1rem .9rem 1.1rem .9rem}
   .entry .kind{display:block}
@@ -509,7 +528,8 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 /* ---- print ---- */
 @media print{
   :root{--paper:#fff;--board:#fff;--ink:#000;--mid:#333;--faint:#555;
-        --hair:#bbb;--rule:#666;--accent:#000;--accent-ink:#000;--accent-tint:transparent}
+        --hair:#bbb;--rule:#666;--accent:#000;--accent-ink:#000;
+        --accent-tint:transparent;--accent-hover:transparent}
   body{padding:0;font-size:11pt}
   .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
   .datehead .nav-day a,.datehead .nav-day .step,
