@@ -75,7 +75,11 @@ export function onChange(fn) {
     }
     e.preventDefault();
     history.pushState(null, '', a.getAttribute('href'));
-    listener(params());
-    window.scrollTo(0, 0);
+    const p = params();
+    listener(p, { fromLink: true });
+    // A plain navigation lands at the top. When the link carries ?open (a Week
+    // chip or search row jumping to an expanded entry) the view layer scrolls
+    // that entry into view after render — don't yank it back to the top.
+    if (!p.open.length) window.scrollTo(0, 0);
   });
 }

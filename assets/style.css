@@ -168,6 +168,9 @@ nav a:hover{color:var(--accent-ink)}
 .entry{
   display:grid;grid-template-columns:5rem 1fr;
   border-bottom:1px solid var(--hair);
+  /* when a Week chip / search row scrolls this entry to the top, leave a little
+     air above it rather than butting it against the viewport edge */
+  scroll-margin-top:1.5rem;
 }
 .entry:last-child{border-bottom:none}
 /* open reads as a bounded "selected" card: left accent bar + rules top and bottom

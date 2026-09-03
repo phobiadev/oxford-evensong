@@ -19,7 +19,9 @@ let loadError = false;
 // What to focus after the next render. Navigation (nav click / back / forward)
 // moves focus to the view heading so keyboard and screen-reader users don't
 // restart at the top of the document with no cue. A disclosure toggle keeps
-// focus on the control; a search keystroke leaves the search box alone.
+// focus on the control; a search keystroke leaves the search box alone. A link
+// that jumps to an already-expanded entry (a Week chip or search row carrying
+// ?open) lands on that entry instead of the heading.
 // null → a plain navigation; set by the handlers that are NOT navigation.
 let nextFocus = null;
 
@@ -59,11 +61,22 @@ function applyFocus(focus) {
     el = document.querySelector(`[data-toggle="${CSS.escape(focus.id)}"]`);
   } else if (focus.type === 'filter') {
     el = document.getElementById(`f-${focus.id}`);
+  } else if (focus.type === 'entry') {
+    // A link jumped here to show this expanded entry: bring it into view, then
+    // land focus on its disclosure button so keyboard / SR users arrive on it
+    // too. Honour prefers-reduced-motion (no smooth scroll).
+    const entry = document.getElementById(`s-${focus.id}`);
+    if (entry) {
+      const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      entry.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
+      el = entry.querySelector('[data-toggle]') || entry;
+    }
   }
   if (!el) return;
   const nativelyFocusable = el.matches('a[href], button, input, select, textarea');
   if (!nativelyFocusable && !el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
-  el.focus({ preventScroll: focus === 'main' });
+  // 'main' and 'entry' have already placed the scroll; don't let focus() re-jump.
+  el.focus({ preventScroll: focus === 'main' || focus.type === 'entry' });
 }
 
 function afterRender(p, focus) {
@@ -124,11 +137,17 @@ function afterRender(p, focus) {
   applyFocus(focus);
 }
 
-onChange((p) => {
+onChange((p, { fromLink = false } = {}) => {
   // the picker serves the Day and Week views; drop it on nav elsewhere
   if (p.view !== 'tonight' && p.view !== 'week') ui.picker = false;
-  const focus = nextFocus ?? 'main';
+  let focus = nextFocus ?? 'main';
   nextFocus = null;
+  // A link click that carries ?open (Week chip, search row) jumps to an
+  // expanded entry — land on it, not on the view heading. The in-page
+  // disclosure toggle sets nextFocus itself, so it never reaches here.
+  if (focus === 'main' && fromLink && p.open.length) {
+    focus = { type: 'entry', id: p.open[p.open.length - 1] };
+  }
   render(p, focus);
 });
 
