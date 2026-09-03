@@ -118,7 +118,7 @@ nav a:hover{color:var(--accent-ink)}
 .datehead{padding:1.05rem 1.15rem .95rem;border-bottom:1px solid var(--rule)}
 .datehead h1{font-weight:500;font-size:2.3rem;line-height:1.05;letter-spacing:.005em}
 .datehead .nav-day{
-  display:flex;align-items:baseline;gap:.55rem;
+  display:flex;align-items:baseline;gap:.55rem;flex-wrap:wrap;
 }
 /* the Tonight heading is an <h1> wrapping the date/picker button; the button
    carries the type, the h1 must not add a box of its own */
@@ -138,6 +138,11 @@ nav a:hover{color:var(--accent-ink)}
   padding:0;line-height:1.05;
 }
 .datehead .nav-day .pick:hover{color:var(--accent-ink)}
+.datehead .nav-day .jump{
+  font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.62rem;color:var(--mid);text-decoration:none;align-self:center;
+}
+.datehead .nav-day .jump:hover{color:var(--accent-ink)}
 .datehead .wk{
   font-family:var(--mono);
   text-transform:uppercase;letter-spacing:.11em;font-size:.68rem;
@@ -462,16 +467,21 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .picker .phead{
   font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-size:.58rem;
   color:var(--faint);margin-bottom:.5rem;display:flex;justify-content:space-between;
+  align-items:center;
 }
 .picker .phead button{background:none;border:none;font-family:inherit;font-size:inherit;
   letter-spacing:inherit;text-transform:inherit;color:var(--accent-ink);cursor:pointer}
+.picker .phead .pterm{display:flex;align-items:center;gap:.45rem}
+.picker .phead .pterm a{color:var(--accent-ink);text-decoration:none;font-size:.8rem;line-height:1}
+.picker .phead .pterm a:hover{color:var(--ink)}
+.picker .phead .pterm .step{color:var(--faint);font-size:.8rem;line-height:1}
 .pgrid{display:grid;grid-template-columns:auto repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
 .pgrid > *{background:var(--board);padding:.34rem .2rem;text-align:center;font-family:var(--mono);font-size:.58rem}
 .pgrid .ph{color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
 .pgrid .wlabel{color:var(--faint)}
 .pgrid a{color:var(--ink);text-decoration:none}
 .js .pgrid a:hover{background:var(--accent-tint);color:var(--accent-ink)}
-.pgrid a.on{background:var(--accent);color:#fff}
+.pgrid a.on,.pgrid a.wkon{background:var(--accent);color:#fff}
 .pgrid a.has{font-weight:500;color:var(--accent-ink)}
 
 /* ---- narrow ---- */

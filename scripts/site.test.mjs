@@ -12,7 +12,7 @@ import { dirname, join } from 'node:path';
 import * as browser from '../assets/oxweeks.js';
 import { nowParts, clockLabel, timeLabel } from '../assets/london.js';
 import { chooseDay } from '../assets/schedule.js';
-import { searchHits } from '../assets/views.js';
+import { searchHits, weekHeadTitle } from '../assets/views.js';
 import * as node from './oxweeks.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -38,6 +38,14 @@ test('termForDate picks the term whose -2..10 window holds the date', () => {
   assert.equal(browser.termForDate(terms, '2026-05-12').id, '2026-TT');
   assert.equal(browser.termForDate(terms, '2026-10-25').id, '2026-MT');
   assert.equal(browser.termForDate(terms, '2026-08-01'), null);
+});
+
+test('weekHeadTitle names in-band weeks and falls back to "Vacation"', () => {
+  assert.equal(weekHeadTitle(MT, 3), '3rd Week of Michaelmas');
+  assert.equal(weekHeadTitle(MT, 0), '0th Week of Michaelmas');
+  assert.equal(weekHeadTitle(MT, -2), '-2nd Week of Michaelmas');
+  assert.equal(weekHeadTitle(MT, 11), 'Vacation');
+  assert.equal(weekHeadTitle(MT, -9), 'Vacation');
 });
 
 test('isValidISODate rejects bad shapes and impossible calendar dates', () => {

@@ -43,6 +43,22 @@ function termLong(term) {
 }
 
 /**
+ * The date-head heading for the Week / Chapel views: "3rd Week of Trinity",
+ * or "Vacation" once the week falls outside the -2..10 band (matching the
+ * dayHead guard). Pure — unit-tested in scripts/site.test.mjs.
+ */
+export function weekHeadTitle(term, wk) {
+  return (wk >= -2 && wk <= 10)
+    ? `${ordinalWeek(wk)} of ${termShort(term)}`
+    : 'Vacation';
+}
+
+/* a small mono caption-style link back to "now" in the date-head arrow row */
+function jumpLink(hrefStr, label) {
+  return `<a class="jump" href="${esc(hrefStr)}" data-link>${esc(label)}</a>`;
+}
+
+/**
  * The term to show for a date: the one whose weeks -2..10 cover it; else the
  * next term to start after the date; else the current term (if held); else the
  * newest held term.
@@ -66,8 +82,8 @@ export function resolveTerm(data, dateISO) {
 
 export function shell(inner, { now, view, weekSpan }) {
   const nav = [
-    ['tonight', 'Tonight'],
-    ['week', 'This week'],
+    ['tonight', 'Day'],
+    ['week', 'Week'],
     ['chapels', 'Chapels'],
     ['search', 'Find music'],
   ].map(([v, label]) => {
@@ -124,7 +140,7 @@ function dayFeast(services) {
 
 /* ---------- date-head with day/week navigation ---------- */
 
-function dayHead(dateISO, term, feast, { picker }) {
+function dayHead(dateISO, term, feast, { picker, data, backToToday }) {
   const { week } = weekDayForDate(term, dateISO);
   const inRange = week >= -2 && week <= 10;
   const wk = inRange
@@ -137,27 +153,48 @@ function dayHead(dateISO, term, feast, { picker }) {
         <a href="${esc(href({ date: addDays(dateISO, -1), open: [] }))}" data-link aria-label="Previous day">‹</a>
         <h1 class="daytitle"><button class="pick" type="button" data-pick aria-expanded="${picker ? 'true' : 'false'}">${esc(longDate(dateISO))}</button></h1>
         <a href="${esc(href({ date: addDays(dateISO, 1), open: [] }))}" data-link aria-label="Next day">›</a>
+        ${backToToday ? jumpLink(href({ view: 'tonight', date: null, open: [] }), 'Today') : ''}
       </div>
       <div class="wk">${wk}</div>
     </div>
-    ${picker ? pickerHTML(dateISO, term, 'tonight') : ''}`;
+    ${picker ? pickerHTML(dateISO, term, 'tonight', data) : ''}`;
 }
 
-function pickerHTML(currentISO, term, view) {
-  const heldDates = view; // unused marker
+function pickerHTML(currentISO, term, view, data) {
+  // Week mode highlights the whole row of the anchor's week; Day mode a single
+  // day-cell. curWk may fall outside 0..8, in which case no row lights up.
+  const { week: curWk } = weekDayForDate(term, currentISO);
   let rows = '';
   for (let w = 0; w <= 8; w++) {
     let cells = `<span class="wlabel">${ordinalWeek(w).replace(' Week', '')}</span>`;
     for (const d of DAYS) {
       const iso = dateForWeekDay(term, w, d);
-      const on = iso === currentISO ? ' on' : '';
-      cells += `<a href="${esc(href({ view: 'tonight', date: iso, open: [] }))}" data-link class="${on.trim()}">${iso.slice(8)}</a>`;
+      const cls = view === 'week'
+        ? (w === curWk ? 'wkon' : '')
+        : (iso === currentISO ? 'on' : '');
+      cells += `<a href="${esc(href({ view, date: iso, open: [] }))}" data-link class="${cls}">${iso.slice(8)}</a>`;
     }
     rows += cells;
   }
+
+  // previous / next term, paged by writing ?date= into the adjacent term
+  const all = data?.termObjects ?? [];
+  const i = all.findIndex((t) => t.id === term.id);
+  const prev = i > 0 ? all[i - 1] : null;
+  const next = i >= 0 ? all[i + 1] : null;
+  const termNav = `<span class="pterm">`
+    + (prev
+      ? `<a href="${esc(href({ view, date: prev.weekOneSunday, open: [] }))}" data-link aria-label="Previous term">‹</a>`
+      : `<span class="step" aria-hidden="true">‹</span>`)
+    + esc(termLong(term))
+    + (next
+      ? `<a href="${esc(href({ view, date: next.weekOneSunday, open: [] }))}" data-link aria-label="Next term">›</a>`
+      : `<span class="step" aria-hidden="true">›</span>`)
+    + `</span>`;
+
   return `
     <div class="picker">
-      <div class="phead"><span>${esc(termLong(term))}</span><button type="button" data-pick>Close</button></div>
+      <div class="phead">${termNav}<button type="button" data-pick>Close</button></div>
       <div class="pgrid">
         <span class="ph"></span>${DAYS.map((d) => `<span class="ph">${d}</span>`).join('')}
         ${rows}
@@ -178,7 +215,8 @@ export function tonight(data, p, now, ui) {
   const termDoc = data.terms.get(term.id);
   const weekSpanFor = weekSpanString(term, date);
 
-  const head = dayHead(date, term, feast, { picker: ui.picker });
+  const backToToday = Boolean(p.date) && p.date !== now.date;
+  const head = dayHead(date, term, feast, { picker: ui.picker, data, backToToday });
 
   if (!services.length) {
     return shell(
@@ -270,35 +308,43 @@ function weekSpanString(term, dateISO) {
 
 /* ---------- This week ---------- */
 
-export function week(data, p, now) {
+export function week(data, p, now, ui = {}) {
   const anchor = p.date || now.date;
   const term = resolveTerm(data, anchor);
   if (!term) return shell(emptyBoard('', '<p>No term data available.</p>'), { now, view: 'week' });
 
-  const { week: wk } = weekDayForDate(term, anchor);
-  const sun = dateForWeekDay(term, Math.min(Math.max(wk, -2), 10), 'Sun');
+  // true Sunday of the anchor's week — no clamp, so navigation past weeks 10/-2
+  // keeps stepping instead of freezing on the boundary week.
+  const { week: wk, day } = weekDayForDate(term, anchor);
+  const inRange = wk >= -2 && wk <= 10;
+  const sun = addDays(anchor, -DAYS.indexOf(day));
   const dates = DAYS.map((_, i) => addDays(sun, i));
   const sat = dates[6];
 
   const prevAnchor = addDays(sun, -7);
   const nextAnchor = addDays(sun, 7);
+  const showThisWeek = !(now.date >= sun && now.date <= sat);
 
   const head = `
     <div class="datehead">
       <div class="nav-day">
         <a href="${esc(href({ view: 'week', date: prevAnchor, open: [] }))}" data-link aria-label="Previous week">‹</a>
-        <h1>${esc(ordinalWeek(wk))} of ${esc(termShort(term))}</h1>
+        <h1 class="daytitle"><button class="pick" type="button" data-pick aria-expanded="${ui.picker ? 'true' : 'false'}">${esc(weekHeadTitle(term, wk))}</button></h1>
         <a href="${esc(href({ view: 'week', date: nextAnchor, open: [] }))}" data-link aria-label="Next week">›</a>
+        ${showThisWeek ? jumpLink(href({ view: 'week', date: null, open: [] }), 'This week') : ''}
       </div>
       <div class="wk">${esc(dateSpan(sun, sat))}</div>
     </div>`;
+  const pick = ui.picker ? pickerHTML(anchor, term, 'week', data) : '';
 
   const anyServices = dates.some((d) => (data.servicesByDate.get(d) || []).length);
   if (!anyServices) {
-    const msg = (wk < 1 || wk > 8)
-      ? `${ordinalWeek(wk)} of ${termShort(term)} is outside Full Term — no sung services.`
-      : `No sung services recorded for ${ordinalWeek(wk)} of ${termShort(term)}.`;
-    return shell(`<div class="board">${head}<div class="empty"><p>${esc(msg)}</p></div></div>`,
+    const msg = !inRange
+      ? 'No sung services — this week falls outside term.'
+      : (wk < 1 || wk > 8)
+        ? `${ordinalWeek(wk)} of ${termShort(term)} is outside Full Term — no sung services.`
+        : `No sung services recorded for ${ordinalWeek(wk)} of ${termShort(term)}.`;
+    return shell(`<div class="board">${head}${pick}<div class="empty"><p>${esc(msg)}</p></div></div>`,
       { now, view: 'week' });
   }
 
@@ -323,6 +369,7 @@ export function week(data, p, now) {
   return shell(`
     <div class="board">
       ${head}
+      ${pick}
       <div class="wgrid">${cols}</div>
       ${awaiting}
     </div>`, { now, view: 'week' });
@@ -397,7 +444,7 @@ export function chapel(data, p, now, ui) {
   const term = resolveTerm(data, p.date || (own[own.length - 1]?.weekOneSunday) || now.date);
   const svcAll = term ? servicesForVenue(data, term.id, v.id) : [];
   const anchor = p.date || svcAll[0]?.date || now.date;
-  const { week: wk } = term ? weekDayForDate(term, anchor) : { week: 0 };
+  const { week: wk, day: wkDay } = term ? weekDayForDate(term, anchor) : { week: 0, day: 'Sun' };
 
   const ct = CHOIR_TYPE[v.choir?.type];
   const choirLine = [v.chapel, [v.choir?.name, ct && `(${ct})`].filter(Boolean).join(' ')]
@@ -429,7 +476,7 @@ export function chapel(data, p, now, ui) {
   }
 
   // week nav + services grouped by day within the chosen week
-  const sun = dateForWeekDay(term, Math.min(Math.max(wk, -2), 10), 'Sun');
+  const sun = addDays(anchor, -DAYS.indexOf(wkDay));
   const weekDates = DAYS.map((_, i) => addDays(sun, i));
   const inWeek = svcAll.filter((s) => weekDates.includes(s.date));
   const openSet = new Set(p.open);
@@ -438,7 +485,7 @@ export function chapel(data, p, now, ui) {
     <div class="datehead">
       <div class="nav-day">
         <a href="${esc(href({ date: addDays(sun, -7), open: [] }))}" data-link aria-label="Previous week">‹</a>
-        <h2 class="wknav-title">${esc(ordinalWeek(wk))} of ${esc(termShort(term))}</h2>
+        <h2 class="wknav-title">${esc(weekHeadTitle(term, wk))}</h2>
         <a href="${esc(href({ date: addDays(sun, 7), open: [] }))}" data-link aria-label="Next week">›</a>
       </div>
       <div class="wk">${esc(dateSpan(weekDates[0], weekDates[6]))}</div>
