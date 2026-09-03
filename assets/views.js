@@ -550,8 +550,13 @@ function searchRow(s, m, q, showDate) {
     + '</a>';
 }
 
-function searchGroup(heading, rows) {
-  return `<div class="result-day">${heading ? `<h2>${esc(heading)}</h2>` : ''}${rows.join('')}</div>`;
+// `showDate` false → a day group (date / date-desc sort): the day is the
+// delimited unit, so dividers sit between groups (`.byday`). true → a flat group
+// (composer / chapel sort) with a date on every row and per-row hairlines
+// (`.flat`).
+function searchGroup(heading, showDate, rows) {
+  const cls = showDate ? 'result-day flat' : 'result-day byday';
+  return `<div class="${cls}">${heading ? `<h2>${esc(heading)}</h2>` : ''}${rows.join('')}</div>`;
 }
 
 function pushInto(map, key, value) {
@@ -607,19 +612,55 @@ export function searchHits(services, {
   return { hits, hiddenPast, groups };
 }
 
-export function search(data, p, now) {
-  // The input keeps the raw string; the query logic works on the trimmed form.
-  // Trimming the value we render back into the box would eat a space the moment
-  // the debounced keystroke re-renders the view (a trailing/lone space vanishes,
-  // a space between words survives — that's the bug this avoids).
-  const raw = p.q || '';
-  const q = raw.trim();
-  const term = resolveTerm(data, now.date);
+const searchSort = (p) => (SEARCH_SORTS.some(([v]) => v === p.sort) ? p.sort : 'date');
 
+/**
+ * The inner HTML of `.results` — the empty prompt, the no-match line, or the
+ * count line plus the `.result-day` groups. Split out of `search()` so the
+ * search box can repaint just this region on each keystroke without swapping
+ * out the `<input>` node (issue 7).
+ */
+export function searchResultsHTML(data, p, now) {
+  const q = (p.q || '').trim();
+  if (!q) {
+    return '<div class="empty"><p>Type a composer or a piece.</p>'
+      + '<span class="mono">e.g. Bairstow · Dum transisset · Missa</span></div>';
+  }
+
+  const upcomingOnly = p.past !== '1'; // upcoming-only is the default
+  const { hits, hiddenPast, groups } = searchHits(allServices(data), {
+    q, venue: p.venue || '', type: p.type || '', sort: searchSort(p), upcomingOnly, today: now.date,
+  });
+
+  if (!hits.length) {
+    const showAll = hiddenPast
+      ? ` <a href="${esc(href({ past: '1' }))}" data-link>Show ${hiddenPast} past result${hiddenPast === 1 ? '' : 's'}</a>.`
+      : '';
+    const what = upcomingOnly && hiddenPast ? 'No upcoming service matches' : 'Nothing matches';
+    return `<div class="empty"><p>${what} “${esc(q)}”.${showAll}</p></div>`;
+  }
+
+  const body = groups.map((g) => searchGroup(
+    g.heading, g.showDate,
+    g.items.map(({ s, m }) => searchRow(s, m, q, g.showDate)),
+  )).join('');
+  const past = hiddenPast
+    ? ` · <a href="${esc(href({ past: '1' }))}" data-link>${hiddenPast} past hidden</a>`
+    : '';
+  return `<div class="search-count">${hits.length} service${hits.length === 1 ? '' : 's'}${past}</div>${body}`;
+}
+
+export function search(data, p, now) {
+  // The box renders the untrimmed `p.q` so opening a shared `?q=Howells%20` link
+  // doesn't rewrite the visitor's URL; `searchResultsHTML` trims for matching.
+  // While typing, app.js repaints only `.results` and never re-renders this
+  // input, so no in-flight keystroke is lost (issue 7).
+  const raw = p.q || '';
+  const term = resolveTerm(data, now.date);
   const venue = p.venue || '';
   const type = p.type || '';
-  const sort = SEARCH_SORTS.some(([v]) => v === p.sort) ? p.sort : 'date';
-  const upcomingOnly = p.past !== '1'; // upcoming-only is the default
+  const sort = searchSort(p);
+  const upcomingOnly = p.past !== '1';
 
   const box = `
     <div class="search-box">
@@ -635,7 +676,9 @@ export function search(data, p, now) {
     .map((v) => `<option value="${esc(v.id)}"${v.id === venue ? ' selected' : ''}>${esc(v.shortName || v.name)}</option>`)
     .join('');
 
-  const filters = q ? `
+  // The filter bar shows from the empty state; changing a control with no query
+  // just sets its param (issue 8).
+  const filters = `
     <div class="search-filters">
       <label>Chapel
         <select id="f-venue" data-filter="venue">
@@ -657,41 +700,14 @@ export function search(data, p, now) {
         <input type="checkbox" id="f-past" data-filter="past"${upcomingOnly ? ' checked' : ''} />
         Upcoming only
       </label>
-    </div>` : '';
-
-  let results = '';
-  if (!q) {
-    results = '<div class="empty"><p>Type a composer or a piece.</p>'
-      + '<span class="mono">e.g. Bairstow · Dum transisset · Missa</span></div>';
-  } else {
-    const { hits, hiddenPast, groups } = searchHits(allServices(data), {
-      q, venue, type, sort, upcomingOnly, today: now.date,
-    });
-
-    if (!hits.length) {
-      const showAll = hiddenPast
-        ? ` <a href="${esc(href({ past: '1' }))}" data-link>Show ${hiddenPast} past result${hiddenPast === 1 ? '' : 's'}</a>.`
-        : '';
-      const what = upcomingOnly && hiddenPast ? 'No upcoming service matches' : 'Nothing matches';
-      results = `<div class="empty"><p>${what} “${esc(q)}”.${showAll}</p></div>`;
-    } else {
-      const body = groups.map((g) => searchGroup(
-        g.heading,
-        g.items.map(({ s, m }) => searchRow(s, m, q, g.showDate)),
-      )).join('');
-      const past = hiddenPast
-        ? ` · <a href="${esc(href({ past: '1' }))}" data-link>${hiddenPast} past hidden</a>`
-        : '';
-      results = `<div class="search-count">${hits.length} service${hits.length === 1 ? '' : 's'}${past}</div>${body}`;
-    }
-  }
+    </div>`;
 
   return shell(`
     <div class="board">
       <div class="datehead"><h1>Find music</h1><div class="wk">${term ? esc(termLong(term)) : ''}</div></div>
       ${box}
       ${filters}
-      <div class="results" role="status" aria-live="polite">${results}</div>
+      <div class="results" role="status" aria-live="polite">${searchResultsHTML(data, p, now)}</div>
     </div>`, { now, view: 'search' });
 }
 

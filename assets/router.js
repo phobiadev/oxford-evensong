@@ -45,12 +45,16 @@ export function href(patch) {
   return qs ? `?${qs}` : location.pathname;
 }
 
-/** Navigate: merge `patch`, push history, re-render. */
-export function go(patch, { replace = false } = {}) {
+/**
+ * Navigate: merge `patch`, push history, re-render.
+ * `silent: true` updates the URL for shareability without re-rendering — used by
+ * the search box, which repaints only its own results region on each keystroke.
+ */
+export function go(patch, { replace = false, silent = false } = {}) {
   const url = href(patch);
   if (replace) history.replaceState(null, '', url);
   else history.pushState(null, '', url);
-  listener(params());
+  if (!silent) listener(params());
 }
 
 /** Toggle a service id in the `open` list and navigate (replaceState). */

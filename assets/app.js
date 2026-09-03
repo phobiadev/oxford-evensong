@@ -6,7 +6,9 @@ import { params, onChange, go, toggleOpen } from './router.js';
 import { initTheme, bindToggle } from './theme.js';
 import { nowParts } from './london.js';
 import { loadData } from './data.js';
-import { tonight, week, chapels, chapel, search, about, errorView } from './views.js';
+import {
+  tonight, week, chapels, chapel, search, about, errorView, searchResultsHTML,
+} from './views.js';
 
 document.documentElement.classList.add('js');
 
@@ -92,17 +94,18 @@ function afterRender(p, focus) {
     });
   }
 
-  // search box
+  // search box — repaint only .results on each keystroke. A full re-render swaps
+  // out this <input> node and drops in-flight keystrokes, usually a space (#7).
   const q = document.getElementById('q');
   if (q) {
     q.addEventListener('input', () => {
       clearTimeout(q._t);
-      const v = q.value;
       q._t = setTimeout(() => {
-        nextFocus = 'search';
-        go({ q: v || null, open: [] }, { replace: true });
-        const nq = document.getElementById('q');
-        if (nq) { nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length); }
+        const v = q.value;
+        // Push the query to the URL for shareability, but silently — no re-render.
+        go({ q: v.trim() || null, open: [] }, { replace: true, silent: true });
+        const box = document.querySelector('.results');
+        if (box && data) box.innerHTML = searchResultsHTML(data, params(), nowParts(p.now || null));
       }, 140);
     });
   }

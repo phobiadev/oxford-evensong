@@ -434,12 +434,51 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   background:var(--paper);border:1px solid var(--rule);padding:.32rem .4rem;
 }
 .search-filters label.check{
-  flex-direction:row;align-items:center;gap:.4rem;
-  font-size:.62rem;letter-spacing:.06em;align-self:center;
+  flex-direction:row;align-items:center;gap:.5rem;
+  font-size:.62rem;letter-spacing:.06em;color:var(--mid);align-self:center;cursor:pointer;
 }
-.search-filters label.check input{margin:0}
+/* custom checkbox: a drawn box with a sage tick, in the design's own language */
+.search-filters label.check input{
+  appearance:none;-webkit-appearance:none;margin:0;flex:none;
+  width:1rem;height:1rem;display:grid;place-content:center;cursor:pointer;
+  background:var(--paper);border:1px solid var(--rule);border-radius:0;
+}
+.search-filters label.check input::before{
+  content:"";width:.62rem;height:.62rem;background:var(--accent-ink);
+  transform:scale(0);transition:transform .1s ease;
+  clip-path:polygon(13% 46%,0 63%,40% 100%,100% 22%,84% 7%,38% 68%);
+}
+.search-filters label.check input:checked{border-color:var(--accent);background:var(--accent-tint)}
+.search-filters label.check input:checked::before{transform:scale(1)}
 .search-filters select:focus-visible,
-.search-filters input:focus-visible{outline:2px solid var(--accent-ink);outline-offset:1px}
+.search-filters label.check input:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+  .search-filters label.check input::before{transition:none}
+}
+
+/* narrow: an explicit grid of full-width controls — iOS Safari renders bare
+   <select> very tall and the desktop column-flex collapses (#12) */
+@media (max-width:680px){
+  .search-filters{
+    display:grid;grid-template-columns:1fr 1fr;gap:.85rem .8rem;align-items:start;
+  }
+  .search-filters label:not(.check){position:relative;min-width:0}
+  .search-filters select{
+    width:100%;min-height:44px;font-size:1rem;
+    appearance:none;-webkit-appearance:none;border-radius:0;
+    padding:.55rem 1.9rem .55rem .6rem;
+  }
+  /* select caret — a CSS triangle, themed via border-color; not an icon asset */
+  .search-filters label:not(.check)::after{
+    content:"";position:absolute;right:.75rem;bottom:1.05rem;pointer-events:none;
+    border:.3rem solid transparent;border-top-color:var(--mid);border-bottom:0;
+  }
+  .search-filters label.check{grid-column:1 / -1;min-height:44px}
+}
+@media (max-width:520px){
+  .search-filters{grid-template-columns:1fr}
+  .search-filters label.check{grid-column:auto}
+}
 .search-count{padding:.8rem 1.15rem 0;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
 .search-count a{color:var(--faint)}
 .result-day > h2{
@@ -448,10 +487,14 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 }
 .result-day .r{
   display:block;padding:.55rem 1.15rem .7rem;text-decoration:none;color:var(--ink);
-  border-bottom:1px solid var(--hair);
 }
-.result-day .r:last-child{border-bottom:none}
 .js .result-day .r:hover{background:var(--accent-hover)}
+/* date / date-desc sort: the day is the delimited unit — a rule between day
+   groups, nothing between rows of the same day (#13) */
+.result-day.byday + .result-day.byday{border-top:1px solid var(--rule)}
+/* composer / chapel sort: no day grouping, so keep per-row hairlines */
+.result-day.flat .r{border-bottom:1px solid var(--hair)}
+.result-day.flat .r:last-child{border-bottom:none}
 .result-day .r .t{font-family:var(--mono);font-size:.62rem;color:var(--mid);letter-spacing:.02em}
 .result-day .r .c{font-family:var(--serif-sc);font-weight:500;letter-spacing:.02em;font-size:1rem;margin-left:.5em}
 .result-day .r .rd{font-family:var(--mono);font-size:.6rem;color:var(--faint);letter-spacing:.04em;margin-left:.5em}
