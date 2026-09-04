@@ -140,7 +140,10 @@ function dayFeast(services) {
 
 /* ---------- date-head with day/week navigation ---------- */
 
-function dayHead(dateISO, term, feast, { picker, data, backToToday }) {
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monAbbr = (iso) => MON[Number(iso.slice(5, 7)) - 1];
+
+function dayHead(dateISO, term, feast, { picker, data, backToToday, today }) {
   const { week } = weekDayForDate(term, dateISO);
   const inRange = week >= -2 && week <= 10;
   const wk = inRange
@@ -157,26 +160,54 @@ function dayHead(dateISO, term, feast, { picker, data, backToToday }) {
       </div>
       <div class="wk">${wk}</div>
     </div>
-    ${picker ? pickerHTML(dateISO, term, 'tonight', data) : ''}`;
+    ${picker ? pickerHTML(dateISO, term, 'tonight', data, today) : ''}`;
 }
 
-function pickerHTML(currentISO, term, view, data) {
-  // Week mode highlights the whole row of the anchor's week; Day mode a single
-  // day-cell. curWk may fall outside 0..8, in which case no row lights up.
+/* Week view: a plain list of the term's weeks, the shown week filled. */
+function weekListHTML(currentISO, term) {
   const { week: curWk } = weekDayForDate(term, currentISO);
+  let rows = '';
+  for (let w = 0; w <= 8; w++) {
+    const sun = dateForWeekDay(term, w, 'Sun');
+    const sat = dateForWeekDay(term, w, 'Sat');
+    rows += `<li><a href="${esc(href({ view: 'week', date: sun, open: [] }))}" data-link`
+      + `${w === curWk ? ' class="on"' : ''}>`
+      + `<span class="wn">${esc(ordinalWeek(w))}</span>`
+      + `<span class="ws">${esc(dateSpan(sun, sat))}</span>`
+      + '</a></li>';
+  }
+  return `<ul class="wlist">${rows}</ul>`;
+}
+
+/* Day view: the term-week calendar grid. The shown day is filled; the real
+   "today" gets a ring; days that have a service carry a dot. curWk may fall
+   outside 0..8, in which case nothing is marked. */
+function dayGridHTML(currentISO, term, data, today) {
   let rows = '';
   for (let w = 0; w <= 8; w++) {
     let cells = `<span class="wlabel">${ordinalWeek(w).replace(' Week', '')}</span>`;
     for (const d of DAYS) {
       const iso = dateForWeekDay(term, w, d);
-      const cls = view === 'week'
-        ? (w === curWk ? 'wkon' : '')
-        : (iso === currentISO ? 'on' : '');
-      cells += `<a href="${esc(href({ view, date: iso, open: [] }))}" data-link class="${cls}">${iso.slice(8)}</a>`;
+      const dom = Number(iso.slice(8));
+      const cls = [];
+      if (iso === currentISO) cls.push('on');
+      if (iso === today) cls.push('today');
+      if ((data?.servicesByDate.get(iso) || []).length) cls.push('has');
+      const mon = (dom === 1 || (w === 0 && d === 'Sun'))
+        ? `<span class="mon">${esc(monAbbr(iso))}</span>` : '';
+      cells += `<a href="${esc(href({ view: 'tonight', date: iso, open: [] }))}" data-link`
+        + `${cls.length ? ` class="${cls.join(' ')}"` : ''}>${mon}${dom}</a>`;
     }
     rows += cells;
   }
+  return `
+    <div class="pgrid">
+      <span class="ph"></span>${DAYS.map((d) => `<span class="ph">${d}</span>`).join('')}
+      ${rows}
+    </div>`;
+}
 
+function pickerHTML(currentISO, term, view, data, today) {
   // previous / next term, paged by writing ?date= into the adjacent term
   const all = data?.termObjects ?? [];
   const i = all.findIndex((t) => t.id === term.id);
@@ -192,13 +223,14 @@ function pickerHTML(currentISO, term, view, data) {
       : `<span class="step" aria-hidden="true">›</span>`)
     + `</span>`;
 
+  const body = view === 'week'
+    ? weekListHTML(currentISO, term)
+    : dayGridHTML(currentISO, term, data, today);
+
   return `
-    <div class="picker">
+    <div class="picker${view === 'week' ? ' weeks' : ''}">
       <div class="phead">${termNav}<button type="button" data-pick>Close</button></div>
-      <div class="pgrid">
-        <span class="ph"></span>${DAYS.map((d) => `<span class="ph">${d}</span>`).join('')}
-        ${rows}
-      </div>
+      ${body}
     </div>`;
 }
 
@@ -216,7 +248,9 @@ export function tonight(data, p, now, ui) {
   const weekSpanFor = weekSpanString(term, date);
 
   const backToToday = Boolean(p.date) && p.date !== now.date;
-  const head = dayHead(date, term, feast, { picker: ui.picker, data, backToToday });
+  const head = dayHead(date, term, feast, {
+    picker: ui.picker, data, backToToday, today: now.date,
+  });
 
   if (!services.length) {
     return shell(
@@ -335,7 +369,7 @@ export function week(data, p, now, ui = {}) {
       </div>
       <div class="wk">${esc(dateSpan(sun, sat))}</div>
     </div>`;
-  const pick = ui.picker ? pickerHTML(anchor, term, 'week', data) : '';
+  const pick = ui.picker ? pickerHTML(anchor, term, 'week', data, now.date) : '';
 
   const anyServices = dates.some((d) => (data.servicesByDate.get(d) || []).length);
   if (!anyServices) {

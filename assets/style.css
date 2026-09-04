@@ -68,6 +68,10 @@ em{font-style:italic}
 a{color:inherit}
 
 :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:1px}
+/* after a view switch we move focus to the heading (or a jumped-to entry) purely
+   as an orientation cue for assistive tech — those targets carry tabindex="-1"
+   and must not paint a visible ring, especially on touch. */
+#main [tabindex="-1"]:focus{outline:none}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .summary .mid{color:var(--faint)}
 .entry .chapel a{text-decoration:none;color:inherit}
@@ -87,9 +91,10 @@ a{color:inherit}
 .masthead .clock{font-family:var(--mono);font-size:.74rem;color:var(--mid)}
 .masthead .clock b{color:var(--accent-ink);font-weight:500}
 .masthead .toggle{
-  font-family:var(--mono);font-size:.9rem;line-height:1;
+  font-family:var(--mono);font-size:1.08rem;line-height:1;
   background:none;border:none;cursor:pointer;
-  color:var(--mid);padding:.1rem .15rem;
+  color:var(--mid);padding:.1rem .2rem;
+  -webkit-tap-highlight-color:transparent;
 }
 .masthead .toggle:hover{color:var(--accent-ink)}
 
@@ -139,6 +144,7 @@ nav a:hover{color:var(--accent-ink)}
   font-family:inherit;font-size:inherit;font-weight:500;letter-spacing:.005em;
   color:var(--ink);background:none;border:none;cursor:pointer;text-align:left;
   padding:0;line-height:1.05;
+  -webkit-tap-highlight-color:transparent;
 }
 .datehead .nav-day .pick:hover{color:var(--accent-ink)}
 .datehead .nav-day .jump{
@@ -222,6 +228,23 @@ nav a:hover{color:var(--accent-ink)}
 }
 /* enlarge the tap target without moving the underline (WCAG 2.5.8) */
 .disclose::after{content:"";position:absolute;inset:-11px -8px}
+
+.share{
+  position:relative;
+  display:none;margin-top:.8rem;margin-left:1.6rem;
+  font-family:var(--mono);
+  text-transform:uppercase;letter-spacing:.09em;font-size:.62rem;
+  color:var(--mid);
+  background:none;border:none;cursor:pointer;
+  box-shadow:inset 0 -1px 0 var(--rule);padding:0 0 2px;
+  -webkit-tap-highlight-color:transparent;
+}
+.share::after{content:"";position:absolute;inset:-11px -8px}
+.share:hover{color:var(--accent-ink);box-shadow:inset 0 -1px 0 var(--accent)}
+.share.done{color:var(--accent-ink);box-shadow:none;cursor:default}
+/* shown only where it makes sense, and only with JS (the handler lives in app.js) */
+.js .entry.open .share,
+.js .entry:not(.collapsible) .share{display:inline-block}
 
 .music{margin-top:.9rem;border-top:1px solid var(--rule);padding-top:.6rem;max-width:44rem}
 .music .row{display:grid;grid-template-columns:6.6rem 1fr;column-gap:1.1rem;padding:.28rem 0}
@@ -523,14 +546,15 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   padding:.7rem 1rem;margin-top:1.4rem;font-size:.9rem;
 }
 
-/* ---- picker (term-week grid over the date heading) ---- */
+/* ---- picker (opens over the date heading — a week list on Week, a
+       term-week calendar grid on Day) ---- */
 .picker{
   border-bottom:1px solid var(--rule);padding:.9rem 1.15rem 1.1rem;
   background:var(--accent-tint);
 }
 .picker .phead{
   font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-size:.58rem;
-  color:var(--faint);margin-bottom:.5rem;display:flex;justify-content:space-between;
+  color:var(--faint);margin-bottom:.6rem;display:flex;justify-content:space-between;
   align-items:center;
 }
 .picker .phead button{background:none;border:none;font-family:inherit;font-size:inherit;
@@ -539,14 +563,40 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .picker .phead .pterm a{color:var(--accent-ink);text-decoration:none;font-size:.8rem;line-height:1}
 .picker .phead .pterm a:hover{color:var(--ink)}
 .picker .phead .pterm .step{color:var(--faint);font-size:.8rem;line-height:1}
-.pgrid{display:grid;grid-template-columns:auto repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
-.pgrid > *{background:var(--board);padding:.34rem .2rem;text-align:center;font-family:var(--mono);font-size:.58rem}
-.pgrid .ph{color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
-.pgrid .wlabel{color:var(--faint)}
+
+/* Week view: one row per Oxford week */
+.wlist{list-style:none}
+.wlist a{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.62rem .55rem;text-decoration:none;color:var(--ink);
+  border-bottom:1px solid var(--hair);
+}
+.wlist li:last-child a{border-bottom:none}
+.wlist .wn{font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1rem}
+.wlist .ws{font-family:var(--mono);font-size:.66rem;color:var(--mid)}
+.js .wlist a:hover{background:var(--accent-hover);color:var(--accent-ink)}
+.js .wlist a:hover .ws{color:var(--accent-ink)}
+.wlist a.on{background:var(--accent);color:#fff}
+.wlist a.on .ws{color:rgba(255,255,255,.85)}
+
+/* Day view: the term-week calendar grid */
+.pgrid{display:grid;grid-template-columns:2.1rem repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.pgrid > *{
+  background:var(--board);padding:.42rem .2rem;min-height:2.3rem;
+  font-family:var(--mono);font-size:.72rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.pgrid .ph{color:var(--faint);text-transform:uppercase;letter-spacing:.04em;font-size:.54rem;min-height:0;padding:.3rem .1rem}
+.pgrid .wlabel{color:var(--faint);font-size:.54rem}
 .pgrid a{color:var(--ink);text-decoration:none}
+.pgrid a .mon{font-size:.5rem;color:var(--faint);text-transform:uppercase;letter-spacing:.03em;line-height:1;margin-bottom:.12rem}
 .js .pgrid a:hover{background:var(--accent-hover);color:var(--accent-ink)}
-.pgrid a.on,.pgrid a.wkon{background:var(--accent);color:#fff}
-.pgrid a.has{font-weight:500;color:var(--accent-ink)}
+.pgrid a.has::after{content:"";width:3px;height:3px;border-radius:50%;background:var(--accent);margin-top:.16rem}
+.pgrid a.today{box-shadow:inset 0 0 0 1px var(--accent)}
+.pgrid a.on{background:var(--accent);color:#fff}
+.pgrid a.on.today{box-shadow:inset 0 0 0 1px var(--paper)}
+.pgrid a.on .mon{color:rgba(255,255,255,.8)}
+.pgrid a.on.has::after{background:#fff}
 
 /* ---- narrow ---- */
 @media (max-width:520px){
@@ -567,8 +617,11 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   nav a{font-size:.59rem;letter-spacing:.03em}
   .colhead span + span{padding-left:.9rem}
   .chapelhead h1{font-size:1.3rem}
-  .pgrid{font-size:.5rem}
-  .pgrid > *{padding:.3rem .1rem}
+  .pgrid{grid-template-columns:1.6rem repeat(7,1fr)}
+  .pgrid > *{font-size:.66rem;padding:.4rem .05rem;min-height:2.5rem}
+  .pgrid .ph,.pgrid .wlabel{font-size:.48rem}
+  .wlist a{padding:.72rem .35rem}
+  .wlist .wn{font-size:.95rem}
 }
 
 /* ---- print ---- */
@@ -579,6 +632,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   body{padding:0;font-size:11pt}
   .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
   .datehead .nav-day a,.datehead .nav-day .step,
+  .js .entry.open .share,.js .entry:not(.collapsible) .share,
   .picker,.search-box,.search-filters,.chapelhead .back{display:none}
   .board{border-color:#000}
   .entry,.music,.chip,.daygroup{break-inside:avoid}

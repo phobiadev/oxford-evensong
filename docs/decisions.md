@@ -140,6 +140,27 @@ Trinity", and its Sunday is computed by `addDays` rather than a clamped
 identical latent bug in `chapel()` was fixed too. `weekHeadTitle()` in
 `assets/views.js` is the shared, unit-tested guard.
 
+## Day / Week pickers split; per-service share (site fixes pass)
+
+The one shared term-week grid was doing badly by the **Week** view — 63 tiny
+day-cells to choose one of nine weeks, unreadable on a phone. Split:
+
+- **Day** view keeps a calendar grid, rebuilt — larger cells (~44px targets),
+  weekday column heads, month shown at term/month boundaries, the real "today"
+  ringed, and a dot on any day that has a service (`data.servicesByDate`).
+- **Week** view opens `.wlist` instead — one row per Oxford week, week name +
+  `Sun 10 – Sat 16 May` span, the shown week filled. `weekListHTML` /
+  `dayGridHTML` in `assets/views.js`; `pickerHTML` picks by `view`.
+
+Also this pass: a **Share** control on an expanded entry (and on said /
+not-yet-published entries) — `navigator.share` on a coarse-pointer device, else
+copy the canonical Day-view URL to the clipboard (`data-share` wired in
+`app.js`). A `?open=` link opened cold now scrolls to the **first** open entry
+(previously only in-app clicks did, and to the last id). Programmatic
+post-navigation focus on a `[tabindex="-1"]` heading no longer paints a ring
+(mobile "highlight rim" on Day/Week switch). Theme toggle glyph bumped to
+1.08rem.
+
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 
 - **Christ Church publishes monthly, not termly** — the update process must
