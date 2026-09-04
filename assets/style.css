@@ -632,6 +632,51 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .pgrid a.on .mon{color:rgba(255,255,255,.8)}
 .pgrid a.on.has::after{background:#fff}
 
+/* ---- share dialog ---- */
+.share-dialog{
+  width:min(40rem,calc(100vw - 2rem));
+  max-height:calc(100dvh - 2rem);
+  margin:auto;padding:0;overflow:auto;
+  border:1px solid var(--rule);
+  background:var(--board);color:var(--ink);
+  box-shadow:0 1.4rem 3rem rgba(0,0,0,.3);
+}
+.share-dialog::backdrop{background:rgba(10,9,7,.55)}
+.share-dialog > *{padding-left:1.4rem;padding-right:1.4rem}
+.sd-x{display:flex;justify-content:flex-end;padding-top:.7rem}
+.sd-x button{
+  background:none;border:none;cursor:pointer;color:var(--mid);
+  font-family:var(--mono);font-size:.95rem;line-height:1;padding:.3rem;
+}
+.sd-x button:hover{color:var(--accent-ink)}
+.sd-title{font-family:var(--serif);font-weight:500;font-size:1.3rem;line-height:1.2}
+.sd-sub{
+  font-family:var(--mono);font-size:.64rem;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--mid);margin-top:.4rem;text-wrap:pretty;
+}
+.sd-card{padding-top:1.1rem}
+.sd-card canvas{
+  display:block;margin:0 auto;max-width:100%;height:auto;
+  border:1px solid var(--rule);background:#F1EEE3;
+}
+.sd-link{display:flex;gap:.5rem;padding-top:1rem}
+.sd-link input{
+  flex:1;min-width:0;font-family:var(--mono);font-size:.72rem;
+  color:var(--mid);background:var(--paper);
+  border:1px solid var(--rule);padding:.5rem .6rem;
+}
+.sd-actions{display:flex;flex-wrap:wrap;gap:.5rem;padding-top:.7rem;padding-bottom:1.3rem}
+.sd-link button,.sd-actions button{
+  font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--mid);background:none;cursor:pointer;
+  border:1px solid var(--rule);padding:.5rem .8rem;
+  -webkit-tap-highlight-color:transparent;
+}
+.sd-link button:hover,.sd-actions button:hover{color:var(--accent-ink);border-color:var(--accent)}
+.sd-link button.done,.sd-actions button.done{color:var(--accent-ink);border-color:var(--accent)}
+.sd-actions button[hidden]{display:none}
+.sd-share{color:var(--accent-ink);border-color:var(--accent)}
+
 /* ---- narrow ---- */
 @media (max-width:520px){
   body{padding:1.5rem 1rem 2.5rem}
@@ -667,7 +712,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
   .datehead .nav-day a,.datehead .nav-day .step,.datehead .jump,
   .js .entry.open .share,.js .entry:not(.collapsible) .share,
-  .picker,.search-box,.search-filters,.chapelhead .back{display:none}
+  .picker,.search-box,.search-filters,.chapelhead .back,.share-dialog{display:none}
   .board{border-color:#000}
   .entry,.music,.chip,.daygroup{break-inside:avoid}
   .music{max-width:none}

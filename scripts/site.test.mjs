@@ -13,6 +13,7 @@ import * as browser from '../assets/oxweeks.js';
 import { nowParts, clockLabel, timeLabel } from '../assets/london.js';
 import { chooseDay } from '../assets/schedule.js';
 import { searchHits, weekHeadTitle, pickerWeekRange } from '../assets/views.js';
+import { cardModel } from '../assets/card.js';
 import * as node from './oxweeks.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -227,4 +228,70 @@ test('searchHits: chapel sort groups by venue name, alphabetically', () => {
   assert.deepEqual(r.groups.map((g) => g.heading),
     ['Christ Church', 'Magdalen College', 'New College']);
   assert.deepEqual(r.groups[1].items.map((h) => h.s.date), ['2026-05-10', '2026-05-20']);
+});
+
+/* ---- cardModel (assets/card.js): the share-card data model ---- */
+
+const evensong = {
+  id: '2026-05-12-magdalen-1800',
+  date: '2026-05-12',
+  time: '18:00',
+  type: 'choral-evensong',
+  title: 'Choral Evensong',
+  choir: 'The Choir of Magdalen College',
+  _venue: { name: 'Magdalen College' },
+  music: [
+    { slot: 'responses', text: 'Rose', composer: 'Rose' },
+    { slot: 'canticles', text: 'Stanford in G', title: 'Stanford in G' },
+    { slot: 'anthem', text: 'Like as the hart — Howells', composer: 'Howells', title: 'Like as the hart' },
+    { slot: 'other', label: 'Voluntary', text: 'Toccata — Widor', composer: 'Widor', title: 'Toccata' },
+  ],
+};
+
+test('cardModel: a full choral evensong maps chapel, date, time and the music list', () => {
+  const m = cardModel(evensong);
+  assert.equal(m.chapel, 'Magdalen College');
+  assert.equal(m.kind, 'Choral Evensong');
+  assert.equal(m.date, 'Tuesday 12 May 2026');
+  assert.equal(m.time, '6.00 pm');
+  assert.equal(m.noMusicNote, null);
+  assert.equal(m.full.length, 4);
+  assert.deepEqual(m.full[0], { label: 'responses', value: 'Rose' });
+  assert.deepEqual(m.full[1], { label: 'canticles', value: 'Stanford in G' });
+  assert.deepEqual(m.full[2], { label: 'anthem', value: 'Howells, Like as the hart' });
+  assert.deepEqual(m.full[3], { label: 'Voluntary', value: 'Widor, Toccata' });
+  assert.equal(m.source, 'Magdalen College music list');
+});
+
+test('cardModel: a said service has no rows and the spoken note', () => {
+  const m = cardModel({
+    id: '2026-05-13-oriel-1810', date: '2026-05-13', time: '18:10',
+    type: 'said-evensong', _venue: { name: 'Oriel College' },
+  });
+  assert.equal(m.noMusicNote, 'Spoken; no music sung');
+  assert.deepEqual(m.full, []);
+});
+
+test('cardModel: a not-yet-published service gets the awaited note and keeps its occasion', () => {
+  const m = cardModel({
+    id: '2026-05-14-newcollege-1815', date: '2026-05-14', time: '18:15',
+    type: 'choral-evensong', musicStatus: 'not-yet-published',
+    occasion: 'Ascension Day', _venue: { name: 'New College' },
+  });
+  assert.equal(m.occasion, 'Ascension Day');
+  assert.equal(m.noMusicNote, 'Music not published yet');
+  assert.deepEqual(m.full, []);
+});
+
+test('cardModel: falls back to venueId and a hyphenless type when fields are missing', () => {
+  const m = cardModel({
+    id: '2026-05-15-x-0900', date: '2026-05-15', time: null,
+    type: 'sung-eucharist', venueId: 'somewhere', music: [],
+  });
+  assert.equal(m.chapel, 'somewhere');
+  assert.equal(m.kind, 'sung eucharist');
+  assert.equal(m.time, '—');
+  assert.equal(m.source, null);
+  assert.equal(m.noMusicNote, null);
+  assert.deepEqual(m.full, []);
 });
