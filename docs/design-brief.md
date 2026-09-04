@@ -232,10 +232,13 @@ full-width and unclamped. This is the phone view; it reads like the Tonight feed
 
 Week arrows step one Oxford week; `.datehead` h1 = `3rd Week of Trinity`, `.wk` =
 `Sun 10 – Sat 16 May 2026`. The h1 is a picker control: it opens a plain list of
-the term's weeks (`.wlist` — week name + `Sun 10 – Sat 16 May` span per row, the
-shown week filled), its head paging ‹ › across terms. Out of weeks −2..10 the h1
-reads **"Vacation"** with the date span still in `.wk`. A mono **"This week"**
-link by the arrows returns to the current week.
+the term's weeks (`.wlist` — week name + `Sun 10 – Sat 16 May` span per row; the
+shown week gets a 1px accent frame over `--wk-sel`; the real current week, when
+different, carries a mono "this week" tag), its head paging ‹ › across terms.
+The list runs weeks 0–8, widened to any week that actually holds a service. Out
+of weeks −2..10 the h1 reads **"Vacation"** with the date span still in `.wk`. A
+mono **"This week"** link on its own line under the arrows returns to the current
+week.
 
 ### Chapels (list + chapel page)
 
@@ -368,8 +371,9 @@ A4.
 - Chapels list grouping (alphabetical vs. by kind) — decide when building it.
 - The date-picker widget: the **Day** view opens a term-week calendar grid (real
   "today" ringed, days with a service dotted, month shown at boundaries); the
-  **Week** view opens a plain list of the term's weeks with date spans, the shown
-  week filled. Both heads page ‹ › across terms.
+  **Week** view opens a plain list of the term's weeks with date spans (shown
+  week framed, current week tagged). Both heads page ‹ › across terms, and both
+  cover weeks 0–8 widened to any week that holds a service (`pickerWeekRange`).
 - Exact `prefers-reduced-motion` fallback for the expand.
 - Whether the desktop day view ever grows a right rail (week strip) — currently no;
   the board is centred and that's enough.

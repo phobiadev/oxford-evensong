@@ -5,6 +5,7 @@ import { esc, longDate, shortDayDate, proseDate, dateSpan, fold } from './dom.js
 import { href } from './router.js';
 import {
   weekDayForDate, dateForWeekDay, termForDate, ordinalWeek, addDays, DAYS,
+  MIN_WEEK, MAX_WEEK,
 } from './oxweeks.js';
 import { timeLabel } from './london.js';
 import { entryHTML, summaryParts, chipMusicHTML } from './entry.js';
@@ -164,16 +165,44 @@ function dayHead(dateISO, term, feast, { picker, data, backToToday, today }) {
     ${picker ? pickerHTML(dateISO, term, 'tonight', data, today) : ''}`;
 }
 
-/* Week view: a plain list of the term's weeks, the shown week filled. */
-function weekListHTML(currentISO, term) {
+/**
+ * The [lo, hi] week range a picker covers: the default 0..8, widened (clamped to
+ * MIN_WEEK..MAX_WEEK) to take in any week outside that band which actually holds
+ * a service — so an early/late-term or vacation service is directly reachable.
+ */
+export function pickerWeekRange(term, data) {
+  let lo = 0;
+  let hi = 8;
+  const map = data?.servicesByDate;
+  if (map) {
+    for (let w = MIN_WEEK; w <= MAX_WEEK; w++) {
+      if (w >= 0 && w <= 8) continue;
+      if (DAYS.some((d) => (map.get(dateForWeekDay(term, w, d)) || []).length)) {
+        lo = Math.min(lo, w);
+        hi = Math.max(hi, w);
+      }
+    }
+  }
+  return [lo, hi];
+}
+
+/* Week view: a plain list of the term's weeks. The shown week gets a hairline
+   frame; the real current week, when different, carries a "this week" tag. */
+function weekListHTML(currentISO, term, data, today) {
+  const [lo, hi] = pickerWeekRange(term, data);
   const { week: curWk } = weekDayForDate(term, currentISO);
+  const nowWk = today ? weekDayForDate(term, today).week : null;
   let rows = '';
-  for (let w = 0; w <= 8; w++) {
+  for (let w = lo; w <= hi; w++) {
     const sun = dateForWeekDay(term, w, 'Sun');
     const sat = dateForWeekDay(term, w, 'Sat');
+    const cls = [];
+    if (w === curWk) cls.push('on');
+    if (w === nowWk) cls.push('now');
+    const tag = w === nowWk ? '<span class="wtag">this week</span>' : '';
     rows += `<li><a href="${esc(href({ view: 'week', date: sun, open: [] }))}" data-link`
-      + `${w === curWk ? ' class="on"' : ''}>`
-      + `<span class="wn">${esc(ordinalWeek(w))}</span>`
+      + `${cls.length ? ` class="${cls.join(' ')}"` : ''}>`
+      + `<span class="wn">${esc(ordinalWeek(w))}${tag}</span>`
       + `<span class="ws">${esc(dateSpan(sun, sat))}</span>`
       + '</a></li>';
   }
@@ -181,11 +210,11 @@ function weekListHTML(currentISO, term) {
 }
 
 /* Day view: the term-week calendar grid. The shown day is filled; the real
-   "today" gets a ring; days that have a service carry a dot. curWk may fall
-   outside 0..8, in which case nothing is marked. */
+   "today" gets a ring; days that have a service carry a dot. */
 function dayGridHTML(currentISO, term, data, today) {
+  const [lo, hi] = pickerWeekRange(term, data);
   let rows = '';
-  for (let w = 0; w <= 8; w++) {
+  for (let w = lo; w <= hi; w++) {
     let cells = `<span class="wlabel">${ordinalWeek(w).replace(' Week', '')}</span>`;
     for (const d of DAYS) {
       const iso = dateForWeekDay(term, w, d);
@@ -225,7 +254,7 @@ function pickerHTML(currentISO, term, view, data, today) {
     + `</span>`;
 
   const body = view === 'week'
-    ? weekListHTML(currentISO, term)
+    ? weekListHTML(currentISO, term, data, today)
     : dayGridHTML(currentISO, term, data, today);
 
   return `

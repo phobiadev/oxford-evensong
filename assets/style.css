@@ -15,6 +15,7 @@
   --accent-ink:#4F6B4C; /* sage text — occasion, links, clock highlight */
   --accent-tint:rgba(131,160,126,.12); /* expanded-row background (open/selected) */
   --accent-hover:rgba(131,160,126,.06); /* passing hover — lighter than the tint */
+  --wk-sel:#E6ECE1;     /* opaque ground for the picker's shown week */
 
   --serif:"Spectral","Iowan Old Style",Georgia,"Times New Roman",serif;
   --serif-sc:"Spectral SC","Spectral","Iowan Old Style",Georgia,serif;
@@ -34,6 +35,7 @@
     --accent-ink:#AEC9A8;
     --accent-tint:rgba(147,179,141,.13);
     --accent-hover:rgba(147,179,141,.06);
+    --wk-sel:#2B382A;
   }
 }
 :root[data-theme="dark"]{
@@ -48,6 +50,7 @@
   --accent-ink:#AEC9A8;
   --accent-tint:rgba(147,179,141,.13);
   --accent-hover:rgba(147,179,141,.06);
+  --wk-sel:#2B382A;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -580,13 +583,22 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   border-bottom:1px solid var(--hair);
 }
 .wlist li:last-child a{border-bottom:none}
-.wlist .wn{font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1rem}
+.wlist .wn{display:flex;align-items:center;gap:.5rem;
+  font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1rem}
 .wlist .ws{font-family:var(--mono);font-size:.66rem;color:var(--mid)}
-.js .wlist a:hover{background:var(--accent-hover);color:var(--accent-ink)}
-.js .wlist a:hover .ws{color:var(--accent-ink)}
-/* the shown week reads as "selected", matching an open entry: tint + left bar */
-.wlist a.on{background:var(--accent-tint);box-shadow:inset 3px 0 0 var(--accent)}
-.wlist a.on .wn{color:var(--accent-ink)}
+.js .wlist a:hover{background:var(--accent-hover)}
+.js .wlist a:hover .wn,.js .wlist a:hover .ws{color:var(--accent-ink)}
+/* the shown week: a hairline accent frame over an opaque ground — a translucent
+   tint would vanish on the already-tinted panel in the evening palette */
+.wlist a.on{background:var(--wk-sel);box-shadow:inset 0 0 0 1px var(--accent)}
+.wlist a.on .wn,.wlist a.on .ws{color:var(--accent-ink)}
+/* the real current week, when it isn't the one being shown */
+.wlist .now .wn{color:var(--accent-ink)}
+.wlist .wtag{
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-ink);border:1px solid var(--accent);border-radius:2px;
+  padding:.1rem .25rem;line-height:1;white-space:nowrap;
+}
 
 /* Day view: the term-week calendar grid */
 .pgrid{display:grid;grid-template-columns:2.1rem repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}

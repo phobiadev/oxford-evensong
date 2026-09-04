@@ -149,8 +149,17 @@ day-cells to choose one of nine weeks, unreadable on a phone. Split:
   weekday column heads, month shown at term/month boundaries, the real "today"
   ringed, and a dot on any day that has a service (`data.servicesByDate`).
 - **Week** view opens `.wlist` instead — one row per Oxford week, week name +
-  `Sun 10 – Sat 16 May` span, the shown week filled. `weekListHTML` /
+  `Sun 10 – Sat 16 May` span. The shown week is marked with a 1px accent frame
+  over an opaque `--wk-sel` ground (a translucent tint disappeared on the
+  already-tinted panel in the evening palette); when the real current week is
+  not the one shown it carries a mono **"this week"** tag. `weekListHTML` /
   `dayGridHTML` in `assets/views.js`; `pickerHTML` picks by `view`.
+- **Both pickers' week range is data-driven.** `pickerWeekRange()` returns the
+  default `0..8` widened (clamped to `MIN_WEEK..MAX_WEEK`) to take in any week
+  that actually holds a service — so an early/late-term or vacation service is
+  directly reachable without arrowing. Unit-tested. Deep vacation with no data
+  stays arrows-only by design; year-round venues (the Cathedral) are a separate
+  data-scope question.
 
 Also this pass: a **Share** control on an expanded entry (and on said /
 not-yet-published entries) — `navigator.share` on a coarse-pointer device, else
@@ -158,8 +167,10 @@ copy the canonical Day-view URL to the clipboard (`data-share` wired in
 `app.js`). A `?open=` link opened cold now scrolls to the **first** open entry
 (previously only in-app clicks did, and to the last id). Programmatic
 post-navigation focus on a `[tabindex="-1"]` heading no longer paints a ring
-(mobile "highlight rim" on Day/Week switch). Theme toggle glyph bumped to
-1.08rem.
+(mobile "highlight rim" on Day/Week switch). The **Today / This week** link moved
+to its own line under the arrows — inside the flex arrow row its position
+tracked the title's width and it visibly jumped while stepping. Theme toggle
+glyph bumped to 1.2rem and the masthead row centre-aligned.
 
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 
