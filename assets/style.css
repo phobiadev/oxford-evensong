@@ -147,11 +147,16 @@ nav a:hover{color:var(--accent-ink)}
   -webkit-tap-highlight-color:transparent;
 }
 .datehead .nav-day .pick:hover{color:var(--accent-ink)}
-.datehead .nav-day .jump{
+/* own line, directly under the arrow row — a fixed spot that never moves with
+   the length of the date / week title beside the arrows */
+.datehead .jump{
+  display:inline-block;margin-top:.5rem;padding:.15rem .25rem;margin-left:-.25rem;
   font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;
-  font-size:.62rem;color:var(--mid);text-decoration:none;align-self:center;
+  font-size:.62rem;color:var(--mid);text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
 }
-.datehead .nav-day .jump:hover{color:var(--accent-ink)}
+.datehead .jump:hover{color:var(--accent-ink)}
+.datehead .jump + .wk{margin-top:.35rem}
 .datehead .wk{
   font-family:var(--mono);
   text-transform:uppercase;letter-spacing:.11em;font-size:.68rem;
@@ -635,7 +640,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
         --accent-tint:transparent;--accent-hover:transparent}
   body{padding:0;font-size:11pt}
   .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
-  .datehead .nav-day a,.datehead .nav-day .step,
+  .datehead .nav-day a,.datehead .nav-day .step,.datehead .jump,
   .js .entry.open .share,.js .entry:not(.collapsible) .share,
   .picker,.search-box,.search-filters,.chapelhead .back{display:none}
   .board{border-color:#000}

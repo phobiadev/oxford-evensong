@@ -53,7 +53,8 @@ export function weekHeadTitle(term, wk) {
     : 'Vacation';
 }
 
-/* a small mono caption-style link back to "now" in the date-head arrow row */
+/* a small mono caption-style link back to "now" — its own line under the arrow
+   row, so its position never shifts with the length of the date / week title */
 function jumpLink(hrefStr, label) {
   return `<a class="jump" href="${esc(hrefStr)}" data-link>${esc(label)}</a>`;
 }
@@ -156,8 +157,8 @@ function dayHead(dateISO, term, feast, { picker, data, backToToday, today }) {
         <a href="${esc(href({ date: addDays(dateISO, -1), open: [] }))}" data-link aria-label="Previous day">‹</a>
         <h1 class="daytitle"><button class="pick" type="button" data-pick aria-expanded="${picker ? 'true' : 'false'}">${esc(longDate(dateISO))}</button></h1>
         <a href="${esc(href({ date: addDays(dateISO, 1), open: [] }))}" data-link aria-label="Next day">›</a>
-        ${backToToday ? jumpLink(href({ view: 'tonight', date: null, open: [] }), 'Today') : ''}
       </div>
+      ${backToToday ? jumpLink(href({ view: 'tonight', date: null, open: [] }), 'Today') : ''}
       <div class="wk">${wk}</div>
     </div>
     ${picker ? pickerHTML(dateISO, term, 'tonight', data, today) : ''}`;
@@ -365,8 +366,8 @@ export function week(data, p, now, ui = {}) {
         <a href="${esc(href({ view: 'week', date: prevAnchor, open: [] }))}" data-link aria-label="Previous week">‹</a>
         <h1 class="daytitle"><button class="pick" type="button" data-pick aria-expanded="${ui.picker ? 'true' : 'false'}">${esc(weekHeadTitle(term, wk))}</button></h1>
         <a href="${esc(href({ view: 'week', date: nextAnchor, open: [] }))}" data-link aria-label="Next week">›</a>
-        ${showThisWeek ? jumpLink(href({ view: 'week', date: null, open: [] }), 'This week') : ''}
       </div>
+      ${showThisWeek ? jumpLink(href({ view: 'week', date: null, open: [] }), 'This week') : ''}
       <div class="wk">${esc(dateSpan(sun, sat))}</div>
     </div>`;
   const pick = ui.picker ? pickerHTML(anchor, term, 'week', data, now.date) : '';
