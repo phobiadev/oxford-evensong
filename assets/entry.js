@@ -45,6 +45,12 @@ function isSaid(s) {
   return s.type === 'said-evensong' || s.musicStatus === 'no-music';
 }
 
+/** A "Share" control — wired in app.js, hidden without JS (see style.css). */
+function shareBtn(s) {
+  return `<button class="share" type="button" data-share="${esc(s.id)}"`
+    + ` data-share-date="${esc(s.date)}">Share</button>`;
+}
+
 function flagSentence(s) {
   if (s.confidence === 'low') {
     return 'The music below is our reading of a list that gives few or no slot '
@@ -105,7 +111,7 @@ export function entryHTML(s, opts = {}) {
       + `<div class="body"><span class="chapel">${chapelLink}</span>`
       + `<span class="kind">${kind}</span>${occ}`
       + '<div class="summary">Spoken; no music sung</div>'
-      + notes + src + '</div></div>';
+      + notes + src + shareBtn(s) + '</div></div>';
   }
 
   // service known, music not published yet
@@ -115,7 +121,7 @@ export function entryHTML(s, opts = {}) {
       + `<div class="body"><span class="chapel">${chapelLink}</span>`
       + `<span class="kind">${kind}</span>${occ}${choir}`
       + '<div class="summary" style="color:var(--mid)">Music not published yet.</div>'
-      + notes + '</div></div>';
+      + notes + shareBtn(s) + '</div></div>';
   }
 
   // full, collapsible entry
@@ -138,5 +144,6 @@ export function entryHTML(s, opts = {}) {
     + `<button class="disclose" type="button" data-toggle="${esc(s.id)}" aria-expanded="${opts.open ? 'true' : 'false'}" aria-controls="s-${esc(s.id)}">`
     + (opts.open ? 'Close' : 'Full music list')
     + '</button>'
+    + shareBtn(s)
     + '</div></div>';
 }

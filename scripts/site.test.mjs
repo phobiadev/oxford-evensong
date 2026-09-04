@@ -12,7 +12,7 @@ import { dirname, join } from 'node:path';
 import * as browser from '../assets/oxweeks.js';
 import { nowParts, clockLabel, timeLabel } from '../assets/london.js';
 import { chooseDay } from '../assets/schedule.js';
-import { searchHits, weekHeadTitle } from '../assets/views.js';
+import { searchHits, weekHeadTitle, pickerWeekRange } from '../assets/views.js';
 import * as node from './oxweeks.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,6 +31,21 @@ test('assets/oxweeks.js matches scripts/oxweeks.mjs across weeks -2..10', () => 
       }
     }
   }
+});
+
+test('pickerWeekRange: default 0..8, widened only to cover weeks that hold services', () => {
+  assert.deepEqual(pickerWeekRange(TT, null), [0, 8]);
+  assert.deepEqual(pickerWeekRange(TT, { servicesByDate: new Map() }), [0, 8]);
+
+  const map = new Map([
+    [browser.dateForWeekDay(TT, -1, 'Wed'), [{}]],
+    [browser.dateForWeekDay(TT, 9, 'Thu'), [{}]],
+  ]);
+  assert.deepEqual(pickerWeekRange(TT, { servicesByDate: map }), [-1, 9]);
+
+  // empty arrays don't count; the band never exceeds MIN_WEEK..MAX_WEEK
+  const empties = new Map([[browser.dateForWeekDay(TT, -2, 'Sun'), []]]);
+  assert.deepEqual(pickerWeekRange(TT, { servicesByDate: empties }), [0, 8]);
 });
 
 test('termForDate picks the term whose -2..10 window holds the date', () => {

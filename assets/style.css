@@ -15,6 +15,7 @@
   --accent-ink:#4F6B4C; /* sage text — occasion, links, clock highlight */
   --accent-tint:rgba(131,160,126,.12); /* expanded-row background (open/selected) */
   --accent-hover:rgba(131,160,126,.06); /* passing hover — lighter than the tint */
+  --wk-sel:#E6ECE1;     /* opaque ground for the picker's shown week */
 
   --serif:"Spectral","Iowan Old Style",Georgia,"Times New Roman",serif;
   --serif-sc:"Spectral SC","Spectral","Iowan Old Style",Georgia,serif;
@@ -34,6 +35,7 @@
     --accent-ink:#AEC9A8;
     --accent-tint:rgba(147,179,141,.13);
     --accent-hover:rgba(147,179,141,.06);
+    --wk-sel:#2B382A;
   }
 }
 :root[data-theme="dark"]{
@@ -48,6 +50,7 @@
   --accent-ink:#AEC9A8;
   --accent-tint:rgba(147,179,141,.13);
   --accent-hover:rgba(147,179,141,.06);
+  --wk-sel:#2B382A;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -68,6 +71,10 @@ em{font-style:italic}
 a{color:inherit}
 
 :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:1px}
+/* after a view switch we move focus to the heading (or a jumped-to entry) purely
+   as an orientation cue for assistive tech — those targets carry tabindex="-1"
+   and must not paint a visible ring, especially on touch. */
+#main [tabindex="-1"]:focus{outline:none}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .summary .mid{color:var(--faint)}
 .entry .chapel a{text-decoration:none;color:inherit}
@@ -75,7 +82,7 @@ a{color:inherit}
 
 /* ---- masthead ---- */
 .masthead{
-  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
   padding:.3rem .1rem .65rem;
 }
 .masthead .mark{
@@ -83,13 +90,14 @@ a{color:inherit}
   font-size:1.16rem;letter-spacing:.05em;
   text-decoration:none;color:var(--ink);
 }
-.masthead .right{display:flex;align-items:baseline;gap:.9rem}
+.masthead .right{display:flex;align-items:center;gap:.9rem}
 .masthead .clock{font-family:var(--mono);font-size:.74rem;color:var(--mid)}
 .masthead .clock b{color:var(--accent-ink);font-weight:500}
 .masthead .toggle{
-  font-family:var(--mono);font-size:.9rem;line-height:1;
+  font-family:var(--mono);font-size:1.2rem;line-height:1;
   background:none;border:none;cursor:pointer;
-  color:var(--mid);padding:.1rem .15rem;
+  color:var(--mid);padding:0 .2rem;
+  -webkit-tap-highlight-color:transparent;
 }
 .masthead .toggle:hover{color:var(--accent-ink)}
 
@@ -121,8 +129,12 @@ nav a:hover{color:var(--accent-ink)}
 .datehead{padding:1.05rem 1.15rem .95rem;border-bottom:1px solid var(--rule)}
 .datehead h1{font-weight:500;font-size:2.3rem;line-height:1.05;letter-spacing:.005em}
 .datehead .nav-day{
-  display:flex;align-items:baseline;gap:.55rem;flex-wrap:wrap;
+  display:flex;align-items:baseline;gap:.55rem;
 }
+/* no flex-wrap + a shrinkable title: when the date / week name is too long for
+   one line its own text wraps, rather than the › arrow dropping to a new line */
+.datehead .nav-day > h1,
+.datehead .nav-day > h2{min-width:0}
 /* the Tonight heading is an <h1> wrapping the date/picker button; the button
    carries the type, the h1 must not add a box of its own */
 .datehead .nav-day .daytitle{font:inherit;font-weight:500;font-size:2.3rem;line-height:1.05}
@@ -136,16 +148,23 @@ nav a:hover{color:var(--accent-ink)}
 .datehead .nav-day a:hover,
 .datehead .nav-day .step:hover{color:var(--accent-ink)}
 .datehead .nav-day .pick{
+  display:block;                /* fill the (shrinkable) h1 so long titles wrap here */
   font-family:inherit;font-size:inherit;font-weight:500;letter-spacing:.005em;
   color:var(--ink);background:none;border:none;cursor:pointer;text-align:left;
   padding:0;line-height:1.05;
+  -webkit-tap-highlight-color:transparent;
 }
 .datehead .nav-day .pick:hover{color:var(--accent-ink)}
-.datehead .nav-day .jump{
+/* own line, directly under the arrow row — a fixed spot that never moves with
+   the length of the date / week title beside the arrows */
+.datehead .jump{
+  display:inline-block;margin-top:.5rem;padding:.15rem .25rem;margin-left:-.25rem;
   font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;
-  font-size:.62rem;color:var(--mid);text-decoration:none;align-self:center;
+  font-size:.62rem;color:var(--mid);text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
 }
-.datehead .nav-day .jump:hover{color:var(--accent-ink)}
+.datehead .jump:hover{color:var(--accent-ink)}
+.datehead .jump + .wk{margin-top:.35rem}
 .datehead .wk{
   font-family:var(--mono);
   text-transform:uppercase;letter-spacing:.11em;font-size:.68rem;
@@ -163,6 +182,12 @@ nav a:hover{color:var(--accent-ink)}
 }
 .colhead span{padding:.4rem .9rem .4rem 0;text-align:right;border-right:1px solid var(--rule)}
 .colhead span + span{padding:.4rem 1.15rem;text-align:left;border-right:none}
+
+/* the colhead opens the day's feed with a rule; a matching rule closes it —
+   unless the last entry is open, which already frames its own end. If the feed
+   is the board's last child its own border serves as that closing rule. */
+.feed.closed{border-bottom:1px solid var(--rule)}
+.feed.closed:last-child{border-bottom-width:0}
 
 /* ---- service entry ---- */
 .entry{
@@ -222,6 +247,26 @@ nav a:hover{color:var(--accent-ink)}
 }
 /* enlarge the tap target without moving the underline (WCAG 2.5.8) */
 .disclose::after{content:"";position:absolute;inset:-11px -8px}
+
+.share{
+  position:relative;
+  display:none;margin-top:.8rem;margin-left:1.6rem;
+  font-family:var(--mono);
+  text-transform:uppercase;letter-spacing:.09em;font-size:.62rem;
+  color:var(--mid);
+  background:none;border:none;cursor:pointer;
+  box-shadow:inset 0 -1px 0 var(--rule);padding:0 0 2px;
+  -webkit-tap-highlight-color:transparent;
+}
+.share::after{content:"";position:absolute;inset:-11px -8px}
+.share:hover{color:var(--accent-ink);box-shadow:inset 0 -1px 0 var(--accent)}
+.share.done{color:var(--accent-ink);box-shadow:none;cursor:default}
+/* shown only where it makes sense, and only with JS (the handler lives in app.js) */
+.js .entry.open .share,
+.js .entry:not(.collapsible) .share{display:inline-block}
+/* said / not-yet-published entries have no disclosure button beside it, so it
+   sits flush-left as its own line rather than indented against nothing */
+.entry:not(.collapsible) .share{margin-left:0;margin-top:1rem}
 
 .music{margin-top:.9rem;border-top:1px solid var(--rule);padding-top:.6rem;max-width:44rem}
 .music .row{display:grid;grid-template-columns:6.6rem 1fr;column-gap:1.1rem;padding:.28rem 0}
@@ -512,6 +557,8 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   color:var(--faint);margin:1.4rem 0 .5rem;
 }
 .about a{color:var(--accent-ink);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
+.about .mono{font-size:.9em;color:var(--mid)}
+.about b{font-weight:600}
 .about .updated{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
 .about ul{list-style:none;margin-top:.3rem}
 .about li{padding:.25rem 0;font-size:.95rem;border-bottom:1px solid var(--hair)}
@@ -523,14 +570,15 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   padding:.7rem 1rem;margin-top:1.4rem;font-size:.9rem;
 }
 
-/* ---- picker (term-week grid over the date heading) ---- */
+/* ---- picker (opens over the date heading — a week list on Week, a
+       term-week calendar grid on Day) ---- */
 .picker{
   border-bottom:1px solid var(--rule);padding:.9rem 1.15rem 1.1rem;
   background:var(--accent-tint);
 }
 .picker .phead{
   font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-size:.58rem;
-  color:var(--faint);margin-bottom:.5rem;display:flex;justify-content:space-between;
+  color:var(--faint);margin-bottom:.6rem;display:flex;justify-content:space-between;
   align-items:center;
 }
 .picker .phead button{background:none;border:none;font-family:inherit;font-size:inherit;
@@ -539,14 +587,50 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .picker .phead .pterm a{color:var(--accent-ink);text-decoration:none;font-size:.8rem;line-height:1}
 .picker .phead .pterm a:hover{color:var(--ink)}
 .picker .phead .pterm .step{color:var(--faint);font-size:.8rem;line-height:1}
-.pgrid{display:grid;grid-template-columns:auto repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
-.pgrid > *{background:var(--board);padding:.34rem .2rem;text-align:center;font-family:var(--mono);font-size:.58rem}
-.pgrid .ph{color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
-.pgrid .wlabel{color:var(--faint)}
+
+/* Week view: one row per Oxford week */
+.wlist{list-style:none}
+.wlist a{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.62rem .55rem;text-decoration:none;color:var(--ink);
+  border-bottom:1px solid var(--hair);
+}
+.wlist li:last-child a{border-bottom:none}
+.wlist .wn{display:flex;align-items:center;gap:.5rem;
+  font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1rem}
+.wlist .ws{font-family:var(--mono);font-size:.66rem;color:var(--mid)}
+.js .wlist a:hover{background:var(--accent-hover)}
+.js .wlist a:hover .wn,.js .wlist a:hover .ws{color:var(--accent-ink)}
+/* the shown week: a hairline accent frame over an opaque ground — a translucent
+   tint would vanish on the already-tinted panel in the evening palette */
+.wlist a.on{background:var(--wk-sel);box-shadow:inset 0 0 0 1px var(--accent)}
+.wlist a.on .wn,.wlist a.on .ws{color:var(--accent-ink)}
+/* the real current week, when it isn't the one being shown */
+.wlist .now .wn{color:var(--accent-ink)}
+.wlist .wtag{
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-ink);border:1px solid var(--accent);border-radius:2px;
+  padding:.1rem .25rem;line-height:1;white-space:nowrap;
+}
+
+/* Day view: the term-week calendar grid */
+.pgrid{display:grid;grid-template-columns:2.1rem repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.pgrid > *{
+  background:var(--board);padding:.42rem .2rem;min-height:2.3rem;
+  font-family:var(--mono);font-size:.72rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.pgrid .ph{color:var(--faint);text-transform:uppercase;letter-spacing:.04em;font-size:.54rem;min-height:0;padding:.3rem .1rem}
+.pgrid .wlabel{color:var(--faint);font-size:.54rem}
 .pgrid a{color:var(--ink);text-decoration:none}
+.pgrid a .mon{font-size:.5rem;color:var(--faint);text-transform:uppercase;letter-spacing:.03em;line-height:1;margin-bottom:.12rem}
 .js .pgrid a:hover{background:var(--accent-hover);color:var(--accent-ink)}
-.pgrid a.on,.pgrid a.wkon{background:var(--accent);color:#fff}
-.pgrid a.has{font-weight:500;color:var(--accent-ink)}
+.pgrid a.has::after{content:"";width:3px;height:3px;border-radius:50%;background:var(--accent);margin-top:.16rem}
+.pgrid a.today{box-shadow:inset 0 0 0 1px var(--accent)}
+.pgrid a.on{background:var(--accent);color:#fff}
+.pgrid a.on.today{box-shadow:inset 0 0 0 1px var(--paper)}
+.pgrid a.on .mon{color:rgba(255,255,255,.8)}
+.pgrid a.on.has::after{background:#fff}
 
 /* ---- narrow ---- */
 @media (max-width:520px){
@@ -567,8 +651,11 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   nav a{font-size:.59rem;letter-spacing:.03em}
   .colhead span + span{padding-left:.9rem}
   .chapelhead h1{font-size:1.3rem}
-  .pgrid{font-size:.5rem}
-  .pgrid > *{padding:.3rem .1rem}
+  .pgrid{grid-template-columns:1.6rem repeat(7,1fr)}
+  .pgrid > *{font-size:.66rem;padding:.4rem .05rem;min-height:2.5rem}
+  .pgrid .ph,.pgrid .wlabel{font-size:.48rem}
+  .wlist a{padding:.72rem .35rem}
+  .wlist .wn{font-size:.95rem}
 }
 
 /* ---- print ---- */
@@ -578,7 +665,8 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
         --accent-tint:transparent;--accent-hover:transparent}
   body{padding:0;font-size:11pt}
   .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
-  .datehead .nav-day a,.datehead .nav-day .step,
+  .datehead .nav-day a,.datehead .nav-day .step,.datehead .jump,
+  .js .entry.open .share,.js .entry:not(.collapsible) .share,
   .picker,.search-box,.search-filters,.chapelhead .back{display:none}
   .board{border-color:#000}
   .entry,.music,.chip,.daygroup{break-inside:avoid}

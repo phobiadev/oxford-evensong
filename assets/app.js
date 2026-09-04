@@ -1,18 +1,20 @@
 // Oxford Evensong — client entry point. No build step; ES modules loaded
-// directly by the browser. Fetches data/ at runtime and renders one of five
+// directly by the browser. Fetches data/ at runtime and renders one of the
 // views from the query string.
 
-import { params, onChange, go, toggleOpen } from './router.js';
+import { params, onChange, go, toggleOpen, href } from './router.js';
 import { initTheme, bindToggle } from './theme.js';
 import { nowParts } from './london.js';
 import { loadData } from './data.js';
 import {
-  tonight, week, chapels, chapel, search, about, errorView, searchResultsHTML,
+  tonight, week, chapels, chapel, search, about, help, errorView, searchResultsHTML,
 } from './views.js';
 
 document.documentElement.classList.add('js');
 
-const ui = { picker: false };
+// `pickerView` records which view the date/week picker was opened in — it closes
+// as soon as the view changes (a nav click, or crossing between Day and Week).
+const ui = { picker: false, pickerView: null };
 let data = null;
 let loadError = false;
 
@@ -25,11 +27,11 @@ let loadError = false;
 // null → a plain navigation; set by the handlers that are NOT navigation.
 let nextFocus = null;
 
-const VIEWS = { tonight, week, chapels, chapel, search, about };
+const VIEWS = { tonight, week, chapels, chapel, search, about, help };
 
 const TITLES = {
   tonight: 'Day', week: 'Week', chapels: 'Chapels',
-  chapel: 'Chapels', search: 'Find music', about: 'About',
+  chapel: 'Chapels', search: 'Find music', about: 'About', help: 'How to use',
 };
 
 function render(p, focus) {
@@ -62,14 +64,14 @@ function applyFocus(focus) {
   } else if (focus.type === 'filter') {
     el = document.getElementById(`f-${focus.id}`);
   } else if (focus.type === 'entry') {
-    // A link jumped here to show this expanded entry: bring it into view, then
-    // land focus on its disclosure button so keyboard / SR users arrive on it
-    // too. Honour prefers-reduced-motion (no smooth scroll).
+    // A link (or a shared URL opened cold) wants this expanded entry in view:
+    // bring it to the top and land focus on the entry itself, so keyboard / SR
+    // users arrive on its chapel + service heading. Honour prefers-reduced-motion.
     const entry = document.getElementById(`s-${focus.id}`);
     if (entry) {
       const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       entry.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
-      el = entry.querySelector('[data-toggle]') || entry;
+      el = entry;
     }
   }
   if (!el) return;
@@ -84,7 +86,34 @@ function afterRender(p, focus) {
 
   // date / picker toggle
   for (const b of document.querySelectorAll('[data-pick]')) {
-    b.addEventListener('click', () => { ui.picker = !ui.picker; render(params(), 'pick'); });
+    b.addEventListener('click', () => {
+      ui.picker = !ui.picker;
+      ui.pickerView = ui.picker ? params().view : null;
+      render(params(), 'pick');
+    });
+  }
+
+  // share one service — the native share sheet on a touch device, copy-link
+  // everywhere else. The link is the canonical Day-view URL for that service.
+  for (const b of document.querySelectorAll('[data-share]')) {
+    b.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const url = location.origin + location.pathname + href({
+        view: 'tonight', date: b.dataset.shareDate, open: [b.dataset.share],
+        venue: null, q: null, type: null, sort: null, past: null, now: null,
+      });
+      if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
+        try { await navigator.share({ url }); } catch { /* dismissed */ }
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+        b.textContent = 'Link copied';
+        b.classList.add('done');
+        clearTimeout(b._t);
+        b._t = setTimeout(() => { b.textContent = 'Share'; b.classList.remove('done'); }, 1800);
+      } catch { /* clipboard blocked — nothing sensible to do */ }
+    });
   }
 
   // disclosure buttons
@@ -138,15 +167,21 @@ function afterRender(p, focus) {
 }
 
 onChange((p, { fromLink = false } = {}) => {
-  // the picker serves the Day and Week views; drop it on nav elsewhere
-  if (p.view !== 'tonight' && p.view !== 'week') ui.picker = false;
+  // The picker stays open only while you keep working its own view with a
+  // specific date (grid/list cells, the day/week arrows, its term paging).
+  // Anything else — a nav click, the logo, a Today / This week jump, crossing
+  // between Day and Week — closes it.
+  if (ui.picker && !(p.view === ui.pickerView && p.date)) {
+    ui.picker = false;
+    ui.pickerView = null;
+  }
   let focus = nextFocus ?? 'main';
   nextFocus = null;
   // A link click that carries ?open (Week chip, search row) jumps to an
   // expanded entry — land on it, not on the view heading. The in-page
   // disclosure toggle sets nextFocus itself, so it never reaches here.
   if (focus === 'main' && fromLink && p.open.length) {
-    focus = { type: 'entry', id: p.open[p.open.length - 1] };
+    focus = { type: 'entry', id: p.open[0] };
   }
   render(p, focus);
 });
@@ -160,5 +195,7 @@ onChange((p, { fromLink = false } = {}) => {
     console.error(err);
     loadError = true;
   }
-  render(p);
+  // A shared link that carries ?open should land on the first expanded entry,
+  // exactly as an in-app jump does — not at the top with the service below the fold.
+  render(p, p.open.length ? { type: 'entry', id: p.open[0] } : null);
 })();

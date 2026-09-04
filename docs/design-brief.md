@@ -136,7 +136,9 @@ system setting until first click, then remembers the choice in `localStorage`.
 ```
 
 Nav is four items only; no hamburger, no "About" in the bar (it lives in the footer
-colophon). `Find music` stays in the nav even while deferred — see §9.
+colophon, alongside "how to use" → `?view=help`, a plain-prose guide to the views,
+the calendar navigation, Oxford weeks, the entry marks and sharing). `Find music`
+stays in the nav even while deferred — see §9.
 
 ## 8. The service entry
 
@@ -231,10 +233,14 @@ fine (it's a calendar).
 full-width and unclamped. This is the phone view; it reads like the Tonight feed.
 
 Week arrows step one Oxford week; `.datehead` h1 = `3rd Week of Trinity`, `.wk` =
-`Sun 10 – Sat 16 May 2026`. The h1 is a picker control like the Day view's (same
-term-week grid, one row per week, the shown week's row filled); out of weeks
-−2..10 the h1 reads **"Vacation"** with the date span still in `.wk`. A mono
-**"This week"** link by the arrows returns to the current week.
+`Sun 10 – Sat 16 May 2026`. The h1 is a picker control: it opens a plain list of
+the term's weeks (`.wlist` — week name + `Sun 10 – Sat 16 May` span per row; the
+shown week gets a 1px accent frame over `--wk-sel`; the real current week, when
+different, carries a mono "this week" tag), its head paging ‹ › across terms.
+The list runs weeks 0–8, widened to any week that actually holds a service. Out
+of weeks −2..10 the h1 reads **"Vacation"** with the date span still in `.wk`. A
+mono **"This week"** link on its own line under the arrows returns to the current
+week.
 
 ### Chapels (list + chapel page)
 
@@ -287,7 +293,7 @@ and past-term search are deferred — see `docs/later.md`.
 ## 11. Interaction
 
 > **Routing note (build).** The site uses **query parameters**, not the hash
-> sketched below: `?view=tonight|week|chapels|chapel|search|about`, `?date=`,
+> sketched below: `?view=tonight|week|chapels|chapel|search|about|help`, `?date=`,
 > `?venue=`, `?q=`, `?open=<serviceId>[,…]`, plus `?now=` and `?theme=`. The path
 > never changes, so it still works as static files under the Pages sub-path. The
 > `#…` forms below are superseded; the behaviour they describe is unchanged.
@@ -298,7 +304,10 @@ and past-term search are deferred — see `docs/later.md`.
   not required — multiple may be open.
 - **Day / week navigation**: arrows and the date-picker change the query
   (`?date=2026-05-12`, `?view=week&date=…`, `?view=chapel&venue=magdalen&date=…`).
-  No server config, works under the Pages sub-path.
+  No server config, works under the Pages sub-path. The nav's Day / Week cells
+  carry the current `?date=` across between the two views (so "Week" lands on the
+  week of the day you were on); clicking the cell you're already on resets to
+  now. The picker closes on any navigation that isn't working its own view.
 - **Theme toggle**: as §6.
 - **Keyboard**: entries and controls are real `<button>` / `<a>`; visible focus
   ring; the grid chips and day headers are links.
@@ -365,8 +374,11 @@ A4.
 - Promote `design/style.css` + `design/app.js` to `assets/`; write `index.html` and
   the render/routing modules.
 - Chapels list grouping (alphabetical vs. by kind) — decide when building it.
-- The date-picker widget: ships as a term-week grid on both the Day and Week
-  views, its head paging ‹ › across terms. A month calendar is still open.
+- The date-picker widget: the **Day** view opens a term-week calendar grid (real
+  "today" ringed, days with a service dotted, month shown at boundaries); the
+  **Week** view opens a plain list of the term's weeks with date spans (shown
+  week framed, current week tagged). Both heads page ‹ › across terms, and both
+  cover weeks 0–8 widened to any week that holds a service (`pickerWeekRange`).
 - Exact `prefers-reduced-motion` fallback for the expand.
 - Whether the desktop day view ever grows a right rail (week strip) — currently no;
   the board is centred and that's enough.

@@ -140,6 +140,55 @@ Trinity", and its Sunday is computed by `addDays` rather than a clamped
 identical latent bug in `chapel()` was fixed too. `weekHeadTitle()` in
 `assets/views.js` is the shared, unit-tested guard.
 
+## Day / Week pickers split; per-service share (site fixes pass)
+
+The one shared term-week grid was doing badly by the **Week** view — 63 tiny
+day-cells to choose one of nine weeks, unreadable on a phone. Split:
+
+- **Day** view keeps a calendar grid, rebuilt — larger cells (~44px targets),
+  weekday column heads, month shown at term/month boundaries, the real "today"
+  ringed, and a dot on any day that has a service (`data.servicesByDate`).
+- **Week** view opens `.wlist` instead — one row per Oxford week, week name +
+  `Sun 10 – Sat 16 May` span. The shown week is marked with a 1px accent frame
+  over an opaque `--wk-sel` ground (a translucent tint disappeared on the
+  already-tinted panel in the evening palette); when the real current week is
+  not the one shown it carries a mono **"this week"** tag. `weekListHTML` /
+  `dayGridHTML` in `assets/views.js`; `pickerHTML` picks by `view`.
+- **Both pickers' week range is data-driven.** `pickerWeekRange()` returns the
+  default `0..8` widened (clamped to `MIN_WEEK..MAX_WEEK`) to take in any week
+  that actually holds a service — so an early/late-term or vacation service is
+  directly reachable without arrowing. Unit-tested. Deep vacation with no data
+  stays arrows-only by design; year-round venues (the Cathedral) are a separate
+  data-scope question.
+
+Also this pass: a **Share** control on an expanded entry (and on said /
+not-yet-published entries) — `navigator.share` on a coarse-pointer device, else
+copy the canonical Day-view URL to the clipboard (`data-share` wired in
+`app.js`). A `?open=` link opened cold now scrolls to the **first** open entry
+(previously only in-app clicks did, and to the last id). Programmatic
+post-navigation focus on a `[tabindex="-1"]` heading no longer paints a ring
+(mobile "highlight rim" on Day/Week switch). The **Today / This week** link moved
+to its own line under the arrows — inside the flex arrow row its position
+tracked the title's width and it visibly jumped while stepping. Theme toggle
+glyph bumped to 1.2rem and the masthead row centre-aligned.
+
+## Help page; picker close-on-nav; Day↔Week keeps the date
+
+- **`?view=help`** — a prose "How to use" page (footer link beside "about &
+  sources", cross-linked with About; reuses `.about` styling). Covers the four
+  views, calendar navigation, Oxford weeks, the service entry + Share, the entry
+  marks, theme, and the data principle. Not in the four-cell nav.
+- The date/week **picker now closes on navigation** unless you're still working
+  its own view with a specific `?date=` (grid/list cells, the arrows, term
+  paging). Opening it on Day and clicking through to Week previously left the
+  Week picker open. `ui.pickerView` tracks the view it was opened in.
+- The nav's **Day / Week cells carry `?date=` between the two views** — "Week"
+  from a given day lands on that day's week, and back again. Clicking the cell
+  you're already on still resets to today / this week.
+- **Day feed gets a closing rule** (`.feed.closed`) so it's bracketed like the
+  `.colhead` opens it — always, except when the last entry is open (it frames
+  its own end); a feed that is the board's last child is closed by the board.
+
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 
 - **Christ Church publishes monthly, not termly** — the update process must

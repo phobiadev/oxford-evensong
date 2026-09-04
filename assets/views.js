@@ -5,6 +5,7 @@ import { esc, longDate, shortDayDate, proseDate, dateSpan, fold } from './dom.js
 import { href } from './router.js';
 import {
   weekDayForDate, dateForWeekDay, termForDate, ordinalWeek, addDays, DAYS,
+  MIN_WEEK, MAX_WEEK,
 } from './oxweeks.js';
 import { timeLabel } from './london.js';
 import { entryHTML, summaryParts, chipMusicHTML } from './entry.js';
@@ -53,7 +54,8 @@ export function weekHeadTitle(term, wk) {
     : 'Vacation';
 }
 
-/* a small mono caption-style link back to "now" in the date-head arrow row */
+/* a small mono caption-style link back to "now" — its own line under the arrow
+   row, so its position never shifts with the length of the date / week title */
 function jumpLink(hrefStr, label) {
   return `<a class="jump" href="${esc(hrefStr)}" data-link>${esc(label)}</a>`;
 }
@@ -88,7 +90,15 @@ export function shell(inner, { now, view, weekSpan }) {
     ['search', 'Find music'],
   ].map(([v, label]) => {
     const active = v === view || (view === 'chapel' && v === 'chapels');
-    return `<a href="${esc(href({ view: v, date: null, open: [], ...DROP_SEARCH }))}" data-link${active ? ' aria-current="page"' : ''}>${label}</a>`;
+    // Day and Week share the date axis: crossing between them keeps the current
+    // date, so "Week" lands on the week of the day you were viewing. Clicking the
+    // view you're already on (or arriving from elsewhere) resets to now.
+    const keepDate = !active
+      && (v === 'tonight' || v === 'week')
+      && (view === 'tonight' || view === 'week');
+    const patch = { view: v, open: [], ...DROP_SEARCH };
+    if (!keepDate) patch.date = null;
+    return `<a href="${esc(href(patch))}" data-link${active ? ' aria-current="page"' : ''}>${label}</a>`;
   }).join('');
 
   return `
@@ -104,7 +114,7 @@ export function shell(inner, { now, view, weekSpan }) {
     <main id="main">${inner}</main>
     <footer>
       Sung services in Oxford’s college chapels and the cathedral, from each chapel’s own music list.
-      <span class="mono">Music verbatim · times Oxford local${weekSpan ? ` · ${esc(weekSpan)}` : ''} · <a href="${esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }))}" data-link>about &amp; sources</a></span>
+      <span class="mono">Music verbatim · times Oxford local${weekSpan ? ` · ${esc(weekSpan)}` : ''} · <a href="${esc(href({ view: 'help', date: null, open: [], ...DROP_SEARCH }))}" data-link>how to use</a> · <a href="${esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }))}" data-link>about &amp; sources</a></span>
     </footer>
   </div>`;
 }
@@ -140,7 +150,10 @@ function dayFeast(services) {
 
 /* ---------- date-head with day/week navigation ---------- */
 
-function dayHead(dateISO, term, feast, { picker, data, backToToday }) {
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monAbbr = (iso) => MON[Number(iso.slice(5, 7)) - 1];
+
+function dayHead(dateISO, term, feast, { picker, data, backToToday, today }) {
   const { week } = weekDayForDate(term, dateISO);
   const inRange = week >= -2 && week <= 10;
   const wk = inRange
@@ -153,30 +166,86 @@ function dayHead(dateISO, term, feast, { picker, data, backToToday }) {
         <a href="${esc(href({ date: addDays(dateISO, -1), open: [] }))}" data-link aria-label="Previous day">‹</a>
         <h1 class="daytitle"><button class="pick" type="button" data-pick aria-expanded="${picker ? 'true' : 'false'}">${esc(longDate(dateISO))}</button></h1>
         <a href="${esc(href({ date: addDays(dateISO, 1), open: [] }))}" data-link aria-label="Next day">›</a>
-        ${backToToday ? jumpLink(href({ view: 'tonight', date: null, open: [] }), 'Today') : ''}
       </div>
+      ${backToToday ? jumpLink(href({ view: 'tonight', date: null, open: [] }), 'Today') : ''}
       <div class="wk">${wk}</div>
     </div>
-    ${picker ? pickerHTML(dateISO, term, 'tonight', data) : ''}`;
+    ${picker ? pickerHTML(dateISO, term, 'tonight', data, today) : ''}`;
 }
 
-function pickerHTML(currentISO, term, view, data) {
-  // Week mode highlights the whole row of the anchor's week; Day mode a single
-  // day-cell. curWk may fall outside 0..8, in which case no row lights up.
+/**
+ * The [lo, hi] week range a picker covers: the default 0..8, widened (clamped to
+ * MIN_WEEK..MAX_WEEK) to take in any week outside that band which actually holds
+ * a service — so an early/late-term or vacation service is directly reachable.
+ */
+export function pickerWeekRange(term, data) {
+  let lo = 0;
+  let hi = 8;
+  const map = data?.servicesByDate;
+  if (map) {
+    for (let w = MIN_WEEK; w <= MAX_WEEK; w++) {
+      if (w >= 0 && w <= 8) continue;
+      if (DAYS.some((d) => (map.get(dateForWeekDay(term, w, d)) || []).length)) {
+        lo = Math.min(lo, w);
+        hi = Math.max(hi, w);
+      }
+    }
+  }
+  return [lo, hi];
+}
+
+/* Week view: a plain list of the term's weeks. The shown week gets a hairline
+   frame; the real current week, when different, carries a "this week" tag. */
+function weekListHTML(currentISO, term, data, today) {
+  const [lo, hi] = pickerWeekRange(term, data);
   const { week: curWk } = weekDayForDate(term, currentISO);
+  const nowWk = today ? weekDayForDate(term, today).week : null;
   let rows = '';
-  for (let w = 0; w <= 8; w++) {
+  for (let w = lo; w <= hi; w++) {
+    const sun = dateForWeekDay(term, w, 'Sun');
+    const sat = dateForWeekDay(term, w, 'Sat');
+    const cls = [];
+    if (w === curWk) cls.push('on');
+    if (w === nowWk) cls.push('now');
+    const tag = w === nowWk ? '<span class="wtag">this week</span>' : '';
+    rows += `<li><a href="${esc(href({ view: 'week', date: sun, open: [] }))}" data-link`
+      + `${cls.length ? ` class="${cls.join(' ')}"` : ''}>`
+      + `<span class="wn">${esc(ordinalWeek(w))}${tag}</span>`
+      + `<span class="ws">${esc(dateSpan(sun, sat))}</span>`
+      + '</a></li>';
+  }
+  return `<ul class="wlist">${rows}</ul>`;
+}
+
+/* Day view: the term-week calendar grid. The shown day is filled; the real
+   "today" gets a ring; days that have a service carry a dot. */
+function dayGridHTML(currentISO, term, data, today) {
+  const [lo, hi] = pickerWeekRange(term, data);
+  let rows = '';
+  for (let w = lo; w <= hi; w++) {
     let cells = `<span class="wlabel">${ordinalWeek(w).replace(' Week', '')}</span>`;
     for (const d of DAYS) {
       const iso = dateForWeekDay(term, w, d);
-      const cls = view === 'week'
-        ? (w === curWk ? 'wkon' : '')
-        : (iso === currentISO ? 'on' : '');
-      cells += `<a href="${esc(href({ view, date: iso, open: [] }))}" data-link class="${cls}">${iso.slice(8)}</a>`;
+      const dom = Number(iso.slice(8));
+      const cls = [];
+      if (iso === currentISO) cls.push('on');
+      if (iso === today) cls.push('today');
+      if ((data?.servicesByDate.get(iso) || []).length) cls.push('has');
+      const mon = (dom === 1 || (w === 0 && d === 'Sun'))
+        ? `<span class="mon">${esc(monAbbr(iso))}</span>` : '';
+      cells += `<a href="${esc(href({ view: 'tonight', date: iso, open: [] }))}" data-link`
+        + `${cls.length ? ` class="${cls.join(' ')}"` : ''}>${mon}${dom}</a>`;
     }
     rows += cells;
   }
+  return `
+    <div class="pgrid">
+      <span class="ph"></span>${DAYS.map((d) => `<span class="ph">${d}</span>`).join('')}
+      ${rows}
+    </div>`;
+}
 
+function pickerHTML(currentISO, term, view, data, today) {
   // previous / next term, paged by writing ?date= into the adjacent term
   const all = data?.termObjects ?? [];
   const i = all.findIndex((t) => t.id === term.id);
@@ -192,13 +261,14 @@ function pickerHTML(currentISO, term, view, data) {
       : `<span class="step" aria-hidden="true">›</span>`)
     + `</span>`;
 
+  const body = view === 'week'
+    ? weekListHTML(currentISO, term, data, today)
+    : dayGridHTML(currentISO, term, data, today);
+
   return `
-    <div class="picker">
+    <div class="picker${view === 'week' ? ' weeks' : ''}">
       <div class="phead">${termNav}<button type="button" data-pick>Close</button></div>
-      <div class="pgrid">
-        <span class="ph"></span>${DAYS.map((d) => `<span class="ph">${d}</span>`).join('')}
-        ${rows}
-      </div>
+      ${body}
     </div>`;
 }
 
@@ -216,7 +286,9 @@ export function tonight(data, p, now, ui) {
   const weekSpanFor = weekSpanString(term, date);
 
   const backToToday = Boolean(p.date) && p.date !== now.date;
-  const head = dayHead(date, term, feast, { picker: ui.picker, data, backToToday });
+  const head = dayHead(date, term, feast, {
+    picker: ui.picker, data, backToToday, today: now.date,
+  });
 
   if (!services.length) {
     return shell(
@@ -226,6 +298,7 @@ export function tonight(data, p, now, ui) {
   }
 
   const openSet = new Set(p.open);
+  const lastOpen = openSet.has(services[services.length - 1].id);
   const feed = services.map((s) => entryHTML(s, { open: openSet.has(s.id) })).join('');
   const note = advanced
     ? '<div class="daynote">Tonight’s services have begun — showing the next day with music.</div>'
@@ -238,7 +311,7 @@ export function tonight(data, p, now, ui) {
       ${head}
       ${note}
       <div class="colhead"><span>Time</span><span>Service &amp; music</span></div>
-      <div class="feed">${feed}</div>
+      <div class="feed${lastOpen ? '' : ' closed'}">${feed}</div>
       ${awaiting}
     </div>`, { now, view: 'tonight', weekSpan: weekSpanFor });
 }
@@ -331,11 +404,11 @@ export function week(data, p, now, ui = {}) {
         <a href="${esc(href({ view: 'week', date: prevAnchor, open: [] }))}" data-link aria-label="Previous week">‹</a>
         <h1 class="daytitle"><button class="pick" type="button" data-pick aria-expanded="${ui.picker ? 'true' : 'false'}">${esc(weekHeadTitle(term, wk))}</button></h1>
         <a href="${esc(href({ view: 'week', date: nextAnchor, open: [] }))}" data-link aria-label="Next week">›</a>
-        ${showThisWeek ? jumpLink(href({ view: 'week', date: null, open: [] }), 'This week') : ''}
       </div>
+      ${showThisWeek ? jumpLink(href({ view: 'week', date: null, open: [] }), 'This week') : ''}
       <div class="wk">${esc(dateSpan(sun, sat))}</div>
     </div>`;
-  const pick = ui.picker ? pickerHTML(anchor, term, 'week', data) : '';
+  const pick = ui.picker ? pickerHTML(anchor, term, 'week', data, now.date) : '';
 
   const anyServices = dates.some((d) => (data.servicesByDate.get(d) || []).length);
   if (!anyServices) {
@@ -748,6 +821,8 @@ export function about(data, p, now) {
         <p>The site lives at <a href="https://phobiadev.github.io/oxford-evensong/">phobiadev.github.io/oxford-evensong</a>.
         Its source and data are on <a href="https://github.com/phobiadev/oxford-evensong" target="_blank" rel="noopener">GitHub</a>.</p>
 
+        <p>New here? <a href="${esc(href({ view: 'help', date: null, open: [], ...DROP_SEARCH }))}" data-link>How to use the site</a>.</p>
+
         <h2>Report an error</h2>
         <p>Spotted something wrong? <a href="mailto:${CONTACT}?subject=${subject}">${CONTACT}</a>.</p>
 
@@ -755,4 +830,85 @@ export function about(data, p, now) {
         <ul>${venues}</ul>
       </div>
     </div>`, { now, view: 'about' });
+}
+
+/* ---------- Help ---------- */
+
+export function help(data, p, now) {
+  const aboutLink = esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }));
+  return shell(`
+    <div class="board">
+      <div class="datehead"><h1>How to use</h1><div class="wk">A quick guide</div></div>
+      <div class="about">
+        <p>Oxford Evensong shows the sung services in Oxford’s college chapels and
+        the cathedral — what is on each day, when, and what music is sung — taken
+        from each chapel’s own published music list.</p>
+
+        <h2>The four views</h2>
+        <p><b>Day</b> is the front page: every sung service on one day, earliest
+        first, each with a one-line music summary. It opens on today — or, once
+        the evening’s services have begun, on the next day with music.</p>
+        <p><b>Week</b> is a seven-column Sunday–Saturday grid of the whole week at
+        a glance. Each service is a chip; tap one to open that day with the service
+        expanded. On a phone the grid becomes a stacked list.</p>
+        <p><b>Chapels</b> lists every chapel with its choir and usual pattern of
+        services. Tap one for its page — address, access notes, a link to its
+        music list, and its services week by week.</p>
+        <p><b>Find music</b> searches this term’s music by composer or work
+        (“Howells”, “Stanford in G”, “Dum transisset”). Narrow by chapel or
+        service type, sort by date, composer or chapel, and include past services
+        if you want them.</p>
+
+        <h2>Moving around the calendar</h2>
+        <p>On Day and Week the <span class="mono">‹ ›</span> arrows step one day or
+        one week. Tap the date or week name to open a picker: on Day a calendar
+        grid for the term (today ringed, days that have a service dotted); on Week
+        a list of the term’s weeks. The picker’s own <span class="mono">‹ ›</span>
+        page to the term before or after.</p>
+        <p>When you are not on the current day or week, a
+        <span class="mono">Today</span> / <span class="mono">This week</span> link
+        appears under the arrows to bring you back. Switching between Day and Week
+        keeps the date you were on.</p>
+
+        <h2>Oxford weeks</h2>
+        <p>Weeks run Sunday to Saturday. Sunday of <b>1st Week</b> is the start of
+        Full Term; <b>0th Week</b> is the week before it, and weeks either side of
+        term are counted outward (<span class="mono">-1st Week</span>,
+        <span class="mono">9th Week</span>…). Beyond that the heading reads
+        <b>Vacation</b>, when the college chapels are mostly dark.</p>
+
+        <h2>A service</h2>
+        <p>Tap a service to expand it: the full music list slot by slot —
+        responses, canticles, anthem, voluntary and so on, exactly as the chapel’s
+        list gives them — the choir singing if it is named, and a link to the
+        source, with the date the list was fetched and where on it the service
+        sits.</p>
+        <p><b>Share</b> copies a direct link to that one service, or opens your
+        phone’s share sheet. Every view has its own link as well — the address bar
+        always reflects what you are looking at, so any day, chapel, search or
+        open service can be bookmarked or sent on. Adding
+        <span class="mono">?theme=light</span> or <span class="mono">?theme=dark</span>
+        to a link fixes the palette for whoever opens it.</p>
+
+        <h2>What the marks mean</h2>
+        <p><b>Spoken; no music sung</b> — a said service, listed for completeness.</p>
+        <p><b>Music not published yet</b> — the service is known, but the chapel
+        has not posted its music.</p>
+        <p>A small <b>?</b> after a chapel’s name, or a note inside the entry —
+        the music is our reading of a list that gives few or no slot labels, and
+        wants checking against the source.</p>
+        <p><b>Also awaited for …</b> at the foot of a day or week — chapels whose
+        list for the term is not in yet.</p>
+
+        <h2>Light and dark</h2>
+        <p>The moon / sun in the top corner switches between the daytime and
+        evening palettes. Your choice is kept on this device.</p>
+
+        <h2>Where the data comes from</h2>
+        <p>Every service is taken verbatim from a chapel’s published list — nothing
+        is invented, and where a list is silent, nothing is shown. See
+        <a href="${aboutLink}" data-link>About &amp; sources</a> for the full list
+        of chapels and how to report an error.</p>
+      </div>
+    </div>`, { now, view: 'help' });
 }
