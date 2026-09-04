@@ -634,7 +634,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 
 /* ---- share dialog ---- */
 .share-dialog{
-  width:min(40rem,calc(100vw - 2rem));
+  width:min(28rem,calc(100vw - 2rem));
   max-height:calc(100dvh - 2rem);
   margin:auto;padding:0;overflow:auto;
   border:1px solid var(--rule);
