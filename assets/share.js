@@ -27,6 +27,7 @@ function canShareFile() {
 function build() {
   dialog = document.createElement('dialog');
   dialog.className = 'share-dialog';
+  dialog.tabIndex = -1; // take the opening focus so no button shows a focus ring
   dialog.setAttribute('aria-label', 'Share this service');
   dialog.innerHTML = `
     <form method="dialog" class="sd-x"><button value="close" aria-label="Close">✕</button></form>
@@ -158,5 +159,6 @@ export async function openShareDialog(service, url) {
   els.link.value = url;
 
   dialog.showModal();
+  dialog.focus();
   await renderCard();
 }
