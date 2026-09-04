@@ -183,6 +183,12 @@ nav a:hover{color:var(--accent-ink)}
 .colhead span{padding:.4rem .9rem .4rem 0;text-align:right;border-right:1px solid var(--rule)}
 .colhead span + span{padding:.4rem 1.15rem;text-align:left;border-right:none}
 
+/* the colhead opens the day's feed with a rule; when nothing is expanded, a
+   matching rule closes it (an open entry frames its own end, so not then). If
+   the feed is the board's last child its own border already closes it. */
+.feed.closed{border-bottom:1px solid var(--rule)}
+.feed.closed:last-child{border-bottom-width:0}
+
 /* ---- service entry ---- */
 .entry{
   display:grid;grid-template-columns:5rem 1fr;
