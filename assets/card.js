@@ -1,20 +1,20 @@
-// The shareable service card — a small image of one service, drawn so it reads
-// the same in anyone's messaging app regardless of their theme.
+// The shareable service card — a small image of one service.
 //
 // `cardModel` is pure (no DOM) and unit-tested in scripts/site.test.mjs.
 // `drawCard` paints that model onto a <canvas> by hand — there is no
 // html2canvas or any other dependency, so the layout lives here in JS rather
-// than in CSS. The card is always the light "paper" palette, always the full
-// music list, and its width is sized to the content (clamped) so short services
-// don't ship a wide image.
+// than in CSS. It takes the light or dark palette (whichever the site is in
+// when you share), always the full music list, and its width is sized to the
+// content (clamped) so short services don't ship a wide image.
 
 import { fullDate } from './dom.js';
 import { timeLabel } from './london.js';
 import { isSaid, slotLabel, musicValueText } from './entry.js';
 
-/* The paper palette, copied from style.css :root. The card never follows the
-   evening palette — a shared image should not depend on when it was made. */
-const C = {
+/* The two palettes, copied from style.css (`:root` and the dark block). The card
+   follows the theme passed to `drawCard` — a card shared from dark mode is a
+   dark image. `drawCard` sets `C` before painting. */
+const LIGHT = {
   paper: '#F1EEE3',
   ink: '#22201A',
   mid: '#6C685C',
@@ -23,6 +23,16 @@ const C = {
   hair: '#D8D3C4',
   accentInk: '#4F6B4C',
 };
+const DARK = {
+  paper: '#191813',
+  ink: '#E9E3D4',
+  mid: '#9C9585',
+  faint: '#847D6D',
+  rule: '#453F34',
+  hair: '#37332A',
+  accentInk: '#AEC9A8',
+};
+let C = LIGHT;
 
 const SERIF = '"Spectral", "Iowan Old Style", Georgia, serif';
 const SERIF_SC = '"Spectral SC", "Spectral", Georgia, serif';
@@ -255,7 +265,7 @@ function paint(ctx, model, width) {
  * Render `model` onto `canvas` at device resolution. Resolves once the pixels
  * are on the canvas (fonts loaded first).
  */
-export async function drawCard(canvas, model) {
+export async function drawCard(canvas, model, theme) {
   if (document.fonts?.ready) {
     try {
       await Promise.all([
@@ -268,6 +278,8 @@ export async function drawCard(canvas, model) {
       await document.fonts.ready;
     } catch { /* fall back to the stack */ }
   }
+
+  C = theme === 'dark' ? DARK : LIGHT;
 
   const width = Math.max(MIN_W, Math.min(MAX_W, contentWidth(model) + PAD * 2));
   const dpr = Math.max(2, Math.round(window.devicePixelRatio || 1));

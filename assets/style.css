@@ -658,7 +658,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .sd-card{padding-top:1.1rem}
 .sd-card canvas{
   display:block;margin:0 auto;max-width:100%;height:auto;
-  border:1px solid var(--rule);background:#F1EEE3;
+  border:1px solid var(--rule);background:var(--paper);
 }
 .sd-link{display:flex;gap:.5rem;padding-top:1rem}
 .sd-link input{

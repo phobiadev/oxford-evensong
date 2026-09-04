@@ -25,7 +25,8 @@ export function initTheme(queryTheme) {
   mq.addEventListener('change', () => paintToggle());
 }
 
-function effective() {
+/** The theme actually in force right now: an explicit choice, else the OS. */
+export function effectiveTheme() {
   const t = root.getAttribute('data-theme');
   if (t === 'light' || t === 'dark') return t;
   return mq.matches ? 'dark' : 'light';
@@ -35,7 +36,7 @@ function effective() {
 export function paintToggle(btn) {
   const b = btn || document.querySelector('.toggle');
   if (!b) return;
-  const dark = effective() === 'dark';
+  const dark = effectiveTheme() === 'dark';
   b.textContent = dark ? SUN : MOON;
   b.setAttribute('aria-label', dark ? 'Switch to day theme' : 'Switch to evening theme');
 }
@@ -45,7 +46,7 @@ export function bindToggle(btn) {
   if (!btn) return;
   paintToggle(btn);
   btn.addEventListener('click', () => {
-    const next = effective() === 'dark' ? 'light' : 'dark';
+    const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     paintToggle(btn);
