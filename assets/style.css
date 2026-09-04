@@ -129,8 +129,12 @@ nav a:hover{color:var(--accent-ink)}
 .datehead{padding:1.05rem 1.15rem .95rem;border-bottom:1px solid var(--rule)}
 .datehead h1{font-weight:500;font-size:2.3rem;line-height:1.05;letter-spacing:.005em}
 .datehead .nav-day{
-  display:flex;align-items:baseline;gap:.55rem;flex-wrap:wrap;
+  display:flex;align-items:center;gap:.55rem;
 }
+/* the title takes the middle track so ‹ / › stay pinned to the row's two edges —
+   their position never shifts with the length of the date / week name */
+.datehead .nav-day > h1,
+.datehead .nav-day > h2{flex:1 1 auto;min-width:0}
 /* the Tonight heading is an <h1> wrapping the date/picker button; the button
    carries the type, the h1 must not add a box of its own */
 .datehead .nav-day .daytitle{font:inherit;font-weight:500;font-size:2.3rem;line-height:1.05}
