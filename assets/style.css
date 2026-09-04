@@ -79,7 +79,7 @@ a{color:inherit}
 
 /* ---- masthead ---- */
 .masthead{
-  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
   padding:.3rem .1rem .65rem;
 }
 .masthead .mark{
@@ -87,13 +87,13 @@ a{color:inherit}
   font-size:1.16rem;letter-spacing:.05em;
   text-decoration:none;color:var(--ink);
 }
-.masthead .right{display:flex;align-items:baseline;gap:.9rem}
+.masthead .right{display:flex;align-items:center;gap:.9rem}
 .masthead .clock{font-family:var(--mono);font-size:.74rem;color:var(--mid)}
 .masthead .clock b{color:var(--accent-ink);font-weight:500}
 .masthead .toggle{
-  font-family:var(--mono);font-size:1.08rem;line-height:1;
+  font-family:var(--mono);font-size:1.2rem;line-height:1;
   background:none;border:none;cursor:pointer;
-  color:var(--mid);padding:.1rem .2rem;
+  color:var(--mid);padding:0 .2rem;
   -webkit-tap-highlight-color:transparent;
 }
 .masthead .toggle:hover{color:var(--accent-ink)}
@@ -245,6 +245,9 @@ nav a:hover{color:var(--accent-ink)}
 /* shown only where it makes sense, and only with JS (the handler lives in app.js) */
 .js .entry.open .share,
 .js .entry:not(.collapsible) .share{display:inline-block}
+/* said / not-yet-published entries have no disclosure button beside it, so it
+   sits flush-left as its own line rather than indented against nothing */
+.entry:not(.collapsible) .share{margin-left:0;margin-top:1rem}
 
 .music{margin-top:.9rem;border-top:1px solid var(--rule);padding-top:.6rem;max-width:44rem}
 .music .row{display:grid;grid-template-columns:6.6rem 1fr;column-gap:1.1rem;padding:.28rem 0}
@@ -576,8 +579,9 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .wlist .ws{font-family:var(--mono);font-size:.66rem;color:var(--mid)}
 .js .wlist a:hover{background:var(--accent-hover);color:var(--accent-ink)}
 .js .wlist a:hover .ws{color:var(--accent-ink)}
-.wlist a.on{background:var(--accent);color:#fff}
-.wlist a.on .ws{color:rgba(255,255,255,.85)}
+/* the shown week reads as "selected", matching an open entry: tint + left bar */
+.wlist a.on{background:var(--accent-tint);box-shadow:inset 3px 0 0 var(--accent)}
+.wlist a.on .wn{color:var(--accent-ink)}
 
 /* Day view: the term-week calendar grid */
 .pgrid{display:grid;grid-template-columns:2.1rem repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
