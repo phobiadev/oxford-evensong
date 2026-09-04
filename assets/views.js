@@ -90,7 +90,15 @@ export function shell(inner, { now, view, weekSpan }) {
     ['search', 'Find music'],
   ].map(([v, label]) => {
     const active = v === view || (view === 'chapel' && v === 'chapels');
-    return `<a href="${esc(href({ view: v, date: null, open: [], ...DROP_SEARCH }))}" data-link${active ? ' aria-current="page"' : ''}>${label}</a>`;
+    // Day and Week share the date axis: crossing between them keeps the current
+    // date, so "Week" lands on the week of the day you were viewing. Clicking the
+    // view you're already on (or arriving from elsewhere) resets to now.
+    const keepDate = !active
+      && (v === 'tonight' || v === 'week')
+      && (view === 'tonight' || view === 'week');
+    const patch = { view: v, open: [], ...DROP_SEARCH };
+    if (!keepDate) patch.date = null;
+    return `<a href="${esc(href(patch))}" data-link${active ? ' aria-current="page"' : ''}>${label}</a>`;
   }).join('');
 
   return `
@@ -106,7 +114,7 @@ export function shell(inner, { now, view, weekSpan }) {
     <main id="main">${inner}</main>
     <footer>
       Sung services in Oxford’s college chapels and the cathedral, from each chapel’s own music list.
-      <span class="mono">Music verbatim · times Oxford local${weekSpan ? ` · ${esc(weekSpan)}` : ''} · <a href="${esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }))}" data-link>about &amp; sources</a></span>
+      <span class="mono">Music verbatim · times Oxford local${weekSpan ? ` · ${esc(weekSpan)}` : ''} · <a href="${esc(href({ view: 'help', date: null, open: [], ...DROP_SEARCH }))}" data-link>how to use</a> · <a href="${esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }))}" data-link>about &amp; sources</a></span>
     </footer>
   </div>`;
 }
@@ -812,6 +820,8 @@ export function about(data, p, now) {
         <p>The site lives at <a href="https://phobiadev.github.io/oxford-evensong/">phobiadev.github.io/oxford-evensong</a>.
         Its source and data are on <a href="https://github.com/phobiadev/oxford-evensong" target="_blank" rel="noopener">GitHub</a>.</p>
 
+        <p>New here? <a href="${esc(href({ view: 'help', date: null, open: [], ...DROP_SEARCH }))}" data-link>How to use the site</a>.</p>
+
         <h2>Report an error</h2>
         <p>Spotted something wrong? <a href="mailto:${CONTACT}?subject=${subject}">${CONTACT}</a>.</p>
 
@@ -819,4 +829,85 @@ export function about(data, p, now) {
         <ul>${venues}</ul>
       </div>
     </div>`, { now, view: 'about' });
+}
+
+/* ---------- Help ---------- */
+
+export function help(data, p, now) {
+  const aboutLink = esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }));
+  return shell(`
+    <div class="board">
+      <div class="datehead"><h1>How to use</h1><div class="wk">A quick guide</div></div>
+      <div class="about">
+        <p>Oxford Evensong shows the sung services in Oxford’s college chapels and
+        the cathedral — what is on each day, when, and what music is sung — taken
+        from each chapel’s own published music list.</p>
+
+        <h2>The four views</h2>
+        <p><b>Day</b> is the front page: every sung service on one day, earliest
+        first, each with a one-line music summary. It opens on today — or, once
+        the evening’s services have begun, on the next day with music.</p>
+        <p><b>Week</b> is a seven-column Sunday–Saturday grid of the whole week at
+        a glance. Each service is a chip; tap one to open that day with the service
+        expanded. On a phone the grid becomes a stacked list.</p>
+        <p><b>Chapels</b> lists every chapel with its choir and usual pattern of
+        services. Tap one for its page — address, access notes, a link to its
+        music list, and its services week by week.</p>
+        <p><b>Find music</b> searches this term’s music by composer or work
+        (“Howells”, “Stanford in G”, “Dum transisset”). Narrow by chapel or
+        service type, sort by date, composer or chapel, and include past services
+        if you want them.</p>
+
+        <h2>Moving around the calendar</h2>
+        <p>On Day and Week the <span class="mono">‹ ›</span> arrows step one day or
+        one week. Tap the date or week name to open a picker: on Day a calendar
+        grid for the term (today ringed, days that have a service dotted); on Week
+        a list of the term’s weeks. The picker’s own <span class="mono">‹ ›</span>
+        page to the term before or after.</p>
+        <p>When you are not on the current day or week, a
+        <span class="mono">Today</span> / <span class="mono">This week</span> link
+        appears under the arrows to bring you back. Switching between Day and Week
+        keeps the date you were on.</p>
+
+        <h2>Oxford weeks</h2>
+        <p>Weeks run Sunday to Saturday. Sunday of <b>1st Week</b> is the start of
+        Full Term; <b>0th Week</b> is the week before it, and weeks either side of
+        term are counted outward (<span class="mono">-1st Week</span>,
+        <span class="mono">9th Week</span>…). Beyond that the heading reads
+        <b>Vacation</b>, when the college chapels are mostly dark.</p>
+
+        <h2>A service</h2>
+        <p>Tap a service to expand it: the full music list slot by slot —
+        responses, canticles, anthem, voluntary and so on, exactly as the chapel’s
+        list gives them — the choir singing if it is named, and a link to the
+        source, with the date the list was fetched and where on it the service
+        sits.</p>
+        <p><b>Share</b> copies a direct link to that one service, or opens your
+        phone’s share sheet. Every view has its own link as well — the address bar
+        always reflects what you are looking at, so any day, chapel, search or
+        open service can be bookmarked or sent on. Adding
+        <span class="mono">?theme=light</span> or <span class="mono">?theme=dark</span>
+        to a link fixes the palette for whoever opens it.</p>
+
+        <h2>What the marks mean</h2>
+        <p><b>Spoken; no music sung</b> — a said service, listed for completeness.</p>
+        <p><b>Music not published yet</b> — the service is known, but the chapel
+        has not posted its music.</p>
+        <p>A small <b>?</b> after a chapel’s name, or a note inside the entry —
+        the music is our reading of a list that gives few or no slot labels, and
+        wants checking against the source.</p>
+        <p><b>Also awaited for …</b> at the foot of a day or week — chapels whose
+        list for the term is not in yet.</p>
+
+        <h2>Light and dark</h2>
+        <p>The moon / sun in the top corner switches between the daytime and
+        evening palettes. Your choice is kept on this device.</p>
+
+        <h2>Where the data comes from</h2>
+        <p>Every service is taken verbatim from a chapel’s published list — nothing
+        is invented, and where a list is silent, nothing is shown. See
+        <a href="${aboutLink}" data-link>About &amp; sources</a> for the full list
+        of chapels and how to report an error.</p>
+      </div>
+    </div>`, { now, view: 'help' });
 }

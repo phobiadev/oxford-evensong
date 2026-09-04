@@ -1,5 +1,5 @@
 // Oxford Evensong — client entry point. No build step; ES modules loaded
-// directly by the browser. Fetches data/ at runtime and renders one of five
+// directly by the browser. Fetches data/ at runtime and renders one of the
 // views from the query string.
 
 import { params, onChange, go, toggleOpen, href } from './router.js';
@@ -7,12 +7,14 @@ import { initTheme, bindToggle } from './theme.js';
 import { nowParts } from './london.js';
 import { loadData } from './data.js';
 import {
-  tonight, week, chapels, chapel, search, about, errorView, searchResultsHTML,
+  tonight, week, chapels, chapel, search, about, help, errorView, searchResultsHTML,
 } from './views.js';
 
 document.documentElement.classList.add('js');
 
-const ui = { picker: false };
+// `pickerView` records which view the date/week picker was opened in — it closes
+// as soon as the view changes (a nav click, or crossing between Day and Week).
+const ui = { picker: false, pickerView: null };
 let data = null;
 let loadError = false;
 
@@ -25,11 +27,11 @@ let loadError = false;
 // null → a plain navigation; set by the handlers that are NOT navigation.
 let nextFocus = null;
 
-const VIEWS = { tonight, week, chapels, chapel, search, about };
+const VIEWS = { tonight, week, chapels, chapel, search, about, help };
 
 const TITLES = {
   tonight: 'Day', week: 'Week', chapels: 'Chapels',
-  chapel: 'Chapels', search: 'Find music', about: 'About',
+  chapel: 'Chapels', search: 'Find music', about: 'About', help: 'How to use',
 };
 
 function render(p, focus) {
@@ -84,7 +86,11 @@ function afterRender(p, focus) {
 
   // date / picker toggle
   for (const b of document.querySelectorAll('[data-pick]')) {
-    b.addEventListener('click', () => { ui.picker = !ui.picker; render(params(), 'pick'); });
+    b.addEventListener('click', () => {
+      ui.picker = !ui.picker;
+      ui.pickerView = ui.picker ? params().view : null;
+      render(params(), 'pick');
+    });
   }
 
   // share one service — the native share sheet on a touch device, copy-link
@@ -161,8 +167,14 @@ function afterRender(p, focus) {
 }
 
 onChange((p, { fromLink = false } = {}) => {
-  // the picker serves the Day and Week views; drop it on nav elsewhere
-  if (p.view !== 'tonight' && p.view !== 'week') ui.picker = false;
+  // The picker stays open only while you keep working its own view with a
+  // specific date (grid/list cells, the day/week arrows, its term paging).
+  // Anything else — a nav click, the logo, a Today / This week jump, crossing
+  // between Day and Week — closes it.
+  if (ui.picker && !(p.view === ui.pickerView && p.date)) {
+    ui.picker = false;
+    ui.pickerView = null;
+  }
   let focus = nextFocus ?? 'main';
   nextFocus = null;
   // A link click that carries ?open (Week chip, search row) jumps to an

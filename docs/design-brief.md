@@ -136,7 +136,9 @@ system setting until first click, then remembers the choice in `localStorage`.
 ```
 
 Nav is four items only; no hamburger, no "About" in the bar (it lives in the footer
-colophon). `Find music` stays in the nav even while deferred — see §9.
+colophon, alongside "how to use" → `?view=help`, a plain-prose guide to the views,
+the calendar navigation, Oxford weeks, the entry marks and sharing). `Find music`
+stays in the nav even while deferred — see §9.
 
 ## 8. The service entry
 
@@ -291,7 +293,7 @@ and past-term search are deferred — see `docs/later.md`.
 ## 11. Interaction
 
 > **Routing note (build).** The site uses **query parameters**, not the hash
-> sketched below: `?view=tonight|week|chapels|chapel|search|about`, `?date=`,
+> sketched below: `?view=tonight|week|chapels|chapel|search|about|help`, `?date=`,
 > `?venue=`, `?q=`, `?open=<serviceId>[,…]`, plus `?now=` and `?theme=`. The path
 > never changes, so it still works as static files under the Pages sub-path. The
 > `#…` forms below are superseded; the behaviour they describe is unchanged.
@@ -302,7 +304,10 @@ and past-term search are deferred — see `docs/later.md`.
   not required — multiple may be open.
 - **Day / week navigation**: arrows and the date-picker change the query
   (`?date=2026-05-12`, `?view=week&date=…`, `?view=chapel&venue=magdalen&date=…`).
-  No server config, works under the Pages sub-path.
+  No server config, works under the Pages sub-path. The nav's Day / Week cells
+  carry the current `?date=` across between the two views (so "Week" lands on the
+  week of the day you were on); clicking the cell you're already on resets to
+  now. The picker closes on any navigation that isn't working its own view.
 - **Theme toggle**: as §6.
 - **Keyboard**: entries and controls are real `<button>` / `<a>`; visible focus
   ring; the grid chips and day headers are links.

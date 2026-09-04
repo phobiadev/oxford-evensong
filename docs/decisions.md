@@ -172,6 +172,20 @@ to its own line under the arrows — inside the flex arrow row its position
 tracked the title's width and it visibly jumped while stepping. Theme toggle
 glyph bumped to 1.2rem and the masthead row centre-aligned.
 
+## Help page; picker close-on-nav; Day↔Week keeps the date
+
+- **`?view=help`** — a prose "How to use" page (footer link beside "about &
+  sources", cross-linked with About; reuses `.about` styling). Covers the four
+  views, calendar navigation, Oxford weeks, the service entry + Share, the entry
+  marks, theme, and the data principle. Not in the four-cell nav.
+- The date/week **picker now closes on navigation** unless you're still working
+  its own view with a specific `?date=` (grid/list cells, the arrows, term
+  paging). Opening it on Day and clicking through to Week previously left the
+  Week picker open. `ui.pickerView` tracks the view it was opened in.
+- The nav's **Day / Week cells carry `?date=` between the two views** — "Week"
+  from a given day lands on that day's week, and back again. Clicking the cell
+  you're already on still resets to today / this week.
+
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 
 - **Christ Church publishes monthly, not termly** — the update process must
