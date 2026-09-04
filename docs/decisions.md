@@ -185,9 +185,9 @@ glyph bumped to 1.2rem and the masthead row centre-aligned.
 - The nav's **Day / Week cells carry `?date=` between the two views** — "Week"
   from a given day lands on that day's week, and back again. Clicking the cell
   you're already on still resets to today / this week.
-- **Day feed gets a closing rule** (`.feed.closed`) when nothing is expanded, so
-  it's bracketed like the `.colhead` opens it; an open entry frames its own end,
-  and a feed that is the board's last child is already closed by the board.
+- **Day feed gets a closing rule** (`.feed.closed`) so it's bracketed like the
+  `.colhead` opens it — always, except when the last entry is open (it frames
+  its own end); a feed that is the board's last child is closed by the board.
 
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 

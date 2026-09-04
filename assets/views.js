@@ -298,7 +298,7 @@ export function tonight(data, p, now, ui) {
   }
 
   const openSet = new Set(p.open);
-  const anyOpen = services.some((s) => openSet.has(s.id));
+  const lastOpen = openSet.has(services[services.length - 1].id);
   const feed = services.map((s) => entryHTML(s, { open: openSet.has(s.id) })).join('');
   const note = advanced
     ? '<div class="daynote">Tonight’s services have begun — showing the next day with music.</div>'
@@ -311,7 +311,7 @@ export function tonight(data, p, now, ui) {
       ${head}
       ${note}
       <div class="colhead"><span>Time</span><span>Service &amp; music</span></div>
-      <div class="feed${anyOpen ? '' : ' closed'}">${feed}</div>
+      <div class="feed${lastOpen ? '' : ' closed'}">${feed}</div>
       ${awaiting}
     </div>`, { now, view: 'tonight', weekSpan: weekSpanFor });
 }
