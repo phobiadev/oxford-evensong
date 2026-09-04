@@ -5,7 +5,8 @@
 import { params, onChange, go, toggleOpen, href } from './router.js';
 import { initTheme, bindToggle } from './theme.js';
 import { nowParts } from './london.js';
-import { loadData } from './data.js';
+import { loadData, allServices } from './data.js';
+import { openShareDialog } from './share.js';
 import {
   tonight, week, chapels, chapel, search, about, help, errorView, searchResultsHTML,
 } from './views.js';
@@ -93,26 +94,19 @@ function afterRender(p, focus) {
     });
   }
 
-  // share one service — the native share sheet on a touch device, copy-link
-  // everywhere else. The link is the canonical Day-view URL for that service.
+  // share one service — opens a dialog with a preview card, a copy-able link and
+  // (where the browser allows) copy-image / download / native share sheet. The
+  // link is the canonical Day-view URL for that service.
   for (const b of document.querySelectorAll('[data-share]')) {
-    b.addEventListener('click', async (e) => {
+    b.addEventListener('click', (e) => {
       e.stopPropagation();
       const url = location.origin + location.pathname + href({
         view: 'tonight', date: b.dataset.shareDate, open: [b.dataset.share],
         venue: null, q: null, type: null, sort: null, past: null, now: null,
       });
-      if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
-        try { await navigator.share({ url }); } catch { /* dismissed */ }
-        return;
-      }
-      try {
-        await navigator.clipboard.writeText(url);
-        b.textContent = 'Link copied';
-        b.classList.add('done');
-        clearTimeout(b._t);
-        b._t = setTimeout(() => { b.textContent = 'Share'; b.classList.remove('done'); }, 1800);
-      } catch { /* clipboard blocked — nothing sensible to do */ }
+      const svc = data && allServices(data).find((s) => s.id === b.dataset.share);
+      if (svc) openShareDialog(svc, url);
+      else navigator.clipboard?.writeText(url).catch(() => {});
     });
   }
 

@@ -11,6 +11,14 @@ import { timeLabel } from './london.js';
 const CANTICLE_SLOTS = ['canticles', 'magnificat', 'nunc-dimittis', 'setting'];
 const ANTHEM_SLOTS = ['anthem', 'motet'];
 
+/** "composer, title" — else "title" — else "composer" — else verbatim text. */
+export function musicValueText(m) {
+  if (m.composer && m.title) return `${m.composer}, ${m.title}`;
+  if (m.title) return m.title;
+  if (m.composer) return m.composer;
+  return m.text;
+}
+
 /** composer, *title*  —  else *title*  —  else composer  —  else verbatim text. */
 export function musicValueHTML(m) {
   if (m.composer && m.title) return `${esc(m.composer)}, <em>${esc(m.title)}</em>`;
@@ -19,21 +27,29 @@ export function musicValueHTML(m) {
   return esc(m.text);
 }
 
-function slotLabel(m) {
+/** Human slot name: "nunc dimittis", or the free label for an "other" slot. */
+export function slotLabel(m) {
   return m.slot === 'other' ? m.label : m.slot.replace(/-/g, ' ');
 }
 
-/** [canticles/setting, anthem/motet] as HTML fragments, for the collapsed summary. */
-export function summaryParts(s) {
+/** The music items behind the collapsed summary: [canticles/setting, anthem/motet],
+ *  or the first item if neither slot is present. Shared by the summary line and
+ *  the share card so the two never drift. */
+export function summaryItems(s) {
   const music = s.music ?? [];
   const pick = (slots) => music.find((m) => slots.includes(m.slot));
-  const parts = [];
+  const items = [];
   const a = pick(CANTICLE_SLOTS);
   const b = pick(ANTHEM_SLOTS);
-  if (a) parts.push(musicValueHTML(a));
-  if (b) parts.push(musicValueHTML(b));
-  if (!parts.length && music.length) parts.push(musicValueHTML(music[0]));
-  return parts;
+  if (a) items.push(a);
+  if (b) items.push(b);
+  if (!items.length && music.length) items.push(music[0]);
+  return items;
+}
+
+/** summaryItems as HTML fragments, for the collapsed summary. */
+export function summaryParts(s) {
+  return summaryItems(s).map(musicValueHTML);
 }
 
 /** One-line music summary for a Week chip (";"-separated, plain). */
@@ -41,7 +57,8 @@ export function chipMusicHTML(s) {
   return summaryParts(s).join('; ');
 }
 
-function isSaid(s) {
+/** A said service, or one a list explicitly marks as having no music sung. */
+export function isSaid(s) {
   return s.type === 'said-evensong' || s.musicStatus === 'no-music';
 }
 

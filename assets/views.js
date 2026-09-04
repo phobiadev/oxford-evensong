@@ -883,8 +883,10 @@ export function help(data, p, now) {
         list gives them — the choir singing if it is named, and a link to the
         source, with the date the list was fetched and where on it the service
         sits.</p>
-        <p><b>Share</b> copies a direct link to that one service, or opens your
-        phone’s share sheet. Every view has its own link as well — the address bar
+        <p><b>Share</b> opens a small card for that one service: a direct link to
+        copy, and a picture of the service and its music list that you can
+        download, copy, or send straight on with your phone’s share sheet. Every
+        view has its own link as well — the address bar
         always reflects what you are looking at, so any day, chapel, search or
         open service can be bookmarked or sent on. Adding
         <span class="mono">?theme=light</span> or <span class="mono">?theme=dark</span>

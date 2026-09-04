@@ -68,6 +68,11 @@ export function proseDate(iso) {
   return `${d} ${MONTHS[m - 1]} ${y}`;
 }
 
+/** "2026-05-12" -> "Tuesday 12 May 2026" — weekday + full date, for the share card. */
+export function fullDate(iso) {
+  return `${DAYS_LONG[wd(iso)]} ${proseDate(iso)}`;
+}
+
 /** Span "2026-05-10".."2026-05-16" -> "Sun 10 – Sat 16 May 2026". */
 export function dateSpan(a, b) {
   const [ay, am, ad] = a.split('-').map(Number);
