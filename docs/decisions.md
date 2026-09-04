@@ -189,6 +189,20 @@ glyph bumped to 1.2rem and the masthead row centre-aligned.
   `.colhead` opens it — always, except when the last entry is open (it frames
   its own end); a feed that is the board's last child is closed by the board.
 
+## Share dialog: sizing, open focus, and the card follows the theme
+
+- The share `<dialog>` was `min(40rem, …)` — on desktop the card preview filled
+  the whole modal. Narrowed to `min(28rem, …)`; mobile is unchanged (the
+  `calc(100vw - 2rem)` branch already won there).
+- The dialog takes its own opening focus (`autofocus` + `tabindex="-1"`, plus a
+  rAF/timeout re-take for Safari, which defers its autofocus onto the ✕). Same
+  "highlight rim" fix as the Day/Week heading, applied to the modal.
+- **The card image now follows the theme in force when you share** — a card
+  shared from dark mode is a dark image. This reverses the earlier "always the
+  paper palette" rule: in practice people expect the share to match what they're
+  looking at. `card.js` holds both palettes; `drawCard(canvas, model, theme)`
+  takes one, `share.js` passes `effectiveTheme()` (now exported from `theme.js`).
+
 ## Open questions carried from the survey (`docs/sources-survey.md` §6)
 
 - **Christ Church publishes monthly, not termly** — the update process must

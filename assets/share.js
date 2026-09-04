@@ -6,6 +6,7 @@
 // dependencies. Wired from app.js; the card itself is drawn by card.js.
 
 import { cardModel, drawCard } from './card.js';
+import { effectiveTheme } from './theme.js';
 
 let dialog = null;
 let els = null;
@@ -27,7 +28,12 @@ function canShareFile() {
 function build() {
   dialog = document.createElement('dialog');
   dialog.className = 'share-dialog';
-  dialog.tabIndex = -1; // take the opening focus so no button shows a focus ring
+  // Take the opening focus onto the dialog itself, so no control (the ✕ in
+  // particular) shows a focus ring when the dialog appears. `autofocus` is the
+  // spec-compliant hook; `focusDialog()` in openShareDialog is the Safari
+  // fallback (its autofocus lands on the first button and can be deferred).
+  dialog.tabIndex = -1;
+  dialog.autofocus = true;
   dialog.setAttribute('aria-label', 'Share this service');
   dialog.innerHTML = `
     <form method="dialog" class="sd-x"><button value="close" aria-label="Close">✕</button></form>
@@ -133,7 +139,7 @@ async function currentBlob() {
 }
 
 async function renderCard() {
-  await drawCard(els.canvas, state.model);
+  await drawCard(els.canvas, state.model, effectiveTheme());
   state.blob = null;
   state.blob = await canvasToBlob(els.canvas);
 }
@@ -159,6 +165,20 @@ export async function openShareDialog(service, url) {
   els.link.value = url;
 
   dialog.showModal();
-  dialog.focus();
+  focusDialog();
   await renderCard();
+}
+
+// Keep the opening focus on the dialog, not on a control. Safari can apply its
+// own autofocus (to the ✕ button) a frame or two after showModal(), so re-take
+// it across a frame and a macrotask — but only while it's still sitting on the
+// ✕, so we don't yank focus off a control the user has already reached.
+function focusDialog() {
+  const reclaim = () => {
+    if (dialog.open && dialog.contains(document.activeElement)
+        && document.activeElement !== dialog) dialog.focus();
+  };
+  dialog.focus();
+  requestAnimationFrame(reclaim);
+  setTimeout(reclaim, 60);
 }
