@@ -17,8 +17,12 @@ published music lists.
   lists is done by the `update-termcard` skill.
 - The site: plain HTML/CSS/JS (ES modules), no framework, no build step, no runtime
   dependencies. It fetches JSON at runtime. Node is only for `scripts/`.
-- Hosted on GitHub Pages from `main`, root folder, so it must work under a sub-path
-  like `https://USER.github.io/oxford-evensong/`. `.nojekyll` is committed.
+- Hosted on GitHub Pages from `main`, root folder. Served at the custom domain
+  **https://oxfordevensong.com/** (`CNAME` in the repo root; DNS at Namecheap —
+  four apex `A` records to the Pages addresses, `www` CNAME to `phobiadev.github.io`,
+  `www` and the old `github.io` sub-path both 301 to the apex). Keep all URLs
+  relative anyway, so the `github.io` fallback keeps working. `.nojekyll` is
+  committed.
 - Design brief: `docs/design-brief.md`. Elegant and stripped back; not
   cliché-minimalist.
 

@@ -38,6 +38,10 @@ const SERIF = '"Spectral", "Iowan Old Style", Georgia, serif';
 const SERIF_SC = '"Spectral SC", "Spectral", Georgia, serif';
 const MONO = '"Spline Sans Mono", ui-monospace, Menlo, monospace';
 
+/* Painted in the card footer. One constant so the measure pass and the paint
+   pass can never drift apart. */
+const SITE_URL = 'oxfordevensong.com';
+
 const PAD = 48;
 const MIN_W = 520;
 const MAX_W = 940;
@@ -143,7 +147,7 @@ function contentWidth(model) {
   ctx.font = `400 13px ${MONO}`;
   setSpacing(ctx, 0.04);
   if (model.source) w = Math.max(w, ctx.measureText(`FROM ${model.source.toUpperCase()}`).width);
-  w = Math.max(w, ctx.measureText('phobiadev.github.io/oxford-evensong').width);
+  w = Math.max(w, ctx.measureText(SITE_URL).width);
   setSpacing(ctx, 0);
 
   return Math.ceil(w);
@@ -254,7 +258,7 @@ function paint(ctx, model, width) {
     y += 18;
   }
   ctx.fillStyle = C.faint;
-  ctx.fillText('phobiadev.github.io/oxford-evensong', PAD, y);
+  ctx.fillText(SITE_URL, PAD, y);
   setSpacing(ctx, 0);
   y += 14;
 

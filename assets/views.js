@@ -818,7 +818,7 @@ export function about(data, p, now) {
         an unlabelled list it is marked, and each service links to its source.
         Where a list does not say something, nothing is shown — never a guess.</p>
         <p>Times are Europe/London local.</p>
-        <p>The site lives at <a href="https://phobiadev.github.io/oxford-evensong/">phobiadev.github.io/oxford-evensong</a>.
+        <p>The site lives at <a href="https://oxfordevensong.com/">oxfordevensong.com</a>.
         Its source and data are on <a href="https://github.com/phobiadev/oxford-evensong" target="_blank" rel="noopener">GitHub</a>.</p>
 
         <p>New here? <a href="${esc(href({ view: 'help', date: null, open: [], ...DROP_SEARCH }))}" data-link>How to use the site</a>.</p>

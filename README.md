@@ -1,6 +1,6 @@
 # Oxford Evensong
 
-**[phobiadev.github.io/oxford-evensong](https://phobiadev.github.io/oxford-evensong/)**
+**[oxfordevensong.com](https://oxfordevensong.com/)**
 
 A static site listing the sung services in Oxford's college chapels and the
 cathedral: what is on each day, when, and what music is sung — taken from the
