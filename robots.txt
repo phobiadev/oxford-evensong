@@ -1,0 +1,7 @@
+# Oxford Evensong — https://oxfordevensong.com/
+# Everything is public. The chapels' own lists are linked from the about page;
+# please read them at source rather than scraping this site's data/ mirror.
+User-agent: *
+Allow: /
+
+Sitemap: https://oxfordevensong.com/sitemap.xml

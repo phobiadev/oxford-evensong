@@ -7,18 +7,36 @@
 <meta name="description" content="Sung services in Oxford's college chapels and the cathedral: what's on each day, when, and what music is sung, from the chapels' own published music lists.">
 <title>Oxford Evensong</title>
 
+<!-- The palette behind the browser / phone chrome, per scheme. -->
+<meta name="theme-color" content="#F1EEE3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191813" media="(prefers-color-scheme: dark)">
+
 <!-- Link-unfurl tags. Crawlers read only this static HTML (no JS), so every URL
      shares one generic preview; per-service previews would need generated pages.
-     og:url is absolute because relative URLs don't resolve for crawlers. -->
+     og:url and og:image are absolute because relative URLs don't resolve for
+     crawlers. The card itself is rendered from design/og.html — see
+     scripts/make-images.mjs. -->
+<link rel="canonical" href="https://oxfordevensong.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Oxford Evensong">
 <meta property="og:title" content="Oxford Evensong">
 <meta property="og:description" content="Sung services in Oxford's college chapels and the cathedral: what's on each day, when, and what music is sung.">
 <meta property="og:url" content="https://oxfordevensong.com/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://oxfordevensong.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Oxford Evensong — sung services in Oxford's college chapels and the cathedral.">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Oxford Evensong">
 <meta name="twitter:description" content="Sung services in Oxford's college chapels and the cathedral: what's on each day, when, and what music is sung.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%23F1EEE3'/%3E%3Ctext%20x='16'%20y='24'%20font-family='Georgia,%20Times%20New%20Roman,%20serif'%20font-size='24'%20text-anchor='middle'%20fill='%234F6B4C'%3EE%3C/text%3E%3C/svg%3E">
+<meta name="twitter:image" content="https://oxfordevensong.com/assets/og.png">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Evensong">
 
 <link rel="preload" href="assets/fonts/spectral-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/spectral-400i-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -33,6 +51,7 @@
 <script type="module" src="assets/app.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to the services</a>
 <div id="app">
   <div class="sheet">
     <noscript>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oxford Evensong — social card + icon artwork</title>
+<!--
+  Source artwork for the images the site's <head> points at. Rendered to PNG by
+  `node scripts/make-images.mjs` (dev-only; needs a locally installed Playwright).
+  Palette and type are the site's own — see assets/style.css.
+  Open in a browser to review; every artboard is exactly its output size.
+-->
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+  :root{
+    --paper:#F1EEE3; --ink:#22201A; --mid:#6C685C; --faint:#8A8474;
+    --rule:#C3BDAB; --accent:#83A07E; --accent-ink:#4F6B4C;
+    --serif:"Spectral",Georgia,serif;
+    --serif-sc:"Spectral SC","Spectral",Georgia,serif;
+    --mono:"Spline Sans Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#8b8778;display:flex;flex-wrap:wrap;gap:24px;padding:24px;align-items:flex-start}
+  .board{background:var(--paper);color:var(--ink);font-family:var(--serif);position:relative;overflow:hidden}
+
+  /* ---- 1200x630 link-unfurl card ---- */
+  #og{width:1200px;height:630px;padding:72px 84px;display:flex;flex-direction:column}
+  #og .rule{height:1px;background:var(--rule)}
+  #og .wordmark{
+    font-family:var(--serif-sc);font-weight:600;letter-spacing:.045em;
+    font-size:92px;line-height:1.05;
+  }
+  #og .top{margin:auto 0}   /* centre the wordmark + strap in the free space */
+  #og .strap{
+    font-size:36px;line-height:1.42;color:var(--mid);margin-top:30px;max-width:19.5em;
+    text-wrap:balance;
+  }
+  #og .strap em{font-style:italic;color:var(--accent-ink)}
+  #og .foot{
+    margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;
+    font-family:var(--mono);font-size:21px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--faint);padding-top:24px;border-top:1px solid var(--rule);
+  }
+  #og .foot .url{color:var(--accent-ink)}
+  /* the sage stave that marks the top edge — the site's one accent, used once */
+  #og .stave{position:absolute;inset:0 0 auto 0;height:8px;background:var(--accent)}
+
+  /* ---- app / home-screen icon ---- */
+  .icon{display:grid;place-items:center;position:relative}
+  .icon .glyph{
+    font-family:var(--serif-sc);font-weight:600;color:var(--accent-ink);
+    letter-spacing:.02em;line-height:1;
+  }
+  .icon .bar{position:absolute;left:50%;transform:translateX(-50%);background:var(--accent)}
+
+  /* square icon: E filling the tile, a sage rule beneath it */
+  #icon512{width:512px;height:512px}
+  #icon512 .glyph{font-size:340px;transform:translateY(-14px)}
+  #icon512 .bar{bottom:96px;width:200px;height:8px}
+
+  /* maskable: the same mark inside the 80% safe zone, ground bled to the edge */
+  #mask512{width:512px;height:512px}
+  #mask512 .glyph{font-size:250px;transform:translateY(-10px)}
+  #mask512 .bar{bottom:150px;width:148px;height:6px}
+</style>
+</head>
+<body>
+
+<div class="board" id="og">
+  <div class="stave"></div>
+  <div class="top">
+    <div class="wordmark">Oxford Evensong</div>
+    <div class="strap">
+      Sung services in Oxford’s college chapels and the cathedral — what’s on
+      tonight, when, and <em>what music is sung</em>.
+    </div>
+  </div>
+  <div class="foot">
+    <span>From each chapel’s own music list</span>
+    <span class="url">oxfordevensong.com</span>
+  </div>
+</div>
+
+<div class="board icon" id="icon512"><span class="glyph">E</span><span class="bar"></span></div>
+<div class="board icon" id="mask512"><span class="glyph">E</span><span class="bar"></span></div>
+
+</body>
+</html>

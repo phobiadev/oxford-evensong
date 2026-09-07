@@ -12,8 +12,11 @@ import { dirname, join } from 'node:path';
 import * as browser from '../assets/oxweeks.js';
 import { nowParts, clockLabel, timeLabel } from '../assets/london.js';
 import { chooseDay } from '../assets/schedule.js';
-import { searchHits, weekHeadTitle, pickerWeekRange } from '../assets/views.js';
+import {
+  searchHits, weekHeadTitle, pickerWeekRange, chapelAnchorDate,
+} from '../assets/views.js';
 import { cardModel } from '../assets/card.js';
+import { icsForService, fold, escText, assumedMinutes } from '../assets/ics.js';
 import * as node from './oxweeks.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -294,4 +297,96 @@ test('cardModel: falls back to venueId and a hyphenless type when fields are mis
   assert.equal(m.source, null);
   assert.equal(m.noMusicNote, null);
   assert.deepEqual(m.full, []);
+});
+
+/* ---------- chapel page: which week it opens on ---------- */
+
+test('chapelAnchorDate lands on the next service, not the first of the term', () => {
+  const list = [
+    { date: '2026-04-25' }, { date: '2026-05-10' },
+    { date: '2026-05-12' }, { date: '2026-06-20' },
+  ];
+  // mid-term: the next one on or after today
+  assert.equal(chapelAnchorDate(list, '2026-05-11'), '2026-05-12');
+  // today itself counts as upcoming
+  assert.equal(chapelAnchorDate(list, '2026-05-12'), '2026-05-12');
+  // before the term: its first service
+  assert.equal(chapelAnchorDate(list, '2026-01-01'), '2026-04-25');
+  // after the term: its last, rather than dropping back to the start
+  assert.equal(chapelAnchorDate(list, '2026-08-01'), '2026-06-20');
+  // a chapel with nothing held keeps today
+  assert.equal(chapelAnchorDate([], '2026-05-12'), '2026-05-12');
+});
+
+/* ---------- add to calendar (.ics) ---------- */
+
+const ICS_SVC = {
+  id: '2026-05-12-merton-1815', date: '2026-05-12', time: '18:15',
+  type: 'choral-evensong', title: 'Choral Evensong',
+  music: [
+    { slot: 'canticles', text: 'Walmisley in D minor' },
+    { slot: 'anthem', text: 'Bainton, And I saw a new heaven', composer: 'Bainton', title: 'And I saw a new heaven' },
+  ],
+  source: { url: 'https://example.org/list.pdf' },
+  _venue: { name: 'Merton College', chapel: 'Merton College Chapel', address: 'Merton Street, Oxford' },
+};
+const ics = (over = {}, opts = {}) => icsForService({ ...ICS_SVC, ...over },
+  { now: new Date('2026-09-07T12:00:00Z'), ...opts });
+
+const CRLF = '\r\n';
+/** Undo RFC 5545 line folding: each CRLF plus the one space that follows it. */
+const unfold = (doc) => doc.split(`${CRLF} `).join('');
+
+test('icsForService writes a London-local VEVENT with the assumed end time', () => {
+  const out = ics({}, { url: 'https://oxfordevensong.com/?x=1' });
+  const lines = out.split(CRLF);
+  assert.equal(lines[0], 'BEGIN:VCALENDAR');
+  assert.equal(lines.at(-2), 'END:VCALENDAR');
+  assert.equal(lines.at(-1), '');            // the trailing CRLF closes the file
+  assert.ok(lines.includes('TZID:Europe/London'));
+  assert.ok(lines.includes('UID:2026-05-12-merton-1815@oxfordevensong.com'));
+  assert.ok(lines.includes('DTSTAMP:20260907T120000Z'));
+  assert.ok(lines.includes('DTSTART;TZID=Europe/London:20260512T181500'));
+  assert.ok(lines.includes('DTEND;TZID=Europe/London:20260512T191500'));
+  assert.ok(lines.includes('SUMMARY:Choral Evensong — Merton College'));
+  assert.ok(lines.includes('LOCATION:Merton College Chapel\\, Merton Street\\, Oxford'));
+  // the music rides in the description, and the assumed length is disclosed
+  assert.match(unfold(out), /canticles: Walmisley in D minor/);
+  assert.match(unfold(out), /60 minutes is this site’s assumption/);
+});
+
+test('icsForService: compline is half an hour, and a late start rolls the date', () => {
+  assert.equal(assumedMinutes({ type: 'compline' }), 30);
+  assert.equal(assumedMinutes({ type: 'choral-evensong' }), 60);
+  const out = ics({ time: '21:00', type: 'compline', title: 'Compline' });
+  assert.ok(out.split(CRLF).includes('DTEND;TZID=Europe/London:20260512T213000'));
+  const late = ics({ time: '23:45' });
+  assert.ok(late.split(CRLF).includes('DTEND;TZID=Europe/London:20260513T004500'));
+});
+
+test('icsForService returns null when the list gives no start time', () => {
+  assert.equal(ics({ time: null }), null);
+});
+
+test('every .ics content line folds to 75 octets or fewer', () => {
+  const out = ics(
+    { notes: 'A very long note '.repeat(12) },
+    { url: 'https://oxfordevensong.com/?view=tonight&date=2026-05-12&open=2026-05-12-merton-1815' },
+  );
+  const enc = new TextEncoder();
+  for (const line of out.split(CRLF)) {
+    assert.ok(enc.encode(line).length <= 75, `overlong: ${line}`);
+  }
+  assert.match(unfold(out), /A very long note A very long note/);
+});
+
+const enc75 = (l) => new TextEncoder().encode(l).length <= 75;
+
+test('ics text escaping covers backslash, semicolon, comma and newline', () => {
+  assert.equal(escText(String.raw`a\b;c,d` + '\n' + 'e'), String.raw`a\\b\;c\,d\ne`);
+  assert.deepEqual(fold('short'), ['short']);
+  // a multi-byte character is never split across a fold
+  const folded = fold('é'.repeat(80));
+  assert.ok(folded.every((l) => enc75(l)));
+  assert.equal(folded.join('').replaceAll(' ', ''), 'é'.repeat(80));
 });

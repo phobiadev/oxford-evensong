@@ -508,6 +508,20 @@ export function chapels(data, p, now) {
 
 /* ---------- Chapel page ---------- */
 
+/**
+ * The week a chapel page opens on when the URL names no date: the chapel's next
+ * service on or after today, else its last one, else today. Landing on the
+ * term's first week — where the term is months past — is what this avoids.
+ * Pure; unit-tested in scripts/site.test.mjs.
+ *
+ * @param {{date:string}[]} svcAll  the venue's services in the term, date-sorted
+ * @param {string} todayISO
+ */
+export function chapelAnchorDate(svcAll, todayISO) {
+  if (!svcAll.length) return todayISO;
+  return (svcAll.find((s) => s.date >= todayISO) ?? svcAll[svcAll.length - 1]).date;
+}
+
 export function chapel(data, p, now, ui) {
   const v = data.venues.get(p.venue);
   if (!v) {
@@ -523,7 +537,7 @@ export function chapel(data, p, now, ui) {
     .sort((a, b) => a.weekOneSunday.localeCompare(b.weekOneSunday));
   const term = resolveTerm(data, p.date || (own[own.length - 1]?.weekOneSunday) || now.date);
   const svcAll = term ? servicesForVenue(data, term.id, v.id) : [];
-  const anchor = p.date || svcAll[0]?.date || now.date;
+  const anchor = p.date || chapelAnchorDate(svcAll, now.date);
   const { week: wk, day: wkDay } = term ? weekDayForDate(term, anchor) : { week: 0, day: 'Sun' };
 
   const ct = CHOIR_TYPE[v.choir?.type];
@@ -583,7 +597,7 @@ export function chapel(data, p, now, ui) {
     }
     body = [...byDay.entries()].map(([d, list]) => (
       `<div class="daygroup"><h3>${esc(shortDayDate(d))}</h3>`
-      + list.map((s) => entryHTML(s, { open: openSet.has(s.id) })).join('')
+      + list.map((s) => entryHTML(s, { open: openSet.has(s.id), hideVenue: true })).join('')
       + '</div>'
     )).join('');
   }
