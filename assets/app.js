@@ -38,22 +38,81 @@ const TITLES = {
   chapel: 'Chapels', search: 'Find music', about: 'About', help: 'How to use',
 };
 
+/**
+ * Put a freshly-rendered shell on screen. Every view returns the whole shell
+ * (masthead / nav / main / footer), but replacing all of it on each navigation
+ * repaints chrome that barely changed and destroys the very link you clicked.
+ * So patch the shell in place and swap only <main>: the masthead, nav and
+ * footer nodes survive, and the page doesn't flicker between views.
+ */
+function paint(html) {
+  const root = document.getElementById('app');
+  const cur = root.querySelector('.sheet');
+  const tpl = document.createElement('template');
+  tpl.innerHTML = html;
+  const next = tpl.content.querySelector('.sheet');
+  const curMain = cur && cur.querySelector('#main');
+  const nextMain = next && next.querySelector('#main');
+  // First paint (the noscript sheet), or anything unexpected: just write it.
+  if (!cur || !next || !curMain || !nextMain) {
+    root.innerHTML = html;
+    return;
+  }
+
+  // The Week view widens the sheet.
+  if (cur.className !== next.className) cur.className = next.className;
+
+  // Nav: the labels never change, only the hrefs (they carry the current date /
+  // filters) and which link is current. Patch attributes so the anchors — and
+  // the focus and hover on the one just clicked — stay put.
+  const curNav = cur.querySelectorAll('nav a');
+  const nextNav = next.querySelectorAll('nav a');
+  if (curNav.length === nextNav.length) {
+    curNav.forEach((a, i) => {
+      a.setAttribute('href', nextNav[i].getAttribute('href'));
+      if (nextNav[i].hasAttribute('aria-current')) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  } else {
+    cur.querySelector('nav').replaceWith(next.querySelector('nav'));
+  }
+
+  // Masthead: only the clock text and the logo's href move. Leave the theme
+  // button alone so it keeps its handler (bindToggle is idempotent regardless).
+  const clock = cur.querySelector('.clock');
+  const nextClock = next.querySelector('.clock');
+  if (clock && nextClock && clock.innerHTML !== nextClock.innerHTML) {
+    clock.innerHTML = nextClock.innerHTML;
+  }
+  const mark = cur.querySelector('.mark');
+  const nextMark = next.querySelector('.mark');
+  if (mark && nextMark) mark.setAttribute('href', nextMark.getAttribute('href'));
+
+  // Footer: carries the week span and view-dependent hrefs; cheap to rewrite.
+  const foot = cur.querySelector('footer');
+  const nextFoot = next.querySelector('footer');
+  if (foot && nextFoot && foot.innerHTML !== nextFoot.innerHTML) {
+    foot.innerHTML = nextFoot.innerHTML;
+  }
+
+  curMain.replaceWith(nextMain);
+}
+
 function render(p, focus) {
   const now = nowParts(p.now || null);
   lastNow = now;
-  const root = document.getElementById('app');
 
   const label = TITLES[p.view] || 'Day';
   document.title = `${label} · Oxford Evensong`;
 
   if (loadError || !data) {
-    root.innerHTML = errorView(now);
+    paint(errorView(now));
     afterRender(p, focus);
     return;
   }
 
   const fn = VIEWS[p.view] || tonight;
-  root.innerHTML = fn(data, p, now, ui);
+  paint(fn(data, p, now, ui));
   afterRender(p, focus);
 }
 

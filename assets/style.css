@@ -4,6 +4,12 @@
    Promoted from design/style.css; view-specific blocks added below the rule. */
 
 :root{
+  /* Tell the browser which scheme its own surfaces are painted in — scrollbars,
+     select popups, form controls, the caret. Without this they follow the OS
+     and ignore the masthead toggle, so a manually-chosen evening page keeps
+     light scrollbars and light dropdowns. Mirrors the token blocks below. */
+  color-scheme:light;
+
   --paper:#F1EEE3;      /* page ground */
   --board:#F1EEE3;      /* the bounded feed rectangle */
   --ink:#22201A;        /* body text */
@@ -24,6 +30,7 @@
 
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --paper:#191813;
     --board:#211F19;
     --ink:#E9E3D4;
@@ -39,6 +46,7 @@
   }
 }
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --paper:#191813;
   --board:#211F19;
   --ink:#E9E3D4;
@@ -55,7 +63,7 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 main{display:block}
-html{background:var(--paper)}
+html{background:var(--paper);scrollbar-gutter:stable}
 body{
   background:var(--paper);
   color:var(--ink);
@@ -387,6 +395,12 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 
 /* ---- week grid ---- */
 .sheet.wide{max-width:68rem}
+/* Only the week board wants the extra width. Hold the masthead / nav / footer
+   at the standard column so crossing between Day and Week doesn't shift the
+   whole chrome sideways — they stay centred, exactly where they were. */
+.sheet.wide > .masthead,
+.sheet.wide > nav,
+.sheet.wide > footer{width:100%;max-width:57rem;margin-inline:auto}
 .wgrid{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--rule)}
 .col{border-right:1px solid var(--rule);min-width:0;display:flex;flex-direction:column}
 .col:last-child{border-right:none}
