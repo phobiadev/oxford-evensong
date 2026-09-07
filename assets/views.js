@@ -827,6 +827,8 @@ export function about(data, p, now) {
         <p>Times are Europe/London local.</p>
         <p>The site lives at <a href="https://oxfordevensong.com/">oxfordevensong.com</a>.
         Its source and data are on <a href="https://github.com/phobiadev/oxford-evensong" target="_blank" rel="noopener">GitHub</a>.</p>
+        <p>The site’s code, and the transcription of the chapels’ music lists,
+        are the work of Claude (Anthropic).</p>
 
         <p>New here? <a href="${esc(href({ view: 'help', date: null, open: [], ...DROP_SEARCH }))}" data-link>How to use the site</a>.</p>
 
