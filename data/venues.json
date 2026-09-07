@@ -17,7 +17,7 @@
       "shortName": "Christ Church",
       "chapel": "Christ Church Cathedral",
       "kind": "cathedral",
-      "address": "St Aldate's, Oxford OX1 1DP",
+      "address": "St Aldate’s, Oxford OX1 1DP",
       "website": "https://www.chch.ox.ac.uk",
       "chapelPage": "https://www.chch.ox.ac.uk/cathedral/worship-and-music",
       "musicList": {
@@ -90,16 +90,16 @@
         "notes": "PDFs served from /api/files/file/... with opaque names that change each term (TT26: ChapelServicesTT2026Upload2.pdf; card: ChapelCardTT26.pdf). ~20 pp. Text extracts cleanly."
       },
       "choir": { "name": "Choir of Merton College, Oxford", "type": "student-mixed" },
-      "typicalPattern": "Termtime: Sunday 17:45 Choral Evensong or Choral Eucharist; Monday 18:00 Choral Vespers (Girl Choristers); Tuesday 18:15 Choral Evensong; Wednesday 18:15 Choral Evensong (Girl Choristers); Thursday 18:15 Choral Evensong. No Friday/Saturday choral service. The Merton College Girl Choristers' services are suspended during school half-terms.",
+      "typicalPattern": "Termtime: Sunday 17:45 Choral Evensong or Choral Eucharist; Monday 18:00 Choral Vespers (Girl Choristers); Tuesday 18:15 Choral Evensong; Wednesday 18:15 Choral Evensong (Girl Choristers); Thursday 18:15 Choral Evensong. No Friday/Saturday choral service. The Merton College Girl Choristers’ services are suspended during school half-terms.",
       "access": "Open to the public as well as members of College; attend in person or via the YouTube livestream (all services except Monday are streamed).",
       "sample": "sources/samples/merton.pdf",
       "lastChecked": "2026-09-02"
     },
     {
       "id": "queens",
-      "name": "The Queen's College",
-      "shortName": "Queen's",
-      "chapel": "The Queen's College Chapel",
+      "name": "The Queen’s College",
+      "shortName": "Queen’s",
+      "chapel": "The Queen’s College Chapel",
       "kind": "college",
       "address": "High Street, Oxford OX1 4AW",
       "website": "https://www.queens.ox.ac.uk",
@@ -110,9 +110,9 @@
         "organisation": "Termly combined 'Services & Music List' / term card (PDF); by Oxford week with calendar dates; times per service; headings Responses, Psalm, Canticles, Anthem, Introit, Voluntary; includes preachers and special services.",
         "notes": "PDF under /wp-content/uploads/<yyyy>/<mm>/ (TT26: .../2026/04/TT26-Music-List-Term-Card.pdf); name changes each term. ~16 pp, image-heavy (~13 MB) but text is selectable. The choir's own site (www.queenschoir.com/music-list) carries a parallel copy, sometimes marked DRAFT."
       },
-      "choir": { "name": "The Choir of The Queen's College, Oxford", "type": "mixed-adult" },
+      "choir": { "name": "The Choir of The Queen’s College, Oxford", "type": "mixed-adult" },
       "typicalPattern": "Termtime: Choral Evensong Sunday 18:15, Wednesday 18:30, Friday 18:30 (individual services in the list sometimes move — always check the current list for exact times).",
-      "access": "Whether a member of Queen's or a visitor, all are most welcome to join services in chapel.",
+      "access": "Whether a member of Queen’s or a visitor, all are most welcome to join services in chapel.",
       "sample": "sources/samples/queens.pdf",
       "lastChecked": "2026-09-02"
     },
@@ -154,17 +154,17 @@
       },
       "choir": { "name": "The Choir of Keble College", "type": "student-mixed" },
       "typicalPattern": "Full Term, three choral services a week: Sunday 17:30 Sung Eucharist (followed by Formal Hall); Tuesday 18:00 Choral Evensong; Thursday 21:00 Sung Compline.",
-      "access": "Everyone welcome, whatever you do or don't believe; also open for quiet during the day.",
+      "access": "Everyone welcome, whatever you do or don’t believe; also open for quiet during the day.",
       "sample": "sources/samples/keble.pdf",
       "lastChecked": "2026-09-02"
     },
     {
       "id": "st-johns",
-      "name": "St John's College",
-      "shortName": "St John's",
-      "chapel": "St John's College Chapel",
+      "name": "St John’s College",
+      "shortName": "St John’s",
+      "chapel": "St John’s College Chapel",
       "kind": "college",
-      "address": "St Giles', Oxford OX1 3JP",
+      "address": "St Giles’, Oxford OX1 3JP",
       "website": "https://www.sjc.ox.ac.uk",
       "chapelPage": "https://www.sjc.ox.ac.uk/discover/about-college/chapel-and-choir/",
       "musicList": {
@@ -173,7 +173,7 @@
         "organisation": "Termly 'Chapel Termcard' (PDF); by Oxford week and date; Sunday section is preacher-led with hymns/anthem noted; Wednesday Choral Evensong is the choir's main service. Music detail is lighter than the big foundations — expect anthem and canticles, not a full per-service breakdown.",
         "notes": "PDF at /documents/<id>/<name>.pdf (TT26: /documents/3199/Trinity_2026_termcard_3.pdf); numeric id and name change each term. ~2 pp core (plus preacher notes). Text extracts cleanly."
       },
-      "choir": { "name": "The Choir of St John's College, Oxford", "type": "student-mixed" },
+      "choir": { "name": "The Choir of St John’s College, Oxford", "type": "student-mixed" },
       "typicalPattern": "Full Term: Sunday 18:00 Sung Evensong with address; Wednesday 18:00 Choral Evensong.",
       "access": "The Chapel welcomes all members of College, staff and visitors to its services.",
       "sample": "sources/samples/st-johns.pdf",
@@ -216,7 +216,7 @@
         "notes": "AWKWARD: (1) the service is 'Choral Contemplation', a non-denominational reflective service, not Evensong — Magnificat/Nunc dimittis are not the fixed core. (2) The booklet PDF is image-only — no extractable text. (3) Published irregularly; as of 2026-09-02 the most recent online is Hilary 2026 (HT-2026-CC-.pdf) — no Trinity 2026 booklet found. Sample downloaded is Hilary 2026."
       },
       "choir": { "name": "The Choir of Somerville College, Oxford", "type": "student-mixed" },
-      "typicalPattern": "Termtime: Sunday Choral Contemplation at 17:30 (single weekly service; the choir's one regular duty).",
+      "typicalPattern": "Termtime: Sunday Choral Contemplation at 17:30 (single weekly service; the choir’s one regular duty).",
       "access": "Open to all; contact chapel.office@some.ox.ac.uk. Services also on the Somerville College Choir YouTube channel.",
       "sample": "sources/samples/somerville.pdf",
       "lastChecked": "2026-09-02"
@@ -321,7 +321,7 @@
         "notes": "PDF under /wp-content/uploads/<yyyy>/<mm>/ (TT26: /2026/04/Music-list-TT-26.pdf); a separate term card (TT26-Termcard-Final-Version.pdf) covers preachers. Names change each term. ~2 pp. Text extracts cleanly."
       },
       "choir": { "name": "Jesus College Chapel Choir", "type": "student-mixed" },
-      "typicalPattern": "Full Term: Sunday 17:30 Choral Evensong (the choir's main service); additional Choral Evensong on some Tuesdays at 18:15 for feasts / commemorations.",
+      "typicalPattern": "Full Term: Sunday 17:30 Choral Evensong (the choir’s main service); additional Choral Evensong on some Tuesdays at 18:15 for feasts / commemorations.",
       "access": "The College Choir is open to members and to singers from elsewhere in Oxford; services open to visitors.",
       "sample": "sources/samples/jesus.pdf",
       "lastChecked": "2026-09-02"
@@ -437,7 +437,7 @@
       "shortName": "Teddy Hall",
       "chapel": "St Edmund Hall Chapel",
       "kind": "college",
-      "address": "Queen's Lane, Oxford OX1 4AR",
+      "address": "Queen’s Lane, Oxford OX1 4AR",
       "website": "https://www.seh.ox.ac.uk",
       "chapelPage": "https://www.seh.ox.ac.uk/discover/explore-teddy-hall/chapel",
       "musicList": {
@@ -454,11 +454,11 @@
     },
     {
       "id": "st-hughs",
-      "name": "St Hugh's College",
-      "shortName": "St Hugh's",
-      "chapel": "St Hugh's College Chapel",
+      "name": "St Hugh’s College",
+      "shortName": "St Hugh’s",
+      "chapel": "St Hugh’s College Chapel",
       "kind": "college",
-      "address": "St Margaret's Road, Oxford OX2 6LE",
+      "address": "St Margaret’s Road, Oxford OX2 6LE",
       "website": "https://www.st-hughs.ox.ac.uk",
       "chapelPage": "https://www.st-hughs.ox.ac.uk/current-students/chapel-faith/chapel/",
       "musicList": {
@@ -467,7 +467,7 @@
         "organisation": "Termly 'Chapel' term card (PDF) that includes the music; who's-who, then by Oxford week with the Sunday service, preacher/theme and music.",
         "notes": "AWKWARD: as of 2026-09-02 the chapel page says the term card 'will be available shortly' and links no PDF; the only retrievable term card is Hilary 2022 (/wp-content/uploads/2022/01/StHughsCollegeChapelHilary2022.pdf), used as the sample. Recent term cards are not reliably online / not indexed — a human should confirm the current publication route (possibly by email from the Chaplain only)."
       },
-      "choir": { "name": "St Hugh's Chapel Choir", "type": "student-mixed" },
+      "choir": { "name": "St Hugh’s Chapel Choir", "type": "student-mixed" },
       "typicalPattern": "Full Term: Choral Evensong or Eucharist every Sunday at 18:15, followed by sherry/juice and supper. SATB choir drawn from all three common rooms, three organ scholars, four choral awards.",
       "access": "All members of College, their guests, and the public are welcome at services.",
       "sample": "sources/samples/st-hughs.pdf",
@@ -475,9 +475,9 @@
     },
     {
       "id": "st-peters",
-      "name": "St Peter's College",
-      "shortName": "St Peter's",
-      "chapel": "St Peter's College Chapel",
+      "name": "St Peter’s College",
+      "shortName": "St Peter’s",
+      "chapel": "St Peter’s College Chapel",
       "kind": "college",
       "address": "New Inn Hall Street, Oxford OX1 2DL",
       "website": "https://www.spc.ox.ac.uk",
@@ -488,7 +488,7 @@
         "organisation": "Termly 'Music List' PDF; by Oxford week and day; time per service; headings Prelude, Responses, Psalm, Readings, Canticles, Anthem, Hymn, Voluntary (also Introit).",
         "notes": "PDF at /asset/<name>.pdf with irregular names (TT26: 'Music-List-TT2026-updated.pdf-1.pdf' — note the doubled extension; HT26 was 'Hilary-2026-Music-List-2.pdf'). Name changes each term and is not predictable. ~12 pp. Text extracts cleanly."
       },
-      "choir": { "name": "The Choir of St Peter's College, Oxford", "type": "student-mixed" },
+      "choir": { "name": "The Choir of St Peter’s College, Oxford", "type": "student-mixed" },
       "typicalPattern": "Full Term: Choral Evensong Sunday 18:00 and Thursday 18:15 (Thursday followed by Formal Hall); occasional Saturday services. Auditioned mixed-voice choir of c. 25.",
       "access": "Services open to all; the Director of Music welcomes visitors who wish to sing with the choir.",
       "sample": "sources/samples/st-peters.pdf",
@@ -552,7 +552,7 @@
         "notes": "PDF at /documents/848/<name>.pdf — the folder id (848) is stable, the filename is <T><yy>_Final.pdf (TT26: TT26_Final.pdf). ~2 pp. Text extracts cleanly."
       },
       "choir": { "name": "Wadham College Chapel Choir", "type": "student-mixed" },
-      "typicalPattern": "Full Term: Choral Evensong Sunday 18:00 (rehearsal 16:30). Note the term's list may cover only some Sundays.",
+      "typicalPattern": "Full Term: Choral Evensong Sunday 18:00 (rehearsal 16:30). Note the term’s list may cover only some Sundays.",
       "access": null,
       "sample": "sources/samples/wadham.pdf",
       "lastChecked": "2026-09-02"
@@ -580,9 +580,9 @@
     },
     {
       "id": "regents-park",
-      "name": "Regent's Park College",
-      "shortName": "Regent's Park",
-      "chapel": "Regent's Park College Chapel",
+      "name": "Regent’s Park College",
+      "shortName": "Regent’s Park",
+      "chapel": "Regent’s Park College Chapel",
       "kind": "hall",
       "address": "Pusey Street, Oxford OX1 2LB",
       "website": "https://www.rpc.ox.ac.uk",
@@ -593,7 +593,7 @@
         "organisation": "Termly 'Chapel Music List' PDF; by Oxford week, each week given a one-word theme (e.g. 'DOVE'); headings Introit, Anthem, Hymns. One service a week.",
         "notes": "Baptist (Free Church) foundation: the Friday service is a bespoke evening worship written for each term, NOT BCP Evensong. PDF under /wp-content/uploads/<yyyy>/<mm>/ with a random suffix (TT26: /2026/04/RPC-music-list-TT26-d3ql.pdf). ~1 p. Text extracts cleanly. Term card / updates also on Instagram @rpcchapel."
       },
-      "choir": { "name": "Regent's Park College Chapel Choir", "type": "student-mixed" },
+      "choir": { "name": "Regent’s Park College Chapel Choir", "type": "student-mixed" },
       "typicalPattern": "Full Term: Friday Evening Worship 17:45–18:30, with the choir singing (Baptist-tradition service, term-specific liturgy). Also said Morning Prayer Tuesday 09:45.",
       "access": "Everyone in the community is welcome to use the Chapel; public attendance at services not explicitly stated on the site.",
       "sample": "sources/samples/regents-park.pdf",
@@ -605,7 +605,7 @@
       "shortName": "Pusey House",
       "chapel": "Pusey House Chapel (Chapel of the Resurrection)",
       "kind": "church",
-      "address": "St Giles', Oxford OX1 3LZ",
+      "address": "St Giles’, Oxford OX1 3LZ",
       "website": "https://www.puseyhouse.org.uk",
       "chapelPage": "https://www.puseyhouse.org.uk/music",
       "musicList": {
@@ -643,8 +643,8 @@
     },
     {
       "id": "st-stephens-house",
-      "name": "St Stephen's House",
-      "shortName": "St Stephen's House",
+      "name": "St Stephen’s House",
+      "shortName": "St Stephen’s House",
       "chapel": "Church of St John the Evangelist (Iffley Road)",
       "kind": "hall",
       "address": "16 Marston Street, Oxford OX4 1JX",
@@ -657,7 +657,7 @@
         "notes": "NOT FOUND. St Stephen's House is an Anglo-Catholic theological college (PPH) whose principal chapel is the former Cowley Fathers' church of St John the Evangelist; daily Mass and Office are sung during term. But the ssho.ac.uk site has no chapel/worship page (tried /chapel, /worship, /about/spirituality/, /about-us/the-chapels/, /about/student-life/, /visitors/ — all 404 or silent), no service timetable, no statement about public attendance, and no music list. A human should contact the college directly."
       },
       "choir": { "name": null, "type": null },
-      "typicalPattern": "Sung Mass and Office daily in term (Anglo-Catholic), per general knowledge and Wikipedia; times and public-access policy not confirmed from the college's own site.",
+      "typicalPattern": "Sung Mass and Office daily in term (Anglo-Catholic), per general knowledge and Wikipedia; times and public-access policy not confirmed from the college’s own site.",
       "access": null,
       "sample": null,
       "lastChecked": "2026-09-02"

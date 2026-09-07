@@ -13,6 +13,20 @@ leaves for future phases.
 - Surfaces `confidence: "low"` / `"medium"` to the reader; never shows
   `parserNote` as body text.
 
+## Site: deferred from the polish pass (Sept 2026)
+
+- **Per-service structured data.** The static shell carries Open Graph and a
+  canonical URL, but no `Event` JSON-LD — services can't surface in a search
+  engine's event listing. Injecting it at runtime would only reach crawlers that
+  execute JS, and the end times would be the site's assumption (see
+  `assets/ics.js`), not the chapel's. Revisit alongside a pre-render step.
+- **Offline.** No service worker. Useful for a site you open in a chapel with no
+  signal, but cache invalidation on Pages needs care — a shipped change can
+  already take ~10 min to reach a phone.
+- **Per-service link previews.** Every URL still unfurls with the one generic
+  card (`assets/og.png`); a card per service would need generated pages, the
+  same blocker as the no-JS render below.
+
 ## Site: deferred from the first build
 
 - **True no-JS render.** The brief (§14) wants the core "what's on today" read to

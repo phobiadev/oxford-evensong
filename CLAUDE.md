@@ -31,15 +31,17 @@ published music lists.
 | Path | What |
 |---|---|
 | `index.html` | the site shell (loads `assets/fonts.css`, `assets/style.css`, `assets/app.js`) |
-| `assets/*.js` | ES modules: `app` (entry) · `router` (query params) · `data` (fetch + merge) · `oxweeks` (browser week arithmetic) · `london` (Europe/London "now") · `schedule` (Tonight day rule) · `entry` (the service-entry component) · `views` · `theme` · `dom` |
+| `assets/*.js` | ES modules: `app` (entry) · `router` (query params) · `data` (fetch + merge) · `oxweeks` (browser week arithmetic) · `london` (Europe/London "now") · `schedule` (Tonight day rule) · `entry` (the service-entry component) · `views` · `share` + `card` (share dialog + canvas card) · `ics` (add to calendar) · `theme` · `dom` |
 | `assets/style.css` | tokens + components (was `design/style.css`) |
+| `assets/og.png`, `assets/icon-*.png`, `assets/favicon.svg` | link-preview card and app icons, rendered from `design/og.html` by `scripts/make-images.mjs` |
+| `404.html`, `site.webmanifest`, `robots.txt`, `sitemap.xml` | Pages 404, install metadata, crawler files |
 | `data/venues.json` | venue registry |
 | `data/index.json` | `{ current, terms }` — term ids and dates |
 | `data/terms/<termId>.json` | one file per term (schema: `docs/data-schema.md`) |
 | `sources/<termId>/` | raw downloaded lists per term, committed for audit, never linked from the site |
 | `sources/samples/` | the survey's sample lists |
 | `reports/` | reports written by the update skill |
-| `scripts/` | `oxweeks.mjs`, `validate.mjs`, `fetch.mjs`, plus `*.test.mjs` |
+| `scripts/` | `oxweeks.mjs`, `validate.mjs`, `fetch.mjs`, `make-images.mjs` (dev-only), plus `*.test.mjs` |
 | `docs/` | `sources-survey.md`, `data-schema.md`, `design-brief.md`, `decisions.md`, `later.md` |
 | `.claude/skills/update-termcard/` | `SKILL.md` (procedure) + `parsing-notes.md` (per-venue parsing memory) |
 
@@ -69,6 +71,13 @@ published music lists.
   (not persisted; the masthead toggle is what persists, in `localStorage`).
 - Screenshots for review: headless Chromium via Playwright (dev-only; not a repo
   dependency — `/package.json` and `/package-lock.json` are git-ignored).
+  `scripts/make-images.mjs` uses the same dev Playwright to re-render
+  `assets/og.png` and the icons from `design/og.html`; run it only when that
+  artwork changes.
+- **Add to calendar**: `assets/ics.js` writes one service as RFC 5545 with a
+  Europe/London `VTIMEZONE`. Chapels publish a start and no end, so the duration
+  is an assumption (60 min; 30 for Compline) that the file states in its own
+  description — never presented as the chapel's.
 
 ## Conventions
 

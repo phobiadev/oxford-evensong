@@ -942,8 +942,12 @@ export function help(data, p, now) {
         sits.</p>
         <p><b>Share</b> opens a small card for that one service: a direct link to
         copy, and a picture of the service and its music list that you can
-        download, copy, or send straight on with your phone’s share sheet. Every
-        view has its own link as well — the address bar
+        download, copy, or send straight on with your phone’s share sheet.</p>
+        <p><b>Add to calendar</b> saves that one service as a calendar file, with
+        the music in the notes and the chapel’s address as the location. Chapels
+        publish a start time and no end, so the file assumes an hour (half an hour
+        for Compline) and says so — move it if you know better.</p>
+        <p>Every view has its own link as well — the address bar
         always reflects what you are looking at, so any day, chapel, search or
         open service can be bookmarked or sent on. Adding
         <span class="mono">?theme=light</span> or <span class="mono">?theme=dark</span>
