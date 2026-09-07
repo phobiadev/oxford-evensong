@@ -68,6 +68,14 @@ function shareBtn(s) {
     + ` data-share-date="${esc(s.date)}">Share</button>`;
 }
 
+/** "Add to calendar" — an .ics for this one service. Nothing to schedule
+ *  without a start time, so a service whose list gives none gets no button. */
+function calBtn(s) {
+  if (!s.time) return '';
+  return `<button class="cal" type="button" data-cal="${esc(s.id)}"`
+    + ` data-cal-date="${esc(s.date)}">Add to calendar</button>`;
+}
+
 function flagSentence(s) {
   if (s.confidence === 'low') {
     return 'The music below is our reading of a list that gives few or no slot '
@@ -111,7 +119,11 @@ function musicBlock(s) {
  */
 export function entryHTML(s, opts = {}) {
   const venueName = s._venue?.name ?? s.venueId;
-  const chapelLink = `<a href="${esc(href({ view: 'chapel', venue: s.venueId, date: s.date, open: [] }))}" data-link>${esc(venueName)}</a>`;
+  // On a chapel's own page every entry belongs to that chapel, so repeating the
+  // name eight times a week is noise: drop it and let the service type lead.
+  const hideVenue = Boolean(opts.hideVenue);
+  const chapelLink = hideVenue ? '' :
+    `<a href="${esc(href({ view: 'chapel', venue: s.venueId, date: s.date, open: [] }))}" data-link>${esc(venueName)}</a>`;
   const kind = esc(s.title || s.type.replace(/-/g, ' '));
   const occ = s.occasion ? `<span class="occ">${esc(s.occasion)}</span>` : '';
   const choir = s.choir ? `<div class="choir">${esc(s.choir)}</div>` : '';
@@ -123,27 +135,28 @@ export function entryHTML(s, opts = {}) {
   if (isSaid(s)) {
     const src = s.source?.url
       ? `<div class="src"><a href="${esc(s.source.url)}" target="_blank" rel="noopener">source</a></div>` : '';
-    return `<div class="entry said" id="s-${esc(s.id)}">`
+    return `<div class="entry said${hideVenue ? ' novenue' : ''}" id="s-${esc(s.id)}">`
       + timeCell(s.time)
-      + `<div class="body"><span class="chapel">${chapelLink}</span>`
+      + `<div class="body">${chapelLink ? `<span class="chapel">${chapelLink}</span>` : ''}`
       + `<span class="kind">${kind}</span>${occ}`
       + '<div class="summary">Spoken; no music sung</div>'
-      + notes + src + shareBtn(s) + '</div></div>';
+      + notes + src + shareBtn(s) + calBtn(s) + '</div></div>';
   }
 
   // service known, music not published yet
   if (s.musicStatus === 'not-yet-published') {
-    return `<div class="entry" id="s-${esc(s.id)}">`
+    return `<div class="entry${hideVenue ? ' novenue' : ''}" id="s-${esc(s.id)}">`
       + timeCell(s.time)
-      + `<div class="body"><span class="chapel">${chapelLink}</span>`
+      + `<div class="body">${chapelLink ? `<span class="chapel">${chapelLink}</span>` : ''}`
       + `<span class="kind">${kind}</span>${occ}${choir}`
       + '<div class="summary" style="color:var(--mid)">Music not published yet.</div>'
-      + notes + shareBtn(s) + '</div></div>';
+      + notes + shareBtn(s) + calBtn(s) + '</div></div>';
   }
 
   // full, collapsible entry
   const cls = ['entry', 'collapsible'];
   if (opts.open) cls.push('open');
+  if (hideVenue) cls.push('novenue');
   if (s.confidence === 'low') cls.push('lowconf');
   const q = s.confidence === 'low'
     ? '<span class="sr-only"> (interpreted from an unlabelled list)</span>' : '';
@@ -152,7 +165,8 @@ export function entryHTML(s, opts = {}) {
   return `<div class="${cls.join(' ')}" id="s-${esc(s.id)}">`
     + timeCell(s.time)
     + '<div class="body">'
-    + `<span class="chapel">${chapelLink}${q}</span><span class="kind">${kind}</span>`
+    + (chapelLink ? `<span class="chapel">${chapelLink}${q}</span>` : '')
+    + `<span class="kind">${kind}${chapelLink ? '' : q}</span>`
     + occ + choir
     + (summary ? `<div class="summary">${summary}</div>` : '')
     + preacher
@@ -162,5 +176,6 @@ export function entryHTML(s, opts = {}) {
     + (opts.open ? 'Close' : 'Full music list')
     + '</button>'
     + shareBtn(s)
+    + calBtn(s)
     + '</div></div>';
 }

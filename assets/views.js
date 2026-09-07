@@ -479,6 +479,19 @@ function weekChip(s) {
 
 /* ---------- Chapels list ---------- */
 
+/**
+ * The right-hand column of a Chapels row: what this chapel has coming up in the
+ * held term. `{ next, held }` — `next` is the first service on or after today
+ * (null once the term's services are all past), `held` how many the term file
+ * holds in total. Pure; unit-tested in scripts/site.test.mjs.
+ */
+export function venueUpcoming(services, todayISO) {
+  return {
+    next: services.find((s) => s.date >= todayISO) ?? null,
+    held: services.length,
+  };
+}
+
 export function chapels(data, p, now) {
   const term = resolveTerm(data, now.date);
   const termDoc = term ? data.terms.get(term.id) : null;
@@ -491,11 +504,32 @@ export function chapels(data, p, now) {
       const st = termDoc?.venueStatus?.[v.id]?.status;
       const chip = (st && st !== 'published')
         ? `<span class="chip-status">${esc((VENUE_STATUS_PROSE[st] || st))}</span>` : '';
+
+      // A directory is only useful if it says what is actually on. The right
+      // column carries this chapel's next service, and how many the term holds.
+      const { next, held } = term
+        ? venueUpcoming(servicesForVenue(data, term.id, v.id), now.date)
+        : { next: null, held: 0 };
+      let aside = '';
+      if (next) {
+        aside = '<span class="lbl">Next</span>'
+          + `<span class="when">${esc(shortDayDate(next.date))}`
+          + `${next.time ? ` · ${esc(timeLabel(next.time))}` : ''}</span>`
+          + `<span class="held">${held} this term</span>`;
+      } else if (held) {
+        aside = '<span class="lbl">Sang</span>'
+          + `<span class="when">${held} time${held === 1 ? '' : 's'}</span>`
+          + '<span class="held">all past</span>';
+      }
+
       return `<li><a href="${esc(href({ view: 'chapel', venue: v.id, date: null, open: [] }))}" data-link>`
+        + '<span class="main">'
         + `<span class="name">${esc(v.name)}</span>`
-        + (choir ? `<div class="choir">${esc(choir)}</div>` : '')
-        + (v.typicalPattern ? `<div class="pat">${esc(v.typicalPattern)}</div>` : '')
+        + (choir ? `<span class="choir">${esc(choir)}</span>` : '')
+        + (v.typicalPattern ? `<span class="pat">${esc(v.typicalPattern)}</span>` : '')
         + chip
+        + '</span>'
+        + (aside ? `<span class="aside">${aside}</span>` : '')
         + '</a></li>';
     }).join('');
 
@@ -507,6 +541,20 @@ export function chapels(data, p, now) {
 }
 
 /* ---------- Chapel page ---------- */
+
+/**
+ * The week a chapel page opens on when the URL names no date: the chapel's next
+ * service on or after today, else its last one, else today. Landing on the
+ * term's first week — where the term is months past — is what this avoids.
+ * Pure; unit-tested in scripts/site.test.mjs.
+ *
+ * @param {{date:string}[]} svcAll  the venue's services in the term, date-sorted
+ * @param {string} todayISO
+ */
+export function chapelAnchorDate(svcAll, todayISO) {
+  if (!svcAll.length) return todayISO;
+  return (svcAll.find((s) => s.date >= todayISO) ?? svcAll[svcAll.length - 1]).date;
+}
 
 export function chapel(data, p, now, ui) {
   const v = data.venues.get(p.venue);
@@ -523,7 +571,7 @@ export function chapel(data, p, now, ui) {
     .sort((a, b) => a.weekOneSunday.localeCompare(b.weekOneSunday));
   const term = resolveTerm(data, p.date || (own[own.length - 1]?.weekOneSunday) || now.date);
   const svcAll = term ? servicesForVenue(data, term.id, v.id) : [];
-  const anchor = p.date || svcAll[0]?.date || now.date;
+  const anchor = p.date || chapelAnchorDate(svcAll, now.date);
   const { week: wk, day: wkDay } = term ? weekDayForDate(term, anchor) : { week: 0, day: 'Sun' };
 
   const ct = CHOIR_TYPE[v.choir?.type];
@@ -583,7 +631,7 @@ export function chapel(data, p, now, ui) {
     }
     body = [...byDay.entries()].map(([d, list]) => (
       `<div class="daygroup"><h3>${esc(shortDayDate(d))}</h3>`
-      + list.map((s) => entryHTML(s, { open: openSet.has(s.id) })).join('')
+      + list.map((s) => entryHTML(s, { open: openSet.has(s.id), hideVenue: true })).join('')
       + '</div>'
     )).join('');
   }
@@ -894,8 +942,12 @@ export function help(data, p, now) {
         sits.</p>
         <p><b>Share</b> opens a small card for that one service: a direct link to
         copy, and a picture of the service and its music list that you can
-        download, copy, or send straight on with your phone’s share sheet. Every
-        view has its own link as well — the address bar
+        download, copy, or send straight on with your phone’s share sheet.</p>
+        <p><b>Add to calendar</b> saves that one service as a calendar file, with
+        the music in the notes and the chapel’s address as the location. Chapels
+        publish a start time and no end, so the file assumes an hour (half an hour
+        for Compline) and says so — move it if you know better.</p>
+        <p>Every view has its own link as well — the address bar
         always reflects what you are looking at, so any day, chapel, search or
         open service can be bookmarked or sent on. Adding
         <span class="mono">?theme=light</span> or <span class="mono">?theme=dark</span>

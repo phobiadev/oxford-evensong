@@ -7,6 +7,7 @@ import { initTheme, bindToggle } from './theme.js';
 import { nowParts } from './london.js';
 import { loadData, allServices } from './data.js';
 import { openShareDialog } from './share.js';
+import { downloadICS } from './ics.js';
 import {
   tonight, week, chapels, chapel, search, about, help, errorView, searchResultsHTML,
 } from './views.js';
@@ -18,6 +19,8 @@ document.documentElement.classList.add('js');
 const ui = { picker: false, pickerView: null };
 let data = null;
 let loadError = false;
+// The "now" the current DOM was rendered against — see `refreshIfStale`.
+let lastNow = null;
 
 // What to focus after the next render. Navigation (nav click / back / forward)
 // moves focus to the view heading so keyboard and screen-reader users don't
@@ -37,6 +40,7 @@ const TITLES = {
 
 function render(p, focus) {
   const now = nowParts(p.now || null);
+  lastNow = now;
   const root = document.getElementById('app');
 
   const label = TITLES[p.view] || 'Day';
@@ -110,6 +114,20 @@ function afterRender(p, focus) {
     });
   }
 
+  // add one service to a calendar — an .ics the browser hands to the OS
+  for (const b of document.querySelectorAll('[data-cal]')) {
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const svc = data && allServices(data).find((s) => s.id === b.dataset.cal);
+      if (!svc) return;
+      const url = location.origin + location.pathname + href({
+        view: 'tonight', date: b.dataset.calDate, open: [b.dataset.cal],
+        venue: null, q: null, type: null, sort: null, past: null, now: null,
+      });
+      downloadICS(svc, url);
+    });
+  }
+
   // disclosure buttons
   for (const b of document.querySelectorAll('[data-toggle]')) {
     b.addEventListener('click', (e) => {
@@ -134,6 +152,18 @@ function afterRender(p, focus) {
   // out this <input> node and drops in-flight keystrokes, usually a space (#7).
   const q = document.getElementById('q');
   if (q) {
+    // Escape clears the box (and the ?q= in the URL) without leaving the view —
+    // the keyboard counterpart to the native ✕ that only some browsers draw.
+    q.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !q.value) return;
+      e.preventDefault();
+      e.stopPropagation();
+      q.value = '';
+      clearTimeout(q._t);
+      go({ q: null, open: [] }, { replace: true, silent: true });
+      const box = document.querySelector('.results');
+      if (box && data) box.innerHTML = searchResultsHTML(data, params(), nowParts(p.now || null));
+    });
     q.addEventListener('input', () => {
       clearTimeout(q._t);
       q._t = setTimeout(() => {
@@ -179,6 +209,21 @@ onChange((p, { fromLink = false } = {}) => {
   }
   render(p, focus);
 });
+
+// A tab left open goes stale: the masthead clock freezes, and after the last
+// service — or after midnight — the Day view is showing yesterday. Re-render
+// when the page is looked at again and Europe/London has moved on. A ?now=
+// override is a fixed moment by definition, so it is left alone.
+function refreshIfStale() {
+  const p = params();
+  if (p.now || document.visibilityState !== 'visible' || !lastNow) return;
+  const fresh = nowParts(null);
+  if (fresh.date === lastNow.date && fresh.clock === lastNow.clock) return;
+  render(p, null);
+}
+
+document.addEventListener('visibilitychange', refreshIfStale);
+window.addEventListener('focus', refreshIfStale);
 
 (async function start() {
   const p = params();

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Oxford Evensong">
+  <!-- Matches assets/icon-*.png (rendered from design/og.html): paper ground,
+       a sage capital, a sage rule beneath. Georgia stands in for Spectral SC,
+       which an SVG favicon cannot carry. -->
+  <rect width="64" height="64" fill="#F1EEE3"/>
+  <text x="32" y="43" font-family="Georgia,'Times New Roman',serif" font-weight="600"
+        font-size="42" text-anchor="middle" fill="#4F6B4C">E</text>
+  <rect x="20" y="51" width="24" height="2" fill="#83A07E"/>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The site is one page routed by query parameters, so this lists the views a
+     crawler can usefully index. Per-service URLs are not listed: the HTML is
+     identical for all of them (the app renders client-side). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://oxfordevensong.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://oxfordevensong.com/?view=week</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://oxfordevensong.com/?view=chapels</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://oxfordevensong.com/?view=search</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://oxfordevensong.com/?view=about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://oxfordevensong.com/?view=help</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+</urlset>

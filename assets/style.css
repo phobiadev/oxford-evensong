@@ -65,7 +65,25 @@ body{
   -webkit-font-smoothing:antialiased;
   padding:1.9rem 1.4rem 3rem;
 }
-.sheet{max-width:57rem;margin:0 auto}
+/* A column so the footer sits at the foot of a short view (an empty day, the
+   error state) instead of floating halfway up the page. `dvh` so mobile browser
+   chrome collapsing doesn't leave a gap. */
+.sheet{
+  max-width:57rem;margin:0 auto;
+  display:flex;flex-direction:column;min-height:calc(100dvh - 4.9rem);
+}
+.sheet > main{flex:1 0 auto;min-width:0}
+
+/* Skip link — off-screen until focused, then a small board-styled chip. */
+.skip{
+  position:absolute;left:.6rem;top:.6rem;z-index:10;
+  transform:translateY(-160%);
+  background:var(--board);color:var(--accent-ink);
+  border:1px solid var(--rule);
+  font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;
+  padding:.55rem .8rem;text-decoration:none;
+}
+.skip:focus{transform:none}
 .mono{font-family:var(--mono)}
 em{font-style:italic}
 a{color:inherit}
@@ -248,7 +266,7 @@ nav a:hover{color:var(--accent-ink)}
 /* enlarge the tap target without moving the underline (WCAG 2.5.8) */
 .disclose::after{content:"";position:absolute;inset:-11px -8px}
 
-.share{
+.share,.cal{
   position:relative;
   display:none;margin-top:.8rem;margin-left:1.6rem;
   font-family:var(--mono);
@@ -258,12 +276,13 @@ nav a:hover{color:var(--accent-ink)}
   box-shadow:inset 0 -1px 0 var(--rule);padding:0 0 2px;
   -webkit-tap-highlight-color:transparent;
 }
-.share::after{content:"";position:absolute;inset:-11px -8px}
-.share:hover{color:var(--accent-ink);box-shadow:inset 0 -1px 0 var(--accent)}
-.share.done{color:var(--accent-ink);box-shadow:none;cursor:default}
-/* shown only where it makes sense, and only with JS (the handler lives in app.js) */
-.js .entry.open .share,
-.js .entry:not(.collapsible) .share{display:inline-block}
+.share::after,.cal::after{content:"";position:absolute;inset:-11px -8px}
+.share:hover,.cal:hover{color:var(--accent-ink);box-shadow:inset 0 -1px 0 var(--accent)}
+.share.done,.cal.done{color:var(--accent-ink);box-shadow:none;cursor:default}
+/* shown only where it makes sense, and only with JS (the handlers live in app.js) */
+.js .entry.open .share,.js .entry.open .cal,
+.js .entry:not(.collapsible) .share,
+.js .entry:not(.collapsible) .cal{display:inline-block}
 /* said / not-yet-published entries have no disclosure button beside it, so it
    sits flush-left as its own line rather than indented against nothing */
 .entry:not(.collapsible) .share{margin-left:0;margin-top:1rem}
@@ -299,11 +318,21 @@ nav a:hover{color:var(--accent-ink)}
   display:inline-block;margin-top:.4rem;
   border:1px dashed var(--mid);padding:.16rem .42rem;color:var(--mid);
 }
-.entry.lowconf .chapel::after{
+.entry.lowconf .chapel::after,
+.entry.lowconf.novenue .kind::after{
   content:"?";
   font-family:var(--serif);font-size:.7em;color:var(--accent-ink);
   vertical-align:.35em;margin-left:.15em;
 }
+
+/* A chapel's own page: the venue name is the page title, so entries drop it and
+   the service type leads in its place — no separator dot, ink not grey. */
+.entry.novenue .kind{
+  font-style:normal;color:var(--ink);
+  font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1.16rem;
+}
+.entry.novenue .kind::before{content:none}
+.entry.said.novenue .kind{color:var(--mid)}
 
 .empty{
   padding:2.4rem 1.15rem;text-align:center;
@@ -449,20 +478,33 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
 .venues li{border-bottom:1px solid var(--hair)}
 .venues li:last-child{border-bottom:none}
 .venues a{
-  display:block;padding:1rem 1.15rem;text-decoration:none;color:var(--ink);
+  display:grid;grid-template-columns:1fr auto;column-gap:1.6rem;align-items:start;
+  padding:1rem 1.15rem;text-decoration:none;color:var(--ink);
 }
 .js .venues a:hover{background:var(--accent-hover)}
-.venues .name{font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1.12rem}
-.venues .choir{font-style:italic;color:var(--mid);font-size:.9rem;margin-top:.12rem}
+.venues .main{min-width:0}
+.venues .name{
+  display:block;
+  font-family:var(--serif-sc);font-weight:500;letter-spacing:.03em;font-size:1.12rem;
+}
+.venues .choir{display:block;font-style:italic;color:var(--mid);font-size:.9rem;margin-top:.12rem}
 .venues .pat{
-  font-size:.86rem;color:var(--mid);margin-top:.2rem;max-width:46rem;
   display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  font-size:.86rem;color:var(--mid);margin-top:.2rem;max-width:46rem;
 }
 .venues .chip-status{
   font-family:var(--mono);font-size:.56rem;text-transform:uppercase;letter-spacing:.06em;
   border:1px dashed var(--mid);color:var(--mid);padding:.1rem .38rem;
   display:inline-block;margin-top:.35rem;
 }
+/* what's actually coming up here — the reason to read a directory at all */
+.venues .aside{
+  text-align:right;font-family:var(--mono);white-space:nowrap;
+  display:flex;flex-direction:column;gap:.12rem;padding-top:.15rem;
+}
+.venues .aside .lbl{font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+.venues .aside .when{font-size:.78rem;color:var(--accent-ink)}
+.venues .aside .held{font-size:.6rem;color:var(--faint);letter-spacing:.03em}
 
 /* ---- search ---- */
 .search-box{padding:1.05rem 1.15rem;border-bottom:1px solid var(--rule)}
@@ -701,6 +743,11 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   .entry > .body{padding:1rem .9rem 1.1rem .9rem}
   .entry .kind{display:block}
   .entry .kind::before{content:none}
+  .venues a{grid-template-columns:1fr;row-gap:.45rem}
+  .venues .aside{
+    text-align:left;flex-flow:row wrap;align-items:baseline;gap:.15rem .6rem;
+    order:-1;padding-top:0;
+  }
   .music .row{grid-template-columns:1fr;row-gap:.05rem;padding:.4rem 0}
   .music dt{padding-top:0}
   nav a{font-size:.59rem;letter-spacing:.03em}
@@ -722,6 +769,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
   .masthead .toggle,.masthead .clock,nav,.disclose,.js .entry.collapsible .disclose,
   .datehead .nav-day a,.datehead .nav-day .step,.datehead .jump,
   .js .entry.open .share,.js .entry:not(.collapsible) .share,
+  .js .entry.open .cal,.js .entry:not(.collapsible) .cal,
   .picker,.search-box,.search-filters,.chapelhead .back,.share-dialog{display:none}
   .board{border-color:#000}
   .entry,.music,.chip,.daygroup{break-inside:avoid}
