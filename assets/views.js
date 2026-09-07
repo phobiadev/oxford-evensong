@@ -479,6 +479,19 @@ function weekChip(s) {
 
 /* ---------- Chapels list ---------- */
 
+/**
+ * The right-hand column of a Chapels row: what this chapel has coming up in the
+ * held term. `{ next, held }` — `next` is the first service on or after today
+ * (null once the term's services are all past), `held` how many the term file
+ * holds in total. Pure; unit-tested in scripts/site.test.mjs.
+ */
+export function venueUpcoming(services, todayISO) {
+  return {
+    next: services.find((s) => s.date >= todayISO) ?? null,
+    held: services.length,
+  };
+}
+
 export function chapels(data, p, now) {
   const term = resolveTerm(data, now.date);
   const termDoc = term ? data.terms.get(term.id) : null;
@@ -491,11 +504,32 @@ export function chapels(data, p, now) {
       const st = termDoc?.venueStatus?.[v.id]?.status;
       const chip = (st && st !== 'published')
         ? `<span class="chip-status">${esc((VENUE_STATUS_PROSE[st] || st))}</span>` : '';
+
+      // A directory is only useful if it says what is actually on. The right
+      // column carries this chapel's next service, and how many the term holds.
+      const { next, held } = term
+        ? venueUpcoming(servicesForVenue(data, term.id, v.id), now.date)
+        : { next: null, held: 0 };
+      let aside = '';
+      if (next) {
+        aside = '<span class="lbl">Next</span>'
+          + `<span class="when">${esc(shortDayDate(next.date))}`
+          + `${next.time ? ` · ${esc(timeLabel(next.time))}` : ''}</span>`
+          + `<span class="held">${held} this term</span>`;
+      } else if (held) {
+        aside = '<span class="lbl">Sang</span>'
+          + `<span class="when">${held} time${held === 1 ? '' : 's'}</span>`
+          + '<span class="held">all past</span>';
+      }
+
       return `<li><a href="${esc(href({ view: 'chapel', venue: v.id, date: null, open: [] }))}" data-link>`
+        + '<span class="main">'
         + `<span class="name">${esc(v.name)}</span>`
-        + (choir ? `<div class="choir">${esc(choir)}</div>` : '')
-        + (v.typicalPattern ? `<div class="pat">${esc(v.typicalPattern)}</div>` : '')
+        + (choir ? `<span class="choir">${esc(choir)}</span>` : '')
+        + (v.typicalPattern ? `<span class="pat">${esc(v.typicalPattern)}</span>` : '')
         + chip
+        + '</span>'
+        + (aside ? `<span class="aside">${aside}</span>` : '')
         + '</a></li>';
     }).join('');
 

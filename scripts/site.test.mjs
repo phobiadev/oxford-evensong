@@ -13,7 +13,7 @@ import * as browser from '../assets/oxweeks.js';
 import { nowParts, clockLabel, timeLabel } from '../assets/london.js';
 import { chooseDay } from '../assets/schedule.js';
 import {
-  searchHits, weekHeadTitle, pickerWeekRange, chapelAnchorDate,
+  searchHits, weekHeadTitle, pickerWeekRange, chapelAnchorDate, venueUpcoming,
 } from '../assets/views.js';
 import { cardModel } from '../assets/card.js';
 import { icsForService, fold, escText, assumedMinutes } from '../assets/ics.js';
@@ -316,6 +316,15 @@ test('chapelAnchorDate lands on the next service, not the first of the term', ()
   assert.equal(chapelAnchorDate(list, '2026-08-01'), '2026-06-20');
   // a chapel with nothing held keeps today
   assert.equal(chapelAnchorDate([], '2026-05-12'), '2026-05-12');
+});
+
+test('venueUpcoming reports the next service and the term total', () => {
+  const list = [{ date: '2026-05-10' }, { date: '2026-05-12' }, { date: '2026-05-20' }];
+  assert.deepEqual(venueUpcoming(list, '2026-05-11'), { next: list[1], held: 3 });
+  assert.deepEqual(venueUpcoming(list, '2026-05-12'), { next: list[1], held: 3 });
+  // once the term is over there is no "next", but the count stands
+  assert.deepEqual(venueUpcoming(list, '2026-07-01'), { next: null, held: 3 });
+  assert.deepEqual(venueUpcoming([], '2026-05-11'), { next: null, held: 0 });
 });
 
 /* ---------- add to calendar (.ics) ---------- */
