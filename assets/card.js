@@ -95,6 +95,26 @@ function wrap(ctx, text, maxWidth) {
   return lines.length ? lines : [''];
 }
 
+/**
+ * Where to put the baseline of a line that mixes fonts: the largest of their
+ * font ascents, i.e. where `textBaseline = 'top'` would put the tallest of
+ * them. Drawing every run on that one baseline is what keeps their letters
+ * sitting on the same line; matching their top edges instead only lines up by
+ * accident, when the fonts happen to share an ascent.
+ */
+function lineAscent(ctx, ...fonts) {
+  const saved = ctx.font;
+  let ascent = 0;
+  for (const font of fonts) {
+    ctx.font = font;
+    const px = parseFloat(font.match(/(\d*\.?\d+)px/)?.[1] ?? '16');
+    // fontBoundingBoxAscent is absent on older WebKit; 1.05em is Spectral's.
+    ascent = Math.max(ascent, ctx.measureText('H').fontBoundingBoxAscent || px * 1.05);
+  }
+  ctx.font = saved;
+  return ascent;
+}
+
 function rule(ctx, y, x1, x2, color) {
   ctx.strokeStyle = color;
   ctx.lineWidth = 1;
@@ -183,20 +203,30 @@ function paint(ctx, model, width) {
   for (const ln of wrap(ctx, model.chapel, inner)) { ctx.fillText(ln, PAD, y); y += 45; }
   y += 7;
 
-  // kind (+ occasion)
-  ctx.font = `500 14px ${MONO}`;
+  // kind (+ occasion): two different fonts on one line, so they share a
+  // baseline rather than a shared top edge — a fixed nudge drifts whenever the
+  // metrics differ (fallback fonts, or a face that hasn't loaded yet).
+  const kindFont = `500 14px ${MONO}`;
+  const occasionFont = `400 17px ${SERIF}`;
+  const kind = model.kind.toUpperCase();
+  // measured from both fonts whether or not there is an occasion, so the line
+  // sits at the same height on every card
+  const baseline = y + lineAscent(ctx, kindFont, occasionFont);
+
+  ctx.textBaseline = 'alphabetic';
+  ctx.font = kindFont;
   setSpacing(ctx, 0.06);
   ctx.fillStyle = C.mid;
-  const kind = model.kind.toUpperCase();
-  ctx.fillText(kind, PAD, y);
+  ctx.fillText(kind, PAD, baseline);
   if (model.occasion) {
     const kw = ctx.measureText(kind).width;
     setSpacing(ctx, 0);
     ctx.fillStyle = C.accentInk;
-    ctx.font = `400 17px ${SERIF}`;
-    ctx.fillText(`   ${model.occasion}`, PAD + kw, y - 2);
+    ctx.font = occasionFont;
+    ctx.fillText(`   ${model.occasion}`, PAD + kw, baseline);
   }
   setSpacing(ctx, 0);
+  ctx.textBaseline = 'top';
   y += 28;
 
   // date · time
@@ -276,8 +306,10 @@ export async function drawCard(canvas, model, theme) {
         document.fonts.load(`500 40px ${SERIF}`),
         document.fonts.load(`400 22px ${SERIF}`),
         document.fonts.load(`italic 400 19px ${SERIF}`),
+        document.fonts.load(`400 17px ${SERIF}`),
         document.fonts.load(`600 19px ${SERIF_SC}`),
         document.fonts.load(`400 13px ${MONO}`),
+        document.fonts.load(`500 14px ${MONO}`),
       ]);
       await document.fonts.ready;
     } catch { /* fall back to the stack */ }
