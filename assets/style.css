@@ -313,6 +313,15 @@ nav a:hover{color:var(--accent-ink)}
 .empty .mono{display:block;font-style:normal;font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);margin-top:.6rem}
 .empty a{color:var(--accent-ink);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
 
+/* the "opens on the chapel's own site" arrow beside a music-list link (the SVG
+   is in views.js — U+2197 is an emoji codepoint, and iOS has no text font for
+   it, so the character arrives as a blue emoji) */
+.extarrow{
+  width:.66em;height:.66em;margin-left:.3em;vertical-align:-.03em;
+  fill:none;stroke:currentColor;stroke-width:1.3;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+
 .awaiting{padding:.95rem 1.15rem 0;font-style:italic;color:var(--mid);font-size:.92rem}
 .daynote{
   padding:.9rem 1.15rem;border-bottom:1px solid var(--rule);

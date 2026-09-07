@@ -20,6 +20,13 @@ const CONTACT = 'joseph.preston@pmb.ox.ac.uk';
 // trail into Tonight or a chapel page.
 const DROP_SEARCH = { venue: null, q: null, type: null, sort: null, past: null };
 
+/* The "opens on the chapel's own site" arrow. Drawn, not set as U+2197: that
+   character is an emoji codepoint, and iOS — which has no text font covering
+   it — resolves it in Apple Color Emoji, so the arrow arrives as a blue emoji
+   in the middle of the link. An SVG inherits the link's colour and size. */
+const EXT_ARROW = '<svg class="extarrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">'
+  + '<path d="M2.4 7.6 7.6 2.4M3.6 2.4h4v4" /></svg>';
+
 const CHOIR_TYPE = {
   'boys-and-men': 'boys & men',
   'student-mixed': 'mixed student choir',
@@ -533,7 +540,7 @@ export function chapel(data, p, now, ui) {
       ${v.address ? `<div class="addr">${esc(v.address)}</div>` : ''}
       ${v.typicalPattern ? `<div class="pattern">${esc(v.typicalPattern)}</div>` : ''}
       ${v.access ? `<div class="access">${esc(v.access)}</div>` : ''}
-      ${v.musicList?.url ? `<a class="listlink" href="${esc(v.musicList.url)}" target="_blank" rel="noopener">Music list ↗</a>` : ''}
+      ${v.musicList?.url ? `<a class="listlink" href="${esc(v.musicList.url)}" target="_blank" rel="noopener">Music list${EXT_ARROW}</a>` : ''}
     </div>`;
 
   const status = term ? venueStatusFor(data, term.id, v.id) : null;
@@ -803,7 +810,7 @@ export function about(data, p, now) {
     .map((v) => {
       const link = v.chapelPage || v.website;
       return `<li>${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">${esc(v.name)}</a>` : esc(v.name)}`
-        + (v.musicList?.url ? ` · <a href="${esc(v.musicList.url)}" target="_blank" rel="noopener">music list ↗</a>` : '')
+        + (v.musicList?.url ? ` · <a href="${esc(v.musicList.url)}" target="_blank" rel="noopener">music list${EXT_ARROW}</a>` : '')
         + '</li>';
     }).join('');
 
