@@ -572,3 +572,96 @@ promises a list that isn't there; St Stephen's House has no chapel page at all.
     scope; a chapel line reading "No service" / "No evensong" produces no record
     and is noted in the report.
   - **`.docx`** extraction via `fetch.mjs` works cleanly for Exeter.
+
+- **(Michaelmas 2026 run — 2026-10-07)** Learned:
+  - **Timing matters.** Run at the start of 0th Week, 8 of the 26 publishing
+    venues had not yet posted the term's list (New College, Exeter, Jesus, Keble,
+    St John's, University College, Hertford, St Hugh's). A re-run mid-term should
+    pick most of them up. Several keep a generically-labelled link ("Chapel Music
+    List (pdf)", "Music in Chapel") pointing at **last term's file** — always
+    resolve the `href`, never trust the link text.
+  - **Worcester now has a text layer.** `MT26-Services-and-Music-FINAL.pdf`
+    extracts at ~495 chars/page (16 pp) — no longer image-only. Layout:
+    `<WEEK> WEEK` / `<Weekday> <d> <Month> – <FEAST>` / `<HH.MM> <SERVICE> sung by
+    the <group>` / indented `Heading value`. Headings: Hymns / Responses / Psalm /
+    Readings (drop) / Canticles / Anthem(s) / Introit / Preacher / Setting /
+    Motets / **Canticle** (at Compline → `other`/`Canticle`). `Composer, Work`
+    order; curly apostrophes (U+2019) throughout — keep them. Wednesday 21:00
+    Compline is choir-sung here (Canticle + Motet printed), not congregational as
+    `typicalPattern` says. The Monday "Choral Reflection" in `typicalPattern` is
+    not on the list at all, so the validator's "fewer than the typical pattern"
+    warning for Worcester is expected.
+  - **Lincoln dropped its labels.** `Music-List-MT26.pdf` labels only the
+    responses (`Ayleward Responses`, or `Ayleward Preces`) and the psalm; the
+    canticles, anthem, hymn numbers and closing organ work are unlabelled and go
+    by position → every service `medium`. Still two-column: read with `pdftotext`
+    **without** `-layout`.
+  - **Christ Church October 2026** also dropped its headings: only Hymn / Psalm /
+    `<Composer> Responses` are labelled, then canticles, anthem and voluntary
+    unlabelled by position → all `medium`. Where the trailing unlabelled line is
+    plainly a Te Deum or Benedictus (13 and 27 October), record `other` with the
+    label taken from the work's own title and say so in `parserNote`.
+  - **St Edmund Hall's term card is four columns**, and reading order interleaves
+    them badly — the 5th-Week panel prints first. Resolve the mapping from the
+    `-layout` extraction (columns at roughly x≈0 / 46 / 100 / 153), not from
+    reading order. Its Thursday 29 October entry is labelled "Choral Evensong" but
+    carries Compline's music; a Thursday entry may also print **no service name**
+    at all (26 November).
+  - **Balliol prints no times.** Take the Sunday time from the chapel-services
+    page (`5.30 pm` for MT26), `confidence: medium`, and cross-check the service
+    names and preachers against that page's list — it matched the PDF exactly.
+  - **Oriel**: second term running with a term card and no music list. The card
+    points at "the Chapel web page"; neither `/chapel` nor
+    `/chapel/choir-and-music/` carries one. Record the dated services with
+    `musicStatus: "not-yet-published"` and don't generate records for the weekly
+    Wednesday Communion / Thursday Compline the card describes only as a pattern.
+  - **University Church** is fuller than "roughly monthly": MT26 carries a weekly
+    Sunday 10.30 Choral Eucharist *and* the 15.30 Choral Evensong. Its September
+    tab sits under "2026 Trinity Term - Long Vacation" and is at **St Cross**, a
+    different building — don't pull it into the Michaelmas file.
+  - **Pusey House** MT26 is the first of five `_files/ugd/…pdf` links under the
+    "Michaelmas 2026" heading on `/music`. Pusey Singers' weekday Sung Masses
+    print `Congregational` for the music → `musicStatus: "no-music"`, `music: []`.
+  - **A split Mass setting** (different composers per movement) appears at
+    University Church (`Gloria:` / `Sanctus & Benedictus:` / `Agnus Dei:`) and
+    Merton (`Gloria & Sanctus` / `Agnus Dei`). Record each under `other` with its
+    printed heading rather than collapsing into one `setting`.
+  - **Away services are not recorded.** Four lists print carol services or
+    concerts at All Saints, Margaret Street, or Smith Square in London (Trinity,
+    St Peter's, Magdalen, Merton) — a service outside the venue's own chapel is
+    noted in the report, not recorded. Same for outdoor "Carols in the Quad" (LMH,
+    St Edmund Hall) and Magdalen's 9pm "Organ meditation" (organ only, no choir).
+  - **RC Masses: refined.** Record one **only when the list prints a choir and
+    repertoire** — Worcester 27 October ("sung by the Lower Voices", `Mass XI` +
+    motets) and St Edmund Hall 30 November (Palestrina setting) were recorded as
+    `choral-eucharist` and flagged in the report. Those printing no choir and no
+    music (LMH, Merton, Balliol, St Peter's "A said service") stay omitted.
+  - **A joint service can belong to two venues.** The 1 October Evensong of
+    Merton's and Magdalen's Choristers, held in Merton Chapel, is printed in both
+    booklets and is recorded under both venues, each from its own source.
+  - **Magdalen extracted cleanly this term** — no accent mangling, so the `.txt`
+    was usable; still drop the superscript `M`. Watch the half-term note (23–30
+    October): the Choristers' Tuesday service simply disappears on 27 October, and
+    Merton's Girl Choristers' Monday Vespers and Wednesday Evensong disappear on
+    26 and 28 October. Both are correct absences, not parse failures.
+  - **LMH misdated an entry**: "Friday 30 November" printed under Week 3 after
+    Thursday 29 October (it means 30 October). Date from the week heading and flag
+    `low`. Its Wednesday 21:00 Complines print no music and no choir — recorded
+    `low` rather than assumed sung.
+  - **Trinity** can omit the service line entirely: Remembrance Sunday prints
+    "Selection of Anthems" where "Choral Evensong, 6pm" normally goes, leaving no
+    name and no time.
+  - **Regent's Park** linked a button labelled "Michaelmas Term 2026 Chapel Music
+    List" at `/wp-content/uploads/2026/10/RPC-Chapel-Music-List-MT26-for-web.pdf`
+    that 404s — the link was published before the file. `fetch-failed`; do not
+    fall back to a previous term's sample, which would record the wrong term.
+  - **Queen's** choir site (`queenschoir.com/music-list`) is Squarespace and
+    carries **no file link in its markup**, so scraping it finds nothing; guessing
+    `MT26-Music-List-Term-Card.pdf` under 2026/08–10 also missed.
+  - **Registry URLs that now redirect** (all still resolve, so `venues.json` was
+    left alone): Magdalen → `/chapel-and-choir/`, Merton → `/chapel/services`,
+    LMH → `/life-at-lmh/chapel-and-music`.
+  - **`title` may not be null** — the validator errors on an empty title even
+    though the schema calls every field required-or-null. Where a list names no
+    service, use its own wording for the entry (a feast line, or "Selection of
+    Anthems") and explain in `parserNote`.
