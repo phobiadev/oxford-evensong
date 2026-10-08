@@ -10,6 +10,7 @@ import { openShareDialog } from './share.js';
 import { downloadICS } from './ics.js';
 import {
   tonight, week, chapels, chapel, search, about, help, errorView, searchResultsHTML,
+  resolveTerm, pendingNotice,
 } from './views.js';
 
 document.documentElement.classList.add('js');
@@ -98,6 +99,49 @@ function paint(html) {
   curMain.replaceWith(nextMain);
 }
 
+/* ---------- the "term is not complete" notice ----------
+   A visitor landing in 0th Week sees a handful of services and no sign that two
+   thirds of the chapels simply haven't published yet. This says so once per
+   term, then gets out of the way: the footer's "Also awaited for …" line and
+   the Chapels page carry the same fact permanently.
+
+   It lives between <nav> and <main>, which paint() leaves alone — so it is
+   inserted once and survives every navigation until dismissed. */
+const PENDING_KEY = 'pendingNoticeDismissed';
+// The term id the visitor has already dismissed this for, if any.
+let pendingDismissedFor = null;
+
+function store(key, value) {
+  try { localStorage.setItem(key, value); } catch { /* private mode: in-session only */ }
+}
+function stored(key) {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+
+function ensurePendingNotice(p, now) {
+  const sheet = document.getElementById('app').querySelector('.sheet');
+  const nav = sheet && sheet.querySelector('nav');
+  if (!sheet || !nav) return;
+  const existing = sheet.querySelector('.pending');
+
+  const term = data ? resolveTerm(data, p.date || now.date) : null;
+  if (!term || pendingDismissedFor === term.id) { existing?.remove(); return; }
+  // Already showing this term's notice — leave it be rather than rebuild it.
+  if (existing && existing.dataset.term === term.id) return;
+  existing?.remove();
+
+  const html = pendingNotice(data, term, data.terms.get(term.id));
+  if (!html) return;
+  nav.insertAdjacentHTML('afterend', html);
+  const el = sheet.querySelector('.pending');
+  el.dataset.term = term.id;
+  el.querySelector('[data-dismiss-pending]').addEventListener('click', () => {
+    pendingDismissedFor = term.id;
+    store(PENDING_KEY, term.id);
+    el.remove();
+  });
+}
+
 function render(p, focus) {
   const now = nowParts(p.now || null);
   lastNow = now;
@@ -113,6 +157,7 @@ function render(p, focus) {
 
   const fn = VIEWS[p.view] || tonight;
   paint(fn(data, p, now, ui));
+  ensurePendingNotice(p, now);
   afterRender(p, focus);
 }
 
@@ -287,6 +332,7 @@ window.addEventListener('focus', refreshIfStale);
 (async function start() {
   const p = params();
   initTheme(p.theme || null);
+  pendingDismissedFor = stored(PENDING_KEY);
   try {
     data = await loadData();
   } catch (err) {

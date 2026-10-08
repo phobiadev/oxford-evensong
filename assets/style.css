@@ -359,6 +359,50 @@ nav a:hover{color:var(--accent-ink)}
   stroke-linecap:round;stroke-linejoin:round;
 }
 
+/* ---- "this term is not complete" notice ----
+   Shown once per term between the nav and the board (inserted by app.js, which
+   also remembers the dismissal). Sage-barred like an entry rather than boxed in
+   warning colours: it is a statement about coverage, not an error. */
+.pending{
+  border:1px solid var(--rule);border-left:3px solid var(--accent);
+  background:var(--accent-tint);
+  margin-top:1.1rem;padding:.85rem 1.1rem .95rem;
+}
+.pending-head{display:flex;align-items:baseline;gap:1rem}
+.pending h2{
+  flex:1;margin:0;
+  font-family:var(--serif-sc);font-weight:600;font-size:1rem;letter-spacing:.03em;
+  color:var(--ink);
+}
+.pending-x{
+  flex:none;border:0;background:none;cursor:pointer;
+  font-family:var(--mono);font-size:1.05rem;line-height:1;color:var(--mid);
+  padding:.15rem .25rem;border-radius:2px;
+}
+.pending-x:hover{color:var(--ink)}
+.pending p{margin:.5rem 0 0;font-size:.89rem;color:var(--mid);line-height:1.62}
+.pending-list{margin:.75rem 0 0;padding:0;list-style:none}
+.pending-list li{
+  display:flex;gap:.8rem;align-items:baseline;
+  padding:.32rem 0;border-top:1px solid var(--hair);
+}
+.pending-why{
+  flex:none;width:10.5rem;
+  font-family:var(--mono);font-size:.63rem;
+  text-transform:uppercase;letter-spacing:.085em;color:var(--faint);
+}
+.pending-who{color:var(--ink);font-size:.89rem;line-height:1.5}
+.pending-foot{margin-top:.75rem}
+.pending-foot a{
+  color:var(--accent-ink);text-decoration:underline;
+  text-decoration-color:var(--rule);text-underline-offset:2px;
+}
+/* Stack the reason above the chapels once the two columns stop fitting. */
+@media (max-width:34rem){
+  .pending-list li{display:block}
+  .pending-why{width:auto;display:block;margin-bottom:.2rem}
+}
+
 .awaiting{padding:.95rem 1.15rem 0;font-style:italic;color:var(--mid);font-size:.92rem}
 .daynote{
   padding:.9rem 1.15rem;border-bottom:1px solid var(--rule);
@@ -400,6 +444,7 @@ footer a{text-decoration:underline;text-decoration-color:var(--rule);text-underl
    whole chrome sideways — they stay centred, exactly where they were. */
 .sheet.wide > .masthead,
 .sheet.wide > nav,
+.sheet.wide > .pending,
 .sheet.wide > footer{width:100%;max-width:57rem;margin-inline:auto}
 .wgrid{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--rule)}
 .col{border-right:1px solid var(--rule);min-width:0;display:flex;flex-direction:column}

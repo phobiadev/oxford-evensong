@@ -378,6 +378,68 @@ function awaitingLine(data, termDoc, term) {
   return `<div class="awaiting">Also awaited for ${esc(termLong(term))}: ${esc(shown)}${esc(tail)}.</div>`;
 }
 
+/* Short forms of VENUE_STATUS_PROSE for the notice's narrow mono column — the
+   full sentence is what a chapel's own page and the Chapels list carry. */
+const PENDING_WHY = {
+  'not-yet-published': 'Not published yet',
+  'not-found': 'No list found',
+  'fetch-failed': 'Download failed',
+  'not-parsed': 'Not transcribed yet',
+};
+
+/**
+ * The chapels with nothing held for a term, grouped by why — registry order
+ * within each group. `published` and `no-list` are not pending: the first has
+ * its music, and the second never publishes one, so neither is missing.
+ * @returns {Map<string, string[]>} status -> chapel names
+ */
+export function pendingByStatus(data, termDoc) {
+  const groups = new Map();
+  for (const v of data.venueList) {
+    const st = termDoc?.venueStatus?.[v.id]?.status;
+    if (!st || st === 'published' || st === 'no-list') continue;
+    if (!groups.has(st)) groups.set(st, []);
+    groups.get(st).push(v.shortName || v.name);
+  }
+  return groups;
+}
+
+/**
+ * The first-load disclaimer: which chapels have no list in for this term, and
+ * why. The same fact lives permanently in the footer's "Also awaited for …"
+ * line and against each chapel on the Chapels page; this is the one-time
+ * version, so a visitor is not misled into reading an incomplete term as a
+ * complete one. Returns '' when nothing is pending.
+ */
+export function pendingNotice(data, term, termDoc) {
+  const groups = pendingByStatus(data, termDoc);
+  if (!groups.size) return '';
+  const total = [...groups.values()].reduce((n, names) => n + names.length, 0);
+  const rows = [...groups].map(([st, names]) => `
+        <li>
+          <span class="pending-why">${esc(PENDING_WHY[st] || VENUE_STATUS_PROSE[st] || st)}</span>
+          <span class="pending-who">${esc(names.join(', '))}</span>
+        </li>`).join('');
+  const chapelsLink = href({ view: 'chapels', date: null, open: [], ...DROP_SEARCH });
+  return `
+    <aside class="pending" role="note" aria-labelledby="pending-h">
+      <div class="pending-head">
+        <h2 id="pending-h">${esc(termLong(term))} is not complete</h2>
+        <button class="pending-x" type="button" data-dismiss-pending
+                aria-label="Dismiss this notice">&times;</button>
+      </div>
+      <p>${total === 1 ? 'One chapel has' : `${total} chapels have`} not published
+      a music list for this term yet, so none of their services appear anywhere
+      on this site — not on a day, not in a week, not in Find&nbsp;music. Nothing
+      here is a guess: a chapel shows up only once it has published.</p>
+      <ul class="pending-list">${rows}
+      </ul>
+      <p class="pending-foot"><a href="${esc(chapelsLink)}" data-link>See every
+      chapel and its status</a> — and check back; lists usually appear through
+      the first weeks of term.</p>
+    </aside>`;
+}
+
 function weekSpanString(term, dateISO) {
   const { week } = weekDayForDate(term, dateISO);
   if (week < 0 || week > 9) return null;
@@ -893,6 +955,7 @@ export function about(data, p, now) {
 
 export function help(data, p, now) {
   const aboutLink = esc(href({ view: 'about', date: null, open: [], ...DROP_SEARCH }));
+  const chapelsLink = esc(href({ view: 'chapels', date: null, open: [], ...DROP_SEARCH }));
   return shell(`
     <div class="board">
       <div class="datehead"><h1>How to use</h1><div class="wk">A quick guide</div></div>
@@ -962,6 +1025,11 @@ export function help(data, p, now) {
         wants checking against the source.</p>
         <p><b>Also awaited for …</b> at the foot of a day or week — chapels whose
         list for the term is not in yet.</p>
+        <p><b>“… is not complete”</b> — the notice above the board on your first
+        visit each term, naming every chapel with no list in yet and why. Dismiss
+        it and it stays dismissed for that term; the same standing is shown
+        against each chapel on the <a href="${chapelsLink}" data-link>Chapels</a>
+        page.</p>
 
         <h2>Light and dark</h2>
         <p>The moon / sun in the top corner switches between the daytime and

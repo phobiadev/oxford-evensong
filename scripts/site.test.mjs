@@ -14,6 +14,7 @@ import { nowParts, clockLabel, timeLabel } from '../assets/london.js';
 import { chooseDay } from '../assets/schedule.js';
 import {
   searchHits, weekHeadTitle, pickerWeekRange, chapelAnchorDate, venueUpcoming,
+  pendingByStatus,
 } from '../assets/views.js';
 import { cardModel } from '../assets/card.js';
 import { icsForService, fold, escText, assumedMinutes } from '../assets/ics.js';
@@ -325,6 +326,60 @@ test('venueUpcoming reports the next service and the term total', () => {
   // once the term is over there is no "next", but the count stands
   assert.deepEqual(venueUpcoming(list, '2026-07-01'), { next: null, held: 3 });
   assert.deepEqual(venueUpcoming([], '2026-05-11'), { next: null, held: 0 });
+});
+
+/* ---------- "term is not complete" notice ---------- */
+
+test('pendingByStatus groups the chapels with nothing held, by why', () => {
+  const data = {
+    venueList: [
+      { id: 'a', name: 'A College' },
+      { id: 'b', name: 'B College', shortName: 'B' },
+      { id: 'c', name: 'C College' },
+      { id: 'd', name: 'D College' },
+      { id: 'e', name: 'E College' },
+      { id: 'f', name: 'F College' },
+    ],
+  };
+  const termDoc = {
+    venueStatus: {
+      a: { status: 'published' },        // has its music — not pending
+      b: { status: 'not-yet-published' },
+      c: { status: 'no-list' },          // never publishes — not missing
+      d: { status: 'not-found' },
+      e: { status: 'not-yet-published' },
+      f: { status: 'fetch-failed' },
+    },
+  };
+  const groups = pendingByStatus(data, termDoc);
+  // grouped by status, registry order within each group, shortName preferred
+  assert.deepEqual([...groups], [
+    ['not-yet-published', ['B', 'E College']],
+    ['not-found', ['D College']],
+    ['fetch-failed', ['F College']],
+  ]);
+});
+
+test('pendingByStatus: a venue the term file omits counts as nothing held', () => {
+  const data = { venueList: [{ id: 'a', name: 'A College' }] };
+  assert.deepEqual([...pendingByStatus(data, { venueStatus: {} })], []);
+  assert.deepEqual([...pendingByStatus(data, null)], []);
+});
+
+test('pendingByStatus: every chapel published means no notice at all', () => {
+  const data = { venueList: [{ id: 'a', name: 'A' }, { id: 'b', name: 'B' }] };
+  const termDoc = { venueStatus: { a: { status: 'published' }, b: { status: 'no-list' } } };
+  assert.equal(pendingByStatus(data, termDoc).size, 0);
+});
+
+test('the real Michaelmas 2026 file has the 12 chapels the report names', () => {
+  const data = { venueList: readJSON('data/venues.json').venues };
+  const groups = pendingByStatus(data, readJSON('data/terms/2026-MT.json'));
+  const total = [...groups.values()].reduce((n, names) => n + names.length, 0);
+  assert.equal(total, 12);
+  assert.equal(groups.get('not-yet-published').length, 8);
+  assert.equal(groups.get('not-found').length, 3);
+  assert.deepEqual(groups.get('fetch-failed'), ['Regent’s Park']);
 });
 
 /* ---------- add to calendar (.ics) ---------- */
