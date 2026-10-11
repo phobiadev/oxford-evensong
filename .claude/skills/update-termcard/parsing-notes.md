@@ -226,6 +226,16 @@ Harris Manchester, Pembroke, St Stephen's House) are out of scope — status
   verbatim. Superscript `NC` = New College composer — **drop** from `text`.
 - Headings: Responses / Psalm(s) / Canticles / Anthem / Introit / Motet / Hymn /
   Voluntary.
+- **The organ-scholar initials are a slot signal.** `BT` / `HR` / `JH` (MM/JH in
+  TT26) appear *only* against organ pieces, so they identify the opening
+  `other`/Organ and the closing `voluntary` without guessing. Drop the initials
+  themselves from `text`.
+- **Thursday Vespers prints the antiphons in a second column** beside the hymn,
+  psalm and Magnificat (`1 ant. …`, `2 ant. …`, `Mag. ant. …`). Record them as
+  `other`/`Antiphon`, interleaved in printed row order, and say so in the
+  `parserNote`. The hymn at Vespers (`Hymn: O Trinity, most blessed light`) is the
+  `office-hymn`.
+- **Wednesdays print "No choral service"** → **no record** (7 of them in MT26).
 
 ### merton — Merton College
 
@@ -262,7 +272,12 @@ Harris Manchester, Pembroke, St Stephen's House) are out of scope — status
 
 - **`.docx`, not PDF** — `/wp-content/uploads/<yyyy>/<mm>/<year>-Trinity-Term-
   Music-List.docx`. `scripts/fetch.mjs` extracts it to `.txt` (paragraphs → lines,
-  `<w:tab/>` → tab). The term-card PDF is image-only — ignore it.
+  `<w:tab/>` → tab). The `.docx` is not linked by a guessable name — scrape the
+  chapel page. **The term card is no longer always image-only:**
+  `Chapel-Michaelmas-Term-2026.pdf` extracts at ~1,490 chars/page and carries dated
+  Sunday services, "Special Occasions" and an Advent/Christmas list — worth reading
+  when the music list is late (its services get `musicStatus: "not-yet-published"`).
+  Its "Daily Services" block is a *pattern*, not dated entries — no records from it.
 - Layout after the front matter: `<WEEK> WEEK`, then per day
   `<dd> <DAY> <feast>` / `<time> <service>` / indented `Heading: value`.
   Headings: `Setting:` → `setting`; `Gradual:` → `other`/`Gradual` (or `motet` if
@@ -380,7 +395,12 @@ choir page, add it to `venues.json` and note it.)
 
 - Termly "Chapel Music" PDF, `/wp-content/uploads/<yyyy>/<mm>/Music-list-<T>-<yy>.pdf`
   (+ separate termcard for preachers). ~2 pp, **two-column**, read the PDF
-  directly.
+  directly. The stem varies: TT26 was `Music-list-TT-26.pdf`, MT26
+  `Music-list-MT-26-FINAL.pdf` — scrape the choir page for the "Music List" link
+  rather than guessing.
+- **Both extractions are needed.** In reading order the 6th, 7th and 8th Week
+  panels interleave and the music lands under the wrong Sundays; only the
+  `-layout` output resolves week-to-music.
 - `<Weekday> <date>` / `<feast>  <HH.MM> <service>` on one line, then
   `Heading  value ................ Composer` (composer right-aligned) with the
   Psalm tucked to the right of another row. Headings Responses / Canticles /
@@ -665,3 +685,32 @@ promises a list that isn't there; St Stephen's House has no chapel page at all.
     though the schema calls every field required-or-null. Where a list names no
     service, use its own wording for the entry (a feast line, or "Selection of
     Anthems") and explain in `parserNote`.
+
+- **(Michaelmas 2026 mid-term re-run — 2026-10-11)** Learned:
+  - **A mid-term re-run pays, and the merge is cheap.** Four days after the 0th-Week
+    run, 2 of the 8 "not yet published" venues had posted (New College, Jesus) and a
+    third (Exeter) had posted a readable term card. Re-scraping all 14 already-parsed
+    venues found **no URL changed and no file changed** — every one byte-identical by
+    SHA-256, including the University Church's HTML page. Re-scrape the page first,
+    then checksum against `sources/<termId>/`: when it matches, carry the venue over
+    untouched and do not re-parse or re-stamp `fetchedAt`.
+  - **Resolve the `href`, and don't bother guessing it.** `Music-List-MT26.pdf` was
+    probed at Keble's and University College's otherwise-stable paths, and
+    `MT26-Music-List-Term-Card.pdf` under two months of Queen's uploads: all 404.
+    Guessing a filename from a previous term's scheme has now failed for Keble,
+    University College, Queen's and Christ Church's November list. Scrape, or wait.
+  - **A term card without a music list is still worth reading** when it carries dated
+    services (Exeter this run; Oriel and St John's before it) — record them with
+    `musicStatus: "not-yet-published"` and leave the venue `not-yet-published` if the
+    venue separately promises a music list still to come. A *pattern* block ("Tuesday
+    6.15pm Choral Evensong") is never a record.
+  - **A venue can carry services while not being `published`** (Exeter, 15 services).
+    Nothing in the schema forbids it and the site's arrival notice stays truthful, but
+    it was a judgment call — see `reports/2026-MT-2026-10-11.md`.
+  - **Somerville's term card has no text layer at all** (0 extractable characters), so
+    even when a current one appears it will need OCR or manual entry.
+  - **Regent's Park's published link 404s a second time.** Still do not fall back to a
+    previous term's sample.
+  - **A test can pin the data.** `scripts/site.test.mjs` asserts how many chapels the
+    arrival notice names; publishing two venues broke it. Expect to update that
+    assertion whenever a venue's status changes, and say so in the report.

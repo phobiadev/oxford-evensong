@@ -372,12 +372,12 @@ test('pendingByStatus: every chapel published means no notice at all', () => {
   assert.equal(pendingByStatus(data, termDoc).size, 0);
 });
 
-test('the real Michaelmas 2026 file has the 12 chapels the report names', () => {
+test('the real Michaelmas 2026 file has the 10 chapels the report names', () => {
   const data = { venueList: readJSON('data/venues.json').venues };
   const groups = pendingByStatus(data, readJSON('data/terms/2026-MT.json'));
   const total = [...groups.values()].reduce((n, names) => n + names.length, 0);
-  assert.equal(total, 12);
-  assert.equal(groups.get('not-yet-published').length, 8);
+  assert.equal(total, 10);
+  assert.equal(groups.get('not-yet-published').length, 6);
   assert.equal(groups.get('not-found').length, 3);
   assert.deepEqual(groups.get('fetch-failed'), ['Regent’s Park']);
 });

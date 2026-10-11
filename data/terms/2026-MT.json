@@ -7,9 +7,9 @@
     "timezone": "Europe/London"
   },
   "generated": {
-    "at": "2026-10-07T22:30:00Z",
+    "at": "2026-10-11T22:45:00Z",
     "by": "update-termcard",
-    "notes": "First parse of Michaelmas 2026, run on 2026-10-07 (0th Week). 14 of the 26 venues that publish a list had a current Michaelmas 2026 list that could be fetched and read: Christ Church Cathedral, Magdalen, Merton, Worcester, Balliol, Lady Margaret Hall, Lincoln, Oriel, Pusey House, St Edmund Hall, St Peter's, Trinity, Wadham and the University Church. 8 publish but had not posted this term's list yet (New College, Exeter, Jesus, Keble, St John's, University College, Hertford, St Hugh's); 3 had no locatable current list (The Queen's College, Somerville, Corpus Christi); 1 linked a list that 404s (Regent's Park); 5 never publish one. Christ Church publishes monthly and only October is out, so 2 November - 5 December is empty for the cathedral and needs a re-run. Worcester's PDF has a usable text layer for the first time, and Oriel again published a term card with no music. Said services, lunchtime concerts, organ recitals, outdoor carol events and services the choirs sing outside their own chapel (London carol services and concerts) are not recorded; Roman Catholic Masses are recorded only where the list prints a choir and repertoire (Worcester, St Edmund Hall) - see the report.",
+    "notes": "Mid-term re-run of Michaelmas 2026 on 2026-10-11 (Sunday of 1st Week), building on the first parse of 2026-10-07. Every one of the 26 venues that publish a list was re-checked. The 14 lists already in this file were re-downloaded and are byte-identical to the committed copies, so their services and fetch times are unchanged. Three venues are new: New College and Jesus have now published full Michaelmas music lists (21 pp and 2 pp), and Exeter — whose music list is still \"available shortly\" — has published a Michaelmas term card with a readable text layer for the first time, giving 16 dated services with no music. The remaining 9 are unchanged and each venueStatus note records what was checked on 2026-10-11: Keble, St John's, University College, Hertford and St Hugh's still link last term's file or none; The Queen's College, Somerville and Corpus Christi have no current list; Regent's Park still links a Michaelmas PDF that 404s. Christ Church publishes monthly and only October is out, so 2 November - 5 December is still empty for the cathedral and will need another re-run. Said services, recitals, concerts, the 11am Family Nativity Play at Exeter, services the choirs sing outside their own chapel (New College's Christmas Oratorio at the University Church, the London carol services) and outdoor carol events are not recorded; Roman Catholic Masses are recorded only where the list prints a choir and repertoire - see the report.",
     "sources": "sources/2026-MT/"
   },
   "venueStatus": {
@@ -18,7 +18,7 @@
       "sourceUrl": "https://www.chch.ox.ac.uk/sites/default/files/2026-10/Music%20List%20Oct%202026%20FINAL.pdf",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 32,
-      "note": "The cathedral publishes monthly, not termly. Only the October list is out (it runs 28 September – 1 November); the November and December lists, which cover the rest of Full Term, are not yet published, so 2 November – 5 December is empty for this venue and will need a re-run. Said Evening Prayer (Mondays and some other weekdays), said Matins, said and BCP Eucharists, Midday Prayer at the Shrine and the recitals and study courses under 'Forthcoming Events' are not recorded. This month's list labels only the hymn, psalm and responses lines, so canticles, anthems and voluntaries are assigned by position — every service is `medium`. The Cathedral Singers (the foundation's adult cover choir) are noted in `notes`, not `choir`."
+      "note": "The cathedral publishes monthly, not termly. Only the October list is out (it runs 28 September – 1 November); the November and December lists, which cover the rest of Full Term, are not yet published, so 2 November – 5 December is empty for this venue and will need a re-run. Said Evening Prayer (Mondays and some other weekdays), said Matins, said and BCP Eucharists, Midday Prayer at the Shrine and the recitals and study courses under 'Forthcoming Events' are not recorded. This month's list labels only the hymn, psalm and responses lines, so canticles, anthems and voluntaries are assigned by position — every service is `medium`. The Cathedral Singers (the foundation's adult cover choir) are noted in `notes`, not `choir`. Re-checked 2026-10-11: the October list is byte-identical to the one fetched on 2026-10-07 and is still the only one published, so 2 November – 5 December remains empty for the cathedral and a further re-run is needed once the November list appears."
     },
     "magdalen": {
       "status": "published",
@@ -28,11 +28,11 @@
       "note": "25-page booklet; the text layer is clean this term (no accent mangling), but the superscript 'M' that marks a Magdalen composer is dropped from every music text. Noon Prayer (said), the Saturday and guest organ recitals, and the 9pm 'Organ meditation' on 2 December (Messiaen, organ only, no choir) are not recorded; nor is the Alumni Carol Service at All Saints, Margaret Street, London (10 December). The Choristers, Academical Clerks, Consort of Voices and Cantors are all the foundation's own, so `choir` is null except for the two genuinely joint services (Merton Choristers on 1 October — held in Merton College Chapel — and the Chamber Choir of Haberdashers' Girls' School on 11 November). The Choristers' Tuesday service is absent on 27 October, during the school half-term the booklet flags (23–30 October)."
     },
     "new-college": {
-      "status": "not-yet-published",
-      "sourceUrl": "https://www.new.ox.ac.uk/choir-and-chapel",
-      "fetchedAt": "2026-10-07T21:59:00Z",
-      "services": 0,
-      "note": "The college page lists 'Music List (forthcoming)' for Michaelmas Term 2026 (9 October – 5 December). The choir's own site (https://www.newcollegechoir.com/choralservices) still offers only '26b Trinity Music list'. Both were checked."
+      "status": "published",
+      "sourceUrl": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+      "fetchedAt": "2026-10-11T22:45:00Z",
+      "services": 54,
+      "note": "21-page booklet, published since the 2026-10-07 run. It is on the choir’s own site (https://www.newcollegechoir.com/choralservices, link \"26c Michaelmas Music list\"); the college page now points at the same file. The text layer is clean (532 chars/page) — accents, the æ ligature and en dashes all extract correctly. The list is largely unlabelled, so slots go by position and every service is `medium`; the organ-scholar initials (BT/HR/JH) that mark the organ pieces, the \"NCH nn\" hymn-book numbers and the superscript \"NC\" that marks a New College composer are all dropped from the music text. Wednesdays are marked \"No choral service\" and produce no record; the Monday 8.30pm recitals, and the Bach Christmas Oratorio concert at the University Church on 14 December, are not services and are not recorded. The Clerks, choristers and Collegium Novum Consort are all the foundation’s own, so `choir` is null except for the 26 November Evensong sung jointly with Ely College. Four services after the end of Full Term (6, 9 and 24 December) are recorded as the list prints them and fall outside the site’s term window."
     },
     "merton": {
       "status": "published",
@@ -46,28 +46,28 @@
       "sourceUrl": "https://www.queens.ox.ac.uk/chapel-and-choir/",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The newest list on the college page is TT26-Music-List-Term-Card.pdf (Trinity 2026). The choir's own Music List page (https://www.queenschoir.com/music-list) is a Squarespace page with no file link in its markup, and the usual MT26 filename was not present under /wp-content/uploads/ for 2026/08, 2026/09 or 2026/10."
+      "note": "The newest list on the college page is TT26-Music-List-Term-Card.pdf (Trinity 2026). The choir's own Music List page (https://www.queenschoir.com/music-list) is a Squarespace page with no file link in its markup, and the usual MT26 filename was not present under /wp-content/uploads/ for 2026/08, 2026/09 or 2026/10. Re-checked 2026-10-11: the \"Current Termcard\" link on the chapel page still resolves to TT26-Music-List-Term-Card.pdf (Trinity 2026). MT26-Music-List-Term-Card.pdf was probed under /wp-content/uploads/2026/09/ and /2026/10/ and 404s in both."
     },
     "exeter": {
       "status": "not-yet-published",
-      "sourceUrl": "https://www.exeter.ox.ac.uk/about/chapel/",
-      "fetchedAt": "2026-10-07T21:59:00Z",
-      "services": 0,
-      "note": "The chapel page says 'The Michaelmas Term Music List will be available here shortly.' The Michaelmas term card that is up (Chapel-Michaelmas-Term-2026.pdf) carries no music. Exeter publishes its list as .docx."
+      "sourceUrl": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+      "fetchedAt": "2026-10-11T22:45:00Z",
+      "services": 15,
+      "note": "The music list is still not out — the chapel page says \"The Michaelmas Term Music List will be available here shortly\". What is new since the 2026-10-07 run is a Michaelmas term card (Chapel-Michaelmas-Term-2026.pdf) which, unlike previous terms, has a usable text layer. The 15 services recorded here come from that card: the eight dated Sunday evening services with their preachers, the two dated \"Special Occasions\" (Harvest Thanksgiving, German Vespers) and the five dated Advent and Christmas services. None carries any music, so every one is `musicStatus: \"not-yet-published\"`. The card also describes a weekly pattern — Tuesday and Friday 6.15pm Choral Evensong, Thursday 9pm Compline in Weeks 2, 4 and 6 — but gives no dates for it, so no records are generated from it; said Mattins, OICCU prayers, the Tuesday organ recitals and the 11am Family Nativity Play on 5 December are not recorded."
     },
     "keble": {
       "status": "not-yet-published",
       "sourceUrl": "https://www.keble.ox.ac.uk/about/music/",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The live 'Chapel Music List (pdf)' link still points to Music-List-TT26.pdf — last term's list. No Michaelmas 2026 list is up."
+      "note": "The live 'Chapel Music List (pdf)' link still points to Music-List-TT26.pdf — last term's list. No Michaelmas 2026 list is up. Re-checked 2026-10-11: the \"Chapel Music List (pdf)\" link still resolves to Music-List-TT26.pdf (last term). Music-List-MT26.pdf was probed at the usual /wp-content/uploads/ path and 404s."
     },
     "st-johns": {
       "status": "not-yet-published",
       "sourceUrl": "https://www.sjc.ox.ac.uk/discover/about-college/chapel-and-choir/",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The only termcard on the page is 'Download the Chapel Termcard for Trinity Term 2026' (/documents/3199/Trinity_2026_termcard_3.pdf). No Michaelmas 2026 termcard yet."
+      "note": "The only termcard on the page is 'Download the Chapel Termcard for Trinity Term 2026' (/documents/3199/Trinity_2026_termcard_3.pdf). No Michaelmas 2026 termcard yet. Re-checked 2026-10-11: the only termcard offered is still \"Download the Chapel Termcard for Trinity Term 2026\" (/documents/3199/Trinity_2026_termcard_3.pdf). The document id changes each term and cannot be guessed."
     },
     "worcester": {
       "status": "published",
@@ -81,7 +81,7 @@
       "sourceUrl": "https://www.some.ox.ac.uk/our-community/chapel-choir/choral-contemplations/",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The Choral Contemplations page offers term cards for Trinity 2026, Hilary 2026 and Michaelmas 2025, but none for Michaelmas 2026. The booklets are image-only PDFs in any case."
+      "note": "The Choral Contemplations page offers term cards for Trinity 2026, Hilary 2026 and Michaelmas 2025, but none for Michaelmas 2026. The booklets are image-only PDFs in any case. Re-checked 2026-10-11: the Choral Contemplations page still offers Trinity 2026 as its newest term card (TERM-CARD-2026.pdf) and that PDF has no text layer at all (0 extractable characters), so there is nothing to read even for the wrong term."
     },
     "balliol": {
       "status": "published",
@@ -102,21 +102,21 @@
       "sourceUrl": "https://www.ccc.ox.ac.uk/about-corpus/chapel/music-list",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "Still stale: the newest Lectionary & Music List on the page is Michaelmas 2023 (CCC Lectionary & Music List MT23.pdf)."
+      "note": "Still stale: the newest Lectionary & Music List on the page is Michaelmas 2023 (CCC Lectionary & Music List MT23.pdf). Re-checked 2026-10-11: still stale. The newest Lectionary & Music List on the page is Michaelmas 2023 (CCC Lectionary & Music List MT23.pdf); the only other download is a music list from Michaelmas 2019."
     },
     "hertford": {
       "status": "not-yet-published",
       "sourceUrl": "https://www.hertford.ox.ac.uk/living-here/chapel/music/",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The chapel-music page carries no music-list PDF at all this run — not even an older term. Hertford does publish, but late."
+      "note": "The chapel-music page carries no music-list PDF at all this run — not even an older term. Hertford does publish, but late. Re-checked 2026-10-11: the chapel-music page still carries no music-list PDF at all — not even an older term’s."
     },
     "jesus": {
-      "status": "not-yet-published",
-      "sourceUrl": "https://www.jesus.ox.ac.uk/jesus-college-chapel/the-choir/",
-      "fetchedAt": "2026-10-07T21:59:00Z",
-      "services": 0,
-      "note": "The choir page says 'You can view the Music List for Trinity Term 2026 by clicking on the link' and links Music-list-TT-26.pdf. No Michaelmas 2026 list is up."
+      "status": "published",
+      "sourceUrl": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+      "fetchedAt": "2026-10-11T22:45:00Z",
+      "services": 9,
+      "note": "Published since the 2026-10-07 run (Music-list-MT-26-FINAL.pdf). Two-page, two-column list, fully labelled (Introit / Responses / Psalm / Canticles / Anthem / Hymns), work on the left and composer on the right, so the parse is `high` except where noted. Read with `pdftotext` both with and without -layout: reading order interleaves the 6th, 7th and 8th Week panels, and only the -layout extraction resolves which music belongs to which Sunday. One Sunday service a week; the 22 November service is Choral Vespers with a Bach cantata, and 29 November prints two carol services (15.30 and 17.30) with no music."
     },
     "lady-margaret-hall": {
       "status": "published",
@@ -165,7 +165,7 @@
       "sourceUrl": "https://www.st-hughs.ox.ac.uk/current-students/chapel-faith/chapel/",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The chapel page says 'A term card with The Chapel’s current activities will be available shortly.' No PDF is linked."
+      "note": "The chapel page says 'A term card with The Chapel’s current activities will be available shortly.' No PDF is linked. Re-checked 2026-10-11: the chapel page still says \"A term card with The Chapel’s current activities will be available shortly\" and links no PDF."
     },
     "st-peters": {
       "status": "published",
@@ -186,7 +186,7 @@
       "sourceUrl": "https://www.univ.ox.ac.uk/live-at-univ/chapel-faith-provision/",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The 'Music in Chapel' PDF link still points to Music-List-TT26.pdf. A Michaelmas Chapel Card is up (ChapelTermCardWebMT26.pdf) but it carries preachers only, no music."
+      "note": "The 'Music in Chapel' PDF link still points to Music-List-TT26.pdf. A Michaelmas Chapel Card is up (ChapelTermCardWebMT26.pdf) but it carries preachers only, no music. Re-checked 2026-10-11: the \"Music in Chapel\" link still resolves to Music-List-TT26.pdf (last term), and Music-List-MT26.pdf 404s under /wp-content/uploads/2026/10/. A Michaelmas Chapel Card (ChapelTermCardWebMT26.pdf) and a Preachers-MT26 list are now up, but neither carries any music."
     },
     "wadham": {
       "status": "published",
@@ -207,7 +207,7 @@
       "sourceUrl": "https://www.rpc.ox.ac.uk/wp-content/uploads/2026/10/RPC-Chapel-Music-List-MT26-for-web.pdf",
       "fetchedAt": "2026-10-07T21:59:00Z",
       "services": 0,
-      "note": "The chaplaincy page carries a button labelled 'Michaelmas Term 2026 Chapel Music List' pointing at this URL, but it returns HTTP 404 (tried twice). The file appears not to have been uploaded. Worth a re-run."
+      "note": "The chaplaincy page carries a button labelled 'Michaelmas Term 2026 Chapel Music List' pointing at this URL, but it returns HTTP 404 (tried twice). The file appears not to have been uploaded. Worth a re-run. Re-checked 2026-10-11: the button labelled \"Michaelmas Term 2026 Chapel Music List\" still points at /wp-content/uploads/2026/10/RPC-Chapel-Music-List-MT26-for-web.pdf, which still 404s — the link was published before the file. No fallback to a previous term’s list, which would record the wrong term."
     },
     "pusey-house": {
       "status": "published",
@@ -1131,6 +1131,50 @@
       "parserNote": "the list labels only the hymn, psalm and responses lines; the canticles, anthem and closing organ work are printed unlabelled and are assigned by position (composer-first order)."
     },
     {
+      "id": "2026-10-09-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-09",
+      "time": "18:15",
+      "week": 0,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Denys, c.250",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Martin, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "47, 48 (Walmisley, Goss)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Victoria, Magnificat primi toni (odd verses)"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Victoria, Nunc dimittis tertii toni"
+        },
+        {
+          "slot": "anthem",
+          "text": "Byrd, Prevent us, O Lord"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "Service before term.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 9 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-10-10-christ-church-1805",
       "venueId": "christ-church",
       "date": "2026-10-10",
@@ -1173,6 +1217,59 @@
       },
       "confidence": "medium",
       "parserNote": "the list labels only the hymn, psalm and responses lines; the canticles, anthem and closing organ work are printed unlabelled and are assigned by position (composer-first order)."
+    },
+    {
+      "id": "2026-10-10-new-college-1830",
+      "venueId": "new-college",
+      "date": "2026-10-10",
+      "time": "18:30",
+      "week": 0,
+      "day": "Sat",
+      "type": "choral-evensong",
+      "title": "Evensong for Freshers",
+      "occasion": "Paulinus, 644",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Parry, Tranquilly",
+          "label": "Organ"
+        },
+        {
+          "slot": "introit",
+          "text": "Clucas, Keep me as the apple of an eye"
+        },
+        {
+          "slot": "responses",
+          "text": "Martin, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "54 (Bexfield)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Pritchard, New College Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Parry, My soul, there is a country"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Dupré, Finale (Sept pièces, Op. 27)"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Dean of Divinity",
+      "notes": "Service before term.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 10 Saturday', 6.30 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-10-11-university-church-1030",
@@ -1431,6 +1528,57 @@
       "parserNote": "time from the college's chapel-services page (https://www.balliol.ox.ac.uk/balliol-chapel/chapel-services), which gives the Sunday service as 5.30 pm; the music list itself prints no time."
     },
     {
+      "id": "2026-10-11-jesus-1730",
+      "venueId": "jesus",
+      "date": "2026-10-11",
+      "time": "17:30",
+      "week": 1,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": "Trinity 19",
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "Locus iste",
+          "composer": "Anton Bruckner"
+        },
+        {
+          "slot": "responses",
+          "text": "John Sanders"
+        },
+        {
+          "slot": "psalm",
+          "text": "91.1–7"
+        },
+        {
+          "slot": "canticles",
+          "text": "Evening Service in D",
+          "composer": "Herbert Brewer"
+        },
+        {
+          "slot": "anthem",
+          "text": "Evening Hymn",
+          "composer": "Henry Balfour Gardiner"
+        },
+        {
+          "slot": "hymn",
+          "text": "455, 444, 538"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.1, 'Sunday 11th October | 1st Week'"
+      },
+      "confidence": "high",
+      "parserNote": null
+    },
+    {
       "id": "2026-10-11-merton-1745",
       "venueId": "merton",
       "date": "2026-10-11",
@@ -1486,6 +1634,78 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-10-11-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-10-11",
+      "time": "17:45",
+      "week": 1,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Evensong with surplicing of choristers",
+      "occasion": "Trinity XIX",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Vivaldi arr. Bach, Largo e spiccato–Allegro (Concerto, BWV 596)",
+          "label": "Organ"
+        },
+        {
+          "slot": "responses",
+          "text": "Martin, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "23 (Walford Davies)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Stanford in C"
+        },
+        {
+          "slot": "anthem",
+          "text": "Monteverdi, Nisi Dominus (1610)"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Vivaldi arr. Bach, Allegro–Grave–Fuga (Concerto, BWV 596)"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 11 TRINITY XIX', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-10-11-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-10-11",
+      "time": "18:00",
+      "week": 1,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Freshers’ Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": "The Catechist",
+      "notes": null,
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '11 October / Week 1'"
+      },
+      "confidence": "low",
+      "parserNote": "The music list for the term is not published yet, so this service has no music. Time taken from the card’s \"Sundays At 6pm\" heading. The card prints the name \"Freshers’ Evensong\" without a service type; recorded as choral evensong because the card describes the Sunday 6pm service as the choir’s."
     },
     {
       "id": "2026-10-11-lincoln-1800",
@@ -1914,6 +2134,46 @@
       "parserNote": "time from the card's header note: 'Choral Evensong normally takes place on Sundays at 6:15pm in the Chapel'."
     },
     {
+      "id": "2026-10-12-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-12",
+      "time": "18:15",
+      "week": 1,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "Wilfrid of Ripon, 709",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "65, 66 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Moore, First Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Victoria, Salve Regina"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 12 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-10-13-magdalen-1800",
       "venueId": "magdalen",
       "date": "2026-10-13",
@@ -2104,6 +2364,46 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-10-13-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-13",
+      "time": "18:15",
+      "week": 1,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Edward the Confessor, 1066",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Byrd, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "69 (Smart)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Byrd, Second Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Purcell, O God, thou art my God"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 13 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-10-13-magdalen-2100",
@@ -2407,6 +2707,29 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-10-15-new-college-1800",
+      "venueId": "new-college",
+      "date": "2026-10-15",
+      "time": "18:00",
+      "week": 1,
+      "day": "Thu",
+      "type": "special",
+      "title": "Welcoming and Installation",
+      "occasion": "Teresa of Avila, 1582",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "of Sir Robin Niblett as the 47th Warden of New College. Admission by invitation only.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 15 Thursday', 6.00 pm"
+      },
+      "confidence": "low",
+      "parserNote": "The list prints this service with no music and does not say whether the choir sings; recorded from the dated entry alone."
     },
     {
       "id": "2026-10-15-worcester-1800",
@@ -2777,6 +3100,87 @@
       "parserNote": "the list labels only the hymn, psalm and responses lines; the canticles, anthem and closing organ work are printed unlabelled and are assigned by position (composer-first order)."
     },
     {
+      "id": "2026-10-16-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-16",
+      "time": "18:15",
+      "week": 1,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Nicholas Ridley & Hugh Latimer, 1555",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Byrd, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "84, 85 (Coward, Martin)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Tallis, Short Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Tallis, Suscipe quæso Domine"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 16 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-10-17-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-10-17",
+      "time": "17:45",
+      "week": 1,
+      "day": "Sat",
+      "type": "choral-eucharist",
+      "title": "Eucharist",
+      "occasion": "Ignatius, c.107",
+      "choir": null,
+      "music": [
+        {
+          "slot": "setting",
+          "text": "Ives, Missa brevis"
+        },
+        {
+          "slot": "other",
+          "text": "Cantate Domino",
+          "label": "Alleluia"
+        },
+        {
+          "slot": "motet",
+          "text": "Byrd, Ave verum corpus"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Byrd, A Fancie"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 17 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-10-17-magdalen-1800",
       "venueId": "magdalen",
       "date": "2026-10-17",
@@ -3127,6 +3531,52 @@
       "parserNote": "time from the college's chapel-services page (https://www.balliol.ox.ac.uk/balliol-chapel/chapel-services), which gives the Sunday service as 5.30 pm; the music list itself prints no time."
     },
     {
+      "id": "2026-10-18-jesus-1745",
+      "venueId": "jesus",
+      "date": "2026-10-18",
+      "time": "17:45",
+      "week": 2,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": "Luke the Evangelist",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "John Sanders"
+        },
+        {
+          "slot": "psalm",
+          "text": "103.1–8"
+        },
+        {
+          "slot": "canticles",
+          "text": "King’s College Service",
+          "composer": "Joanna Forbes L’Estrange"
+        },
+        {
+          "slot": "anthem",
+          "text": "Litany to the Holy Spirit",
+          "composer": "Peter Hurford"
+        },
+        {
+          "slot": "hymn",
+          "text": "251i, 212, 22"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.1, 'Sunday 18th October | 2nd Week'"
+      },
+      "confidence": "high",
+      "parserNote": null
+    },
+    {
       "id": "2026-10-18-merton-1745",
       "venueId": "merton",
       "date": "2026-10-18",
@@ -3174,6 +3624,74 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-10-18-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-10-18",
+      "time": "17:45",
+      "week": 2,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "College Commemoration",
+      "occasion": "Trinity XX",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Byrd, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "122 (Harris)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Howells, New College Service"
+        },
+        {
+          "slot": "other",
+          "text": "MacMillan, Te Deum",
+          "label": "Te Deum"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Weir, Ettrick Banks"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": "Dr Christian Sahner",
+      "notes": "Margoliouth Fellow in Arabic",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 18 TRINITY XX', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own. The unlabelled MacMillan Te Deum in the anthem position is recorded as other/Te Deum rather than as the anthem."
+    },
+    {
+      "id": "2026-10-18-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-10-18",
+      "time": "18:00",
+      "week": 2,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Chapel Dedication Festival on St Luke’s Day",
+      "occasion": "Chapel Dedication Festival on St Luke’s Day",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": "The Rev’d Bertie Pearson",
+      "notes": "The Rev’d Bertie Pearson is the Rector of St Alban’s Episocpal Church in Washington DC.",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '18 October / Week 2'"
+      },
+      "confidence": "low",
+      "parserNote": "The music list for the term is not published yet, so this service has no music. Time taken from the card’s \"Sundays At 6pm\" heading. The card prints only the occasion for this Sunday and no service name; the type is taken from the card’s description of the Sunday 6pm service and may be a Eucharist."
     },
     {
       "id": "2026-10-18-lincoln-1800",
@@ -3675,6 +4193,46 @@
       "parserNote": "the list prints 'Congregational' in place of repertoire; the service is a Sung Mass with the Pusey Singers but no music is published for it."
     },
     {
+      "id": "2026-10-19-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-19",
+      "time": "18:15",
+      "week": 2,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "Luke the Evangelist",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "McCann, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "147.1–7 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Clucas, Westminster Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Tallis, Mihi autem nimis"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 19 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-10-19-st-peters-2000",
       "venueId": "st-peters",
       "date": "2026-10-19",
@@ -3889,6 +4447,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-10-20-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-20",
+      "time": "18:15",
+      "week": 2,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "McDowall, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "104 (Turle, Boyce)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Frances-Hoad, Merton Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Taverner, Mater Christi sanctissima"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 20 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-10-20-magdalen-2100",
       "venueId": "magdalen",
       "date": "2026-10-20",
@@ -3947,6 +4545,42 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-10-20-new-college-2100",
+      "venueId": "new-college",
+      "date": "2026-10-20",
+      "time": "21:00",
+      "week": 2,
+      "day": "Tue",
+      "type": "compline",
+      "title": "Compline",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "psalm",
+          "text": "4, 133"
+        },
+        {
+          "slot": "anthem",
+          "text": "Sheppard, In manus tuas"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Viadana, Nunc dimittis tertii toni"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 20 Tuesday', 9.00 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-10-21-magdalen-1800",
@@ -4333,6 +4967,61 @@
       "parserNote": null
     },
     {
+      "id": "2026-10-22-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-22",
+      "time": "18:15",
+      "week": 2,
+      "day": "Thu",
+      "type": "other",
+      "title": "Vespers sung by the choristers",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "office-hymn",
+          "text": "O Trinity, most blessed light"
+        },
+        {
+          "slot": "other",
+          "text": "1 ant. I will give thanks",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "psalm",
+          "text": "108"
+        },
+        {
+          "slot": "other",
+          "text": "2 ant. God hath spoken",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Quinney, Magnificat primi toni"
+        },
+        {
+          "slot": "other",
+          "text": "Mag. ant. Quia fecit",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "motet",
+          "text": "Dering, O bone Jesu"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 22 Thursday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own. At Vespers the list prints the antiphons in a second column alongside the hymn, psalm and Magnificat; they are recorded as other/Antiphon, interleaved in printed row order."
+    },
+    {
       "id": "2026-10-22-st-peters-1815",
       "venueId": "st-peters",
       "date": "2026-10-22",
@@ -4558,6 +5247,121 @@
       },
       "confidence": "medium",
       "parserNote": "the list labels only the hymn, psalm and responses lines; the canticles, anthem and closing organ work are printed unlabelled and are assigned by position (composer-first order)."
+    },
+    {
+      "id": "2026-10-23-exeter-1815",
+      "venueId": "exeter",
+      "date": "2026-10-23",
+      "time": "18:15",
+      "week": 2,
+      "day": "Fri",
+      "type": "special",
+      "title": "Harvest Thanksgiving",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Followed by free dinner.",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Special Occasions', 'Friday 23 October'"
+      },
+      "confidence": "medium",
+      "parserNote": "From the card’s \"Special Occasions\" list, which gives the time but no music."
+    },
+    {
+      "id": "2026-10-23-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-23",
+      "time": "18:15",
+      "week": 2,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "McDowall, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "115 (Elvey)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Palestrina, Magnificat quarti toni"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Morgan, Nunc dimittis"
+        },
+        {
+          "slot": "anthem",
+          "text": "Brahms, Ich aber bin elend"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 23 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-10-24-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-10-24",
+      "time": "17:45",
+      "week": 2,
+      "day": "Sat",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "Tallis, E’en like the hunted hind"
+        },
+        {
+          "slot": "responses",
+          "text": "McCann, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "119.1–24 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Ives, Magdalen College Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Wood, Great Lord of Lords"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Schumann, Innig (Six Studies in Canonic Form, Op. 56)"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "Services in half term (24–30 October) are sung by the Clerks.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 24 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-10-24-magdalen-1800",
@@ -4906,6 +5710,57 @@
       "parserNote": "time from the college's chapel-services page (https://www.balliol.ox.ac.uk/balliol-chapel/chapel-services), which gives the Sunday service as 5.30 pm; the music list itself prints no time."
     },
     {
+      "id": "2026-10-25-jesus-1745",
+      "venueId": "jesus",
+      "date": "2026-10-25",
+      "time": "17:45",
+      "week": 3,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": "The Last Sunday after Trinity",
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "Sicut cervus",
+          "composer": "G.P. da Palestrina"
+        },
+        {
+          "slot": "responses",
+          "text": "John Sanders"
+        },
+        {
+          "slot": "psalm",
+          "text": "119.89–96"
+        },
+        {
+          "slot": "canticles",
+          "text": "Evening Service in Bb",
+          "composer": "Charles Villiers Stanford"
+        },
+        {
+          "slot": "anthem",
+          "text": "O Lorde, the maker of al thing",
+          "composer": "John Joubert"
+        },
+        {
+          "slot": "hymn",
+          "text": "453, Come, we that love the Lord, Mine eyes have seen"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.1, 'Sunday 25th October | 3rd Week'"
+      },
+      "confidence": "high",
+      "parserNote": null
+    },
+    {
       "id": "2026-10-25-merton-1745",
       "venueId": "merton",
       "date": "2026-10-25",
@@ -4961,6 +5816,78 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-10-25-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-10-25",
+      "time": "17:45",
+      "week": 3,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "Last Sunday after Trinity",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Hindemith, Sehr langsam (Sonata I)",
+          "label": "Organ"
+        },
+        {
+          "slot": "responses",
+          "text": "McCann, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "1 (Elgar)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Moore in A"
+        },
+        {
+          "slot": "anthem",
+          "text": "Palestrina, Laudate Dominum"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Bach, Kyrie, Gott Heiliger Geist, BWV 671"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Revd Dr Jennifer Brown",
+      "notes": "Team Rector of Abingdon-on-Thames. Services in half term (24–30 October) are sung by the Clerks.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 25 LAST SUNDAY AFTER TRINITY', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-10-25-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-10-25",
+      "time": "18:00",
+      "week": 3,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": "The Chaplain",
+      "notes": null,
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '25 October / Week 3'"
+      },
+      "confidence": "medium",
+      "parserNote": "The music list for the term is not published yet, so this service has no music. Time taken from the card’s \"Sundays At 6pm\" heading."
     },
     {
       "id": "2026-10-25-lincoln-1800",
@@ -5385,6 +6312,50 @@
       "parserNote": "time from the card's header note: 'Choral Evensong normally takes place on Sundays at 6:15pm in the Chapel'."
     },
     {
+      "id": "2026-10-26-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-26",
+      "time": "18:15",
+      "week": 3,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "Alfred, 899",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "119.153–176 (plainchant)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Marenzio, Magnificat octavi toni"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Andreas, Nunc dimittis tertii toni"
+        },
+        {
+          "slot": "anthem",
+          "text": "Walker, I will lift up mine eyes unto the hills"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "Services in half term (24–30 October) are sung by the Clerks.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 26 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-10-27-worcester-1800",
       "venueId": "worcester",
       "date": "2026-10-27",
@@ -5521,6 +6492,50 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-10-27-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-27",
+      "time": "18:15",
+      "week": 3,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "126, 127, 128 (plainchant & fauxbourdons)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Palestrina, Magnificat quarti toni"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Andreas, Nunc dimittis tertii toni"
+        },
+        {
+          "slot": "anthem",
+          "text": "Victoria, Nisi Dominus"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "Services in half term (24–30 October) are sung by the Clerks.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 27 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-10-27-magdalen-2100",
@@ -5954,6 +6969,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-10-29-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-29",
+      "time": "18:15",
+      "week": 3,
+      "day": "Thu",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "James Hannington, 1885",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "142 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Sumsion in G"
+        },
+        {
+          "slot": "anthem",
+          "text": "Ives, In pace in idipsum"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "Services in half term (24–30 October) are sung by the Clerks.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 29 Thursday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-10-29-st-peters-1815",
       "venueId": "st-peters",
       "date": "2026-10-29",
@@ -6175,6 +7230,74 @@
       },
       "confidence": "medium",
       "parserNote": "the list labels only the hymn, psalm and responses lines; the canticles, anthem and closing organ work are printed unlabelled and are assigned by position (composer-first order)."
+    },
+    {
+      "id": "2026-10-30-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-10-30",
+      "time": "18:15",
+      "week": 3,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "147 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Morley, Short Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Byrd, Beati mundo corde"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "Services in half term (24–30 October) are sung by the Clerks.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 30 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-10-31-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-10-31",
+      "time": "17:45",
+      "week": 3,
+      "day": "Sat",
+      "type": "special",
+      "title": "Solemn Requiem for All Souls",
+      "occasion": "Martin Luther, 1546",
+      "choir": null,
+      "music": [
+        {
+          "slot": "setting",
+          "text": "Duruflé, Requiem"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'OCTOBER — 31 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-10-31-magdalen-1800",
@@ -6526,6 +7649,133 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-01-jesus-1745",
+      "venueId": "jesus",
+      "date": "2026-11-01",
+      "time": "17:45",
+      "week": 4,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": "All Saints",
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "Gaudent in coelis",
+          "composer": "Richard Dering"
+        },
+        {
+          "slot": "responses",
+          "text": "John Sanders"
+        },
+        {
+          "slot": "psalm",
+          "text": "149"
+        },
+        {
+          "slot": "canticles",
+          "text": "Evening Service in D",
+          "composer": "Charles Wood"
+        },
+        {
+          "slot": "anthem",
+          "text": "And I saw a new heaven",
+          "composer": "Edgar Bainton"
+        },
+        {
+          "slot": "hymn",
+          "text": "232, 621, 230"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.1, 'Sunday 1st November | 4th Week'"
+      },
+      "confidence": "high",
+      "parserNote": null
+    },
+    {
+      "id": "2026-11-01-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-01",
+      "time": "17:45",
+      "week": 4,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "All Saints",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Du Mage, Plein Jeu–Fugue (Livre d’Orgue)",
+          "label": "Organ"
+        },
+        {
+          "slot": "responses",
+          "text": "McDowall, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "34.1–10 (Camidge)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Burton, Magnificat"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "G. Holst, Nunc dimittis"
+        },
+        {
+          "slot": "anthem",
+          "text": "Palestrina, Vidi turbam magnam"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Du Mage, Grand jeu (Livre d’Orgue)"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 1 ALL SAINTS', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-11-01-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-11-01",
+      "time": "18:00",
+      "week": 4,
+      "day": "Sun",
+      "type": "special",
+      "title": "Solemn Requiem for All Souls",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "A special service when we remember those whom we love but who have died.",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '1 November / Week 4'"
+      },
+      "confidence": "medium",
+      "parserNote": "The music list for the term is not published yet, so this service has no music. Time taken from the card’s \"Sundays At 6pm\" heading."
     },
     {
       "id": "2026-11-01-lincoln-1800",
@@ -7080,6 +8330,50 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-02-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-02",
+      "time": "18:15",
+      "week": 4,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "All Souls",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "23 (plainchant)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Palestrina, Magnificat primi toni"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Quinney, Nunc dimittis tertii toni"
+        },
+        {
+          "slot": "anthem",
+          "text": "Palestrina, Manus tuae Domine"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 2 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-02-pusey-house-1830",
       "venueId": "pusey-house",
       "date": "2026-11-02",
@@ -7257,6 +8551,46 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-03-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-03",
+      "time": "18:15",
+      "week": 4,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Richard Hooker, 1600",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Roberts, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "15, 16 (Hopkins, Howells)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Gibbons, Second Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "MacMillan, When one man dies"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 3 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-11-03-magdalen-2100",
@@ -7618,6 +8952,61 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-05-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-05",
+      "time": "18:15",
+      "week": 4,
+      "day": "Thu",
+      "type": "other",
+      "title": "Vespers sung by the choristers",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "office-hymn",
+          "text": "O Trinity, most blessed light"
+        },
+        {
+          "slot": "other",
+          "text": "1 ant. Blessed be the Lord",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "psalm",
+          "text": "28"
+        },
+        {
+          "slot": "other",
+          "text": "2 ant. Praised be the Lord",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "magnificat",
+          "text": "McCann, Magnificat primi toni"
+        },
+        {
+          "slot": "other",
+          "text": "Mag. ant. Deposuit",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "motet",
+          "text": "Purcell, Evening hymn"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 5 Thursday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own. At Vespers the list prints the antiphons in a second column alongside the hymn, psalm and Magnificat; they are recorded as other/Antiphon, interleaved in printed row order."
+    },
+    {
       "id": "2026-11-05-st-peters-1815",
       "venueId": "st-peters",
       "date": "2026-11-05",
@@ -7774,6 +9163,117 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-06-exeter-1815",
+      "venueId": "exeter",
+      "date": "2026-11-06",
+      "time": "18:15",
+      "week": 4,
+      "day": "Fri",
+      "type": "other",
+      "title": "German Vespers by Candlelight",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Special Occasions', 'Friday 6 November'"
+      },
+      "confidence": "medium",
+      "parserNote": "From the card’s \"Special Occasions\" list, which gives the time but no music."
+    },
+    {
+      "id": "2026-11-06-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-06",
+      "time": "18:15",
+      "week": 4,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Leonard, 6th century",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Roberts, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "32, 33 (Barnby, Soaper)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Lumsden, Lichfield Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Stanford, Justorum animae"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 6 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-11-07-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-07",
+      "time": "17:45",
+      "week": 4,
+      "day": "Sat",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Willibrord, 739",
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "I. Holst, A Hymne to Christ"
+        },
+        {
+          "slot": "responses",
+          "text": "Roberts, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "37 (Stainer)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Tomkins, Fifth Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Gibbons, Behold, thou hast made my days"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Gibbons, A fancy in Gamut flatt"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 7 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-11-07-magdalen-1800",
@@ -8046,6 +9546,57 @@
       "parserNote": "time from the college's chapel-services page (https://www.balliol.ox.ac.uk/balliol-chapel/chapel-services), which gives the Sunday service as 5.30 pm; the music list itself prints no time."
     },
     {
+      "id": "2026-11-08-jesus-1745",
+      "venueId": "jesus",
+      "date": "2026-11-08",
+      "time": "17:45",
+      "week": 5,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": "Remembrance",
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "I give to you a new commandment",
+          "composer": "Peter Nardone"
+        },
+        {
+          "slot": "responses",
+          "text": "John Sanders"
+        },
+        {
+          "slot": "psalm",
+          "text": "121"
+        },
+        {
+          "slot": "canticles",
+          "text": "Evening Service in d",
+          "composer": "Thomas Attwood Walmisley"
+        },
+        {
+          "slot": "anthem",
+          "text": "Upon thine heart",
+          "composer": "Eleanor Daley"
+        },
+        {
+          "slot": "hymn",
+          "text": "427, 14, 358"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Sunday 8th November | 5th Week'"
+      },
+      "confidence": "high",
+      "parserNote": null
+    },
+    {
       "id": "2026-11-08-merton-1745",
       "venueId": "merton",
       "date": "2026-11-08",
@@ -8101,6 +9652,78 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-08-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-08",
+      "time": "17:45",
+      "week": 5,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Remembrance Sunday",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Bach, Largo (Sonata II, BWV 526)",
+          "label": "Organ"
+        },
+        {
+          "slot": "responses",
+          "text": "Roberts, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "70 (Harrison)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Howells, Collegium Regale"
+        },
+        {
+          "slot": "anthem",
+          "text": "Moore, Three Prayers of Dietrich Bonhoeffer"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Bach, Passacaglia in C minor, BWV 582"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 8 REMEMBRANCE SUNDAY', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-11-08-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-11-08",
+      "time": "18:00",
+      "week": 5,
+      "day": "Sun",
+      "type": "special",
+      "title": "College Remembrance Service",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": "The Rev’d Mia Smith",
+      "notes": "The Rev’d Mia Smith is Welfare Officer at Wycliffe Hall.",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '8 November / Week 5'"
+      },
+      "confidence": "medium",
+      "parserNote": "The music list for the term is not published yet, so this service has no music. Time taken from the card’s \"Sundays At 6pm\" heading."
     },
     {
       "id": "2026-11-08-lincoln-1800",
@@ -8530,6 +10153,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-09-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-09",
+      "time": "18:15",
+      "week": 5,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the Clerks",
+      "occasion": "Margery Kempe, c. 1440",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "47, 48 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Quinney, Third Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Byrd, Domine salva nos"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 9 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-10-magdalen-1800",
       "venueId": "magdalen",
       "date": "2026-11-10",
@@ -8668,6 +10331,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-10-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-10",
+      "time": "18:15",
+      "week": 5,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Leo the Great, 461",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Tomkins, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "51 (Wesley)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Howells, Collegium Sancti Johannis Cantabrigiense"
+        },
+        {
+          "slot": "anthem",
+          "text": "Haydn, Insanae et vane curae"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 10 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-10-magdalen-2100",
       "venueId": "magdalen",
       "date": "2026-11-10",
@@ -8726,6 +10429,42 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-10-new-college-2100",
+      "venueId": "new-college",
+      "date": "2026-11-10",
+      "time": "21:00",
+      "week": 5,
+      "day": "Tue",
+      "type": "compline",
+      "title": "Compline",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "psalm",
+          "text": "91, 133"
+        },
+        {
+          "slot": "anthem",
+          "text": "Taverner, In pace"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Reid, Nunc dimittis tertii toni"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 10 Tuesday', 9.00 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-11-11-lincoln-1800",
@@ -9281,6 +11020,87 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-13-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-13",
+      "time": "18:15",
+      "week": 5,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Charles Simeon, 1836",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Tomkins, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "69 (Smart)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Gibbons, Short Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Drayton, Jesu dulcis memoria"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 13 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-11-14-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-14",
+      "time": "17:45",
+      "week": 5,
+      "day": "Sat",
+      "type": "choral-eucharist",
+      "title": "Eucharist",
+      "occasion": "Samuel Seabury, 1796",
+      "choir": null,
+      "music": [
+        {
+          "slot": "setting",
+          "text": "Palestrina, Missa Ecce ego Joannes"
+        },
+        {
+          "slot": "other",
+          "text": "Lauda anima mea",
+          "label": "Alleluia"
+        },
+        {
+          "slot": "motet",
+          "text": "de Séverac, Tantum ergo"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Bruhns, Praeludium in G"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 14 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-14-magdalen-1800",
       "venueId": "magdalen",
       "date": "2026-11-14",
@@ -9539,6 +11359,57 @@
       "parserNote": "time from the college's chapel-services page (https://www.balliol.ox.ac.uk/balliol-chapel/chapel-services), which gives the Sunday service as 5.30 pm; the music list itself prints no time."
     },
     {
+      "id": "2026-11-15-jesus-1745",
+      "venueId": "jesus",
+      "date": "2026-11-15",
+      "time": "17:45",
+      "week": 6,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": "Second before Advent",
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "Open thou mine eyes",
+          "composer": "John Rutter"
+        },
+        {
+          "slot": "responses",
+          "text": "John Sanders"
+        },
+        {
+          "slot": "psalm",
+          "text": "89.20–30"
+        },
+        {
+          "slot": "canticles",
+          "text": "Evening Service in D",
+          "composer": "George Dyson"
+        },
+        {
+          "slot": "anthem",
+          "text": "Zadok the priest",
+          "composer": "G.F. Handel"
+        },
+        {
+          "slot": "hymn",
+          "text": "563, 498, 31"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Sunday 15th November | 6th Week'"
+      },
+      "confidence": "high",
+      "parserNote": null
+    },
+    {
       "id": "2026-11-15-merton-1745",
       "venueId": "merton",
       "date": "2026-11-15",
@@ -9594,6 +11465,78 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-15-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-15",
+      "time": "17:45",
+      "week": 6,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Second Sunday before Advent",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Widor, Andante sostenuto (Symphonie Gothique)",
+          "label": "Organ"
+        },
+        {
+          "slot": "responses",
+          "text": "Tomkins, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "90.1–12 (Hervey)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Howells, Westminster Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Stanford, For lo, I raise up"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Escaich, Évocation II"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Revd Dr Mark Dorsett",
+      "notes": "Chaplain, The King’s School, Worcester",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 15 SECOND SUNDAY BEFORE ADVENT', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-11-15-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-11-15",
+      "time": "18:00",
+      "week": 6,
+      "day": "Sun",
+      "type": "choral-evensong",
+      "title": "Choral Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": "The Rev’d Dr Canon Alwyn Pettersen",
+      "notes": "The Rev’d Dr Canon Alwyn Pettersen was Chaplain of Exeter and Canon Theologian at Worcester Cathedral.",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '15 November / Week 6'"
+      },
+      "confidence": "medium",
+      "parserNote": "The music list for the term is not published yet, so this service has no music. Time taken from the card’s \"Sundays At 6pm\" heading."
     },
     {
       "id": "2026-11-15-lincoln-1800",
@@ -10015,6 +11958,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-16-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-16",
+      "time": "18:15",
+      "week": 6,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "Margaret of Scotland, 1093",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "84, 85 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Morley, Second Service"
+        },
+        {
+          "slot": "anthem",
+          "text": "Tallis, Salvator mundi (II)"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 16 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-16-st-edmund-hall-1815",
       "venueId": "st-edmund-hall",
       "date": "2026-11-16",
@@ -10235,6 +12218,46 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-17-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-17",
+      "time": "18:15",
+      "week": 6,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Hugh of Lincoln, 1200",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Martin, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "89.1–19 (Buck)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Blow in F"
+        },
+        {
+          "slot": "anthem",
+          "text": "MacMillan, See the place where God lives"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 17 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-11-17-magdalen-2100",
@@ -10601,6 +12624,61 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-19-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-19",
+      "time": "18:15",
+      "week": 6,
+      "day": "Thu",
+      "type": "other",
+      "title": "Vespers sung by the choristers",
+      "occasion": "Hilda of Whitby, 680",
+      "choir": null,
+      "music": [
+        {
+          "slot": "office-hymn",
+          "text": "O Trinity, most blessed light"
+        },
+        {
+          "slot": "other",
+          "text": "1 ant. O magnify",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "psalm",
+          "text": "99, 100"
+        },
+        {
+          "slot": "other",
+          "text": "2 ant. I will give you",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "magnificat",
+          "text": "McCann, Magnificat octavi toni"
+        },
+        {
+          "slot": "other",
+          "text": "Mag. ant. Respexit",
+          "label": "Antiphon"
+        },
+        {
+          "slot": "motet",
+          "text": "Harris, King of glory, King of peace"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 19 Thursday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own. At Vespers the list prints the antiphons in a second column alongside the hymn, psalm and Magnificat; they are recorded as other/Antiphon, interleaved in printed row order."
+    },
+    {
       "id": "2026-11-19-st-peters-1815",
       "venueId": "st-peters",
       "date": "2026-11-19",
@@ -10782,6 +12860,74 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-20-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-20",
+      "time": "18:15",
+      "week": 6,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "Edmund, 870",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Martin, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "104 (Turle, Boyce)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Weir, Magnificat and Nunc dimittis"
+        },
+        {
+          "slot": "anthem",
+          "text": "du Caurroy, Salve Regina"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 20 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
+      "id": "2026-11-21-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-21",
+      "time": "17:45",
+      "week": 6,
+      "day": "Sat",
+      "type": "special",
+      "title": "Solemn Requiem",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "setting",
+          "text": "Duruflé, Requiem"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": "for The Reverend Stephen Tucker, Dean of Divinity 1990–1995",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 21 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-11-21-magdalen-1800",
@@ -11059,6 +13205,40 @@
       "parserNote": "time from the college's chapel-services page (https://www.balliol.ox.ac.uk/balliol-chapel/chapel-services), which gives the Sunday service as 5.30 pm; the music list itself prints no time."
     },
     {
+      "id": "2026-11-22-jesus-1745",
+      "venueId": "jesus",
+      "date": "2026-11-22",
+      "time": "17:45",
+      "week": 7,
+      "day": "Sun",
+      "type": "other",
+      "title": "Choral Vespers",
+      "occasion": "Christ the King",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Wachet auf, ruft uns die Stimme BWV 140",
+          "composer": "J.S. Bach",
+          "label": "Cantata"
+        },
+        {
+          "slot": "hymn",
+          "text": "Isaiah, mighty Seer, in days of old"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Sunday 22nd November | 7th Week'"
+      },
+      "confidence": "medium",
+      "parserNote": "The list names the service \"Choral Vespers\", recorded as type \"other\". Its \"Cantata\" heading is recorded as other/Cantata."
+    },
+    {
       "id": "2026-11-22-merton-1745",
       "venueId": "merton",
       "date": "2026-11-22",
@@ -11106,6 +13286,75 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-22-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-22",
+      "time": "17:45",
+      "week": 7,
+      "day": "Sun",
+      "type": "other",
+      "title": "Cantata Vespers",
+      "occasion": "Sunday next before Advent",
+      "choir": null,
+      "music": [
+        {
+          "slot": "other",
+          "text": "Bach, Prelude in A minor, BWV 543",
+          "label": "Organ"
+        },
+        {
+          "slot": "motet",
+          "text": "Pallavicino, Canite tuba in Sion"
+        },
+        {
+          "slot": "other",
+          "text": "Bach, Wachet auf, ruft uns die Stimme, BWV 140",
+          "label": "Cantata"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Palestrina, Magnificat primi toni à8"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Bach, Fugue in A minor, BWV 543"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": "The Revd Alice Goodman",
+      "notes": "Vicar, Fulbourn and the Wilbrahams",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 22 SUNDAY NEXT BEFORE ADVENT', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own. The Bach cantata is recorded as other/Cantata; the list’s introduction calls it \"the termly Cantata\"."
+    },
+    {
+      "id": "2026-11-22-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-11-22",
+      "time": "18:00",
+      "week": 7,
+      "day": "Sun",
+      "type": "other",
+      "title": "Choral Vespers with a consort of instruments on St Cecilia’s Day",
+      "occasion": "St Cecilia’s Day",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": "Prof Beth Breeze",
+      "notes": "Prof Beth Breeze preaches the University Sermon on the Sin of Pride.",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '22 November / Week 7'"
+      },
+      "confidence": "medium",
+      "parserNote": "The music list for the term is not published yet, so this service has no music. Time taken from the card’s \"Sundays At 6pm\" heading."
     },
     {
       "id": "2026-11-22-lincoln-1800",
@@ -11536,6 +13785,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-23-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-23",
+      "time": "18:15",
+      "week": 7,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "Clement, c. 100",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "plainchant, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "114, 115 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Wood in E"
+        },
+        {
+          "slot": "anthem",
+          "text": "Tallis, If ye love me"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 23 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-24-magdalen-1800",
       "venueId": "magdalen",
       "date": "2026-11-24",
@@ -11681,6 +13970,46 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-24-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-24",
+      "time": "18:15",
+      "week": 7,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Smith, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "119.1–24 (Soaper, Goss, Williams)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Coleridge-Taylor in F"
+        },
+        {
+          "slot": "anthem",
+          "text": "Wood, Hail, gladdening light"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 24 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-11-24-magdalen-2100",
@@ -12079,6 +14408,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-26-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-26",
+      "time": "18:15",
+      "week": 7,
+      "day": "Thu",
+      "type": "choral-evensong",
+      "title": "Evensong sung jointly with Ely College",
+      "occasion": null,
+      "choir": "Sung jointly with Ely College",
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Smith, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "119.153–176 (Cooke, Ouseley, Elvey)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Stanford in B flat"
+        },
+        {
+          "slot": "anthem",
+          "text": "Gjeilo, Ubi caritas"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 26 Thursday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-26-st-peters-1815",
       "venueId": "st-peters",
       "date": "2026-11-26",
@@ -12262,6 +14631,46 @@
       "parserNote": null
     },
     {
+      "id": "2026-11-27-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-27",
+      "time": "18:15",
+      "week": 7,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Smith, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "126, 127, 128 (Battishill, Langdon)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Whitlock, Fauxbourdons"
+        },
+        {
+          "slot": "anthem",
+          "text": "Tallis, O nata lux"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 27 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-11-28-merton-1730",
       "venueId": "merton",
       "date": "2026-11-28",
@@ -12283,6 +14692,47 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-28-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-11-28",
+      "time": "17:45",
+      "week": 7,
+      "day": "Sat",
+      "type": "choral-eucharist",
+      "title": "Eucharist sung by the clerks",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "setting",
+          "text": "Byrd, Mass for three voices"
+        },
+        {
+          "slot": "other",
+          "text": "Ostende nobis Domine",
+          "label": "Alleluia"
+        },
+        {
+          "slot": "motet",
+          "text": "Asola, Ad te levavi"
+        },
+        {
+          "slot": "voluntary",
+          "text": "Bach, Allegro (Sonata II, BWV 526)"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 28 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-11-28-magdalen-1800",
@@ -12455,6 +14905,52 @@
       "parserNote": "the music lines are printed unlabelled under the service; the first is recorded as the setting, the closing organ work as the voluntary and the remainder as motets, by position."
     },
     {
+      "id": "2026-11-29-jesus-1530",
+      "venueId": "jesus",
+      "date": "2026-11-29",
+      "time": "15:30",
+      "week": 8,
+      "day": "Sun",
+      "type": "special",
+      "title": "Carol Services",
+      "occasion": "Advent 1",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Oxmas",
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Sunday 29th November | 8th Week', 15.30 & 17.30"
+      },
+      "confidence": "medium",
+      "parserNote": "The list prints \"15.30 & 17.30 Carol Services\" for this day with no music; recorded as two services, one per printed time."
+    },
+    {
+      "id": "2026-11-29-new-college-1600",
+      "venueId": "new-college",
+      "date": "2026-11-29",
+      "time": "16:00",
+      "week": 8,
+      "day": "Sun",
+      "type": "special",
+      "title": "Advent Carol Service",
+      "occasion": "Advent Sunday",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Current New College students, staff and fellows only. Tickets available from the Chapel Office.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 29 ADVENT SUNDAY', 4.00 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "The list prints this service with no music."
+    },
+    {
       "id": "2026-11-29-lady-margaret-hall-1700",
       "venueId": "lady-margaret-hall",
       "date": "2026-11-29",
@@ -12501,6 +14997,29 @@
       "parserNote": "time from the college's chapel-services page (https://www.balliol.ox.ac.uk/balliol-chapel/chapel-services), which gives the Sunday service as 5.30 pm; the music list itself prints no time."
     },
     {
+      "id": "2026-11-29-jesus-1730",
+      "venueId": "jesus",
+      "date": "2026-11-29",
+      "time": "17:30",
+      "week": 8,
+      "day": "Sun",
+      "type": "special",
+      "title": "Carol Services",
+      "occasion": "Advent 1",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Oxmas",
+      "source": {
+        "url": "https://www.jesus.ox.ac.uk/wp-content/uploads/2026/10/Music-list-MT-26-FINAL.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Sunday 29th November | 8th Week', 15.30 & 17.30"
+      },
+      "confidence": "medium",
+      "parserNote": "The list prints \"15.30 & 17.30 Carol Services\" for this day with no music; recorded as two services, one per printed time."
+    },
+    {
       "id": "2026-11-29-merton-1730",
       "venueId": "merton",
       "date": "2026-11-29",
@@ -12545,6 +15064,29 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-11-29-exeter-1800",
+      "venueId": "exeter",
+      "date": "2026-11-29",
+      "time": "18:00",
+      "week": 8,
+      "day": "Sun",
+      "type": "special",
+      "title": "The Advent Procession",
+      "occasion": "Advent Sunday",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "A service from darkness into light as we prepare to welcome Christ into our world. Doors open at 5.30pm.",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, '29 November / Week 8' and 'Advent and Christmas at Exeter', 'Sunday 29 November'"
+      },
+      "confidence": "medium",
+      "parserNote": "The card prints this Sunday twice — as \"Advent Sunday\" in the Sunday list and as \"The Advent Procession\" at 6pm under \"Advent and Christmas at Exeter\"; recorded once. No music is given."
     },
     {
       "id": "2026-11-29-lincoln-1800",
@@ -12900,6 +15442,46 @@
       "parserNote": "Roman Catholic Mass in the college chapel with a printed polyphonic setting; earlier runs omitted RC Masses as out of scope — recorded here and flagged in the report."
     },
     {
+      "id": "2026-11-30-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-11-30",
+      "time": "18:15",
+      "week": 8,
+      "day": "Mon",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": "Andrew",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "McCann, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "147 (plainchant)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Howells in E"
+        },
+        {
+          "slot": "anthem",
+          "text": "Palestrina, Mihi autem nimis"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'NOVEMBER — 30 Monday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-12-01-magdalen-1800",
       "venueId": "magdalen",
       "date": "2026-12-01",
@@ -12973,6 +15555,29 @@
       "parserNote": null
     },
     {
+      "id": "2026-12-01-exeter-1815",
+      "venueId": "exeter",
+      "date": "2026-12-01",
+      "time": "18:15",
+      "week": 8,
+      "day": "Tue",
+      "type": "compline",
+      "title": "Advent Compline by Candlelight",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Advent and Christmas at Exeter', 'Tuesday 1 December'"
+      },
+      "confidence": "medium",
+      "parserNote": "From the card’s Advent and Christmas list, which gives the time but no music."
+    },
+    {
       "id": "2026-12-01-merton-1815",
       "venueId": "merton",
       "date": "2026-12-01",
@@ -13028,6 +15633,50 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-12-01-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-12-01",
+      "time": "18:15",
+      "week": 8,
+      "day": "Tue",
+      "type": "choral-evensong",
+      "title": "Evensong with Blessing of the Christmas Tree",
+      "occasion": "Charles de Foucauld, 1916",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Smith, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "8 (Lawes)"
+        },
+        {
+          "slot": "canticles",
+          "text": "Sumsion in G"
+        },
+        {
+          "slot": "anthem",
+          "text": "Wise, Prepare ye the way of the Lord"
+        },
+        {
+          "slot": "motet",
+          "text": "Andrews, Before Dawn"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'DECEMBER — 1 Tuesday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-12-01-magdalen-2100",
@@ -13344,6 +15993,29 @@
       "parserNote": null
     },
     {
+      "id": "2026-12-03-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-12-03",
+      "time": "18:15",
+      "week": 8,
+      "day": "Thu",
+      "type": "special",
+      "title": "Carol Service for students",
+      "occasion": "Francis Xavier, 1552",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Current New College students and guests only. No booking necessary.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'DECEMBER — 3 Thursday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "The list prints this service with no music."
+    },
+    {
       "id": "2026-12-03-merton-2030",
       "venueId": "merton",
       "date": "2026-12-03",
@@ -13388,6 +16060,29 @@
       },
       "confidence": "medium",
       "parserNote": "time from the card's header note: 'Compline is on Thursdays at 9:30pm in the Crypt beneath St Peter-in-the-East'."
+    },
+    {
+      "id": "2026-12-04-exeter-1730",
+      "venueId": "exeter",
+      "date": "2026-12-04",
+      "time": "17:30",
+      "week": 8,
+      "day": "Fri",
+      "type": "special",
+      "title": "College Christmas Carol Service",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "doors open at 5pm",
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Advent and Christmas at Exeter', 'Friday 4 December'"
+      },
+      "confidence": "medium",
+      "parserNote": "From the card’s Advent and Christmas list, which gives the time but no music."
     },
     {
       "id": "2026-12-04-lady-margaret-hall-1745",
@@ -13436,6 +16131,50 @@
       "parserNote": null
     },
     {
+      "id": "2026-12-04-new-college-1815",
+      "venueId": "new-college",
+      "date": "2026-12-04",
+      "time": "18:15",
+      "week": 8,
+      "day": "Fri",
+      "type": "choral-evensong",
+      "title": "Evensong",
+      "occasion": "John of Damascus, c. 749; Nicholas Ferrar, 1637",
+      "choir": null,
+      "music": [
+        {
+          "slot": "responses",
+          "text": "Smith, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "22, 23 (Wesley, Walford Davies)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Bevan, Magnificat primi toni"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Victoria, Nunc dimittis tertii toni"
+        },
+        {
+          "slot": "anthem",
+          "text": "Byrd, Vigilate"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'DECEMBER — 4 Friday', 6.15 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
+    },
+    {
       "id": "2026-12-05-lincoln-1100",
       "venueId": "lincoln",
       "date": "2026-12-05",
@@ -13480,6 +16219,104 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-12-05-exeter-1500",
+      "venueId": "exeter",
+      "date": "2026-12-05",
+      "time": "15:00",
+      "week": 8,
+      "day": "Sat",
+      "type": "special",
+      "title": "Carol Service for alumni and friends",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Advent and Christmas at Exeter', 'Saturday 5 December'"
+      },
+      "confidence": "medium",
+      "parserNote": "From the card’s Advent and Christmas list, which gives the time but no music."
+    },
+    {
+      "id": "2026-12-05-exeter-1700",
+      "venueId": "exeter",
+      "date": "2026-12-05",
+      "time": "17:00",
+      "week": 8,
+      "day": "Sat",
+      "type": "special",
+      "title": "Carol Service for alumni and friends",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Advent and Christmas at Exeter', 'Saturday 5 December'"
+      },
+      "confidence": "medium",
+      "parserNote": "From the card’s Advent and Christmas list, which gives the time but no music."
+    },
+    {
+      "id": "2026-12-05-new-college-1745",
+      "venueId": "new-college",
+      "date": "2026-12-05",
+      "time": "17:45",
+      "week": 8,
+      "day": "Sat",
+      "type": "choral-evensong",
+      "title": "Evensong sung by the clerks",
+      "occasion": null,
+      "choir": null,
+      "music": [
+        {
+          "slot": "introit",
+          "text": "Mundy, Sive vigilem"
+        },
+        {
+          "slot": "responses",
+          "text": "McCann, Responses"
+        },
+        {
+          "slot": "psalm",
+          "text": "27, 28 (plainchant)"
+        },
+        {
+          "slot": "magnificat",
+          "text": "Soriano, Magnificat primi toni"
+        },
+        {
+          "slot": "nunc-dimittis",
+          "text": "Viadana, Nunc dimittis tertii toni"
+        },
+        {
+          "slot": "anthem",
+          "text": "Byrd, Ecce virgo concipiet"
+        },
+        {
+          "slot": "voluntary",
+          "text": "J. S. Bach, Nun komm, der Heiden Heiland, BWV 659"
+        }
+      ],
+      "musicStatus": "published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'DECEMBER — 5 Saturday', 5.45 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "New College’s list is largely unlabelled. Slots are assigned by position and Anglican-office convention: an opening organ piece -> other/Organ; \"X, Responses\" -> responses; the service name after the psalm -> canticles (split when two composers are given); the next choral item -> anthem; a closing organ piece -> voluntary. The list also appends \"NCH nn\" hymn-book numbers and organ-scholar initials to lines; these are not captured. Times are from the list’s \"Regular service times\" table unless the entry states its own."
     },
     {
       "id": "2026-12-05-magdalen-1800",
@@ -13539,6 +16376,29 @@
       "parserNote": null
     },
     {
+      "id": "2026-12-05-exeter-1900",
+      "venueId": "exeter",
+      "date": "2026-12-05",
+      "time": "19:00",
+      "week": 8,
+      "day": "Sat",
+      "type": "special",
+      "title": "Carol Service: everyone is most welcome",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": null,
+      "source": {
+        "url": "https://www.exeter.ox.ac.uk/wp-content/uploads/2026/10/Chapel-Michaelmas-Term-2026.pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF p.2, 'Advent and Christmas at Exeter', 'Saturday 5 December'"
+      },
+      "confidence": "medium",
+      "parserNote": "From the card’s Advent and Christmas list, which gives the time but no music."
+    },
+    {
       "id": "2026-12-06-pusey-house-1100",
       "venueId": "pusey-house",
       "date": "2026-12-06",
@@ -13592,6 +16452,29 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-12-06-new-college-1600",
+      "venueId": "new-college",
+      "date": "2026-12-06",
+      "time": "16:00",
+      "week": 9,
+      "day": "Sun",
+      "type": "special",
+      "title": "Carol Service",
+      "occasion": "Second Sunday of Advent",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Current New College students, staff and fellows only. Tickets available from the Chapel Office.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'DECEMBER — 6 SECOND SUNDAY OF ADVENT', 4.00 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "After the end of Full Term; the list prints this service with no music."
     },
     {
       "id": "2026-12-07-merton-1800",
@@ -13691,6 +16574,29 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-12-09-new-college-1630",
+      "venueId": "new-college",
+      "date": "2026-12-09",
+      "time": "16:30",
+      "week": 9,
+      "day": "Wed",
+      "type": "special",
+      "title": "Family Carol Service",
+      "occasion": null,
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Families of current New College and New College School students, staff and fellows only. No booking necessary.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'DECEMBER — 9 WEDNESDAY', 4.30 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "After the end of Full Term; the list prints this service with no music."
     },
     {
       "id": "2026-12-09-merton-1815",
@@ -13821,6 +16727,29 @@
       },
       "confidence": "high",
       "parserNote": null
+    },
+    {
+      "id": "2026-12-24-new-college-2300",
+      "venueId": "new-college",
+      "date": "2026-12-24",
+      "time": "23:00",
+      "week": 11,
+      "day": "Thu",
+      "type": "choral-eucharist",
+      "title": "Midnight Mass sung by Collegium Novum Consort",
+      "occasion": "Christmas Eve",
+      "choir": null,
+      "music": [],
+      "musicStatus": "not-yet-published",
+      "preacher": null,
+      "notes": "Current and former New College and New College School students, staff, and fellows and their guests only. Tickets available from the Chapel Office. Not open to the public.",
+      "source": {
+        "url": "https://www.newcollegechoir.com/attachments/download.asp?file=205&type=pdf",
+        "fetchedAt": "2026-10-11T22:45:00Z",
+        "locator": "PDF, 'DECEMBER — 24 CHRISTMAS EVE', 11.00 pm"
+      },
+      "confidence": "medium",
+      "parserNote": "After the end of Full Term; the list prints this service with no music. Collegium Novum Consort is the college’s own group, so `choir` is null."
     }
   ]
 }
